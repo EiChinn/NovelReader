@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -41,7 +40,7 @@ import io.reactivex.disposables.Disposable;
 public class LocalPageLoader extends PageLoader {
     private static final String TAG = "LocalPageLoader";
     //默认从文件中获取数据的长度
-    private final static int BUFFER_SIZE = 512 * 1024;
+    private final static int BLOCK_BUFFER_SIZE = 512 * 1024;
     //没有标题的时候，每个章节的最大长度
     private final static int MAX_LENGTH_WITH_NO_CHAPTER = 10 * 1024;
 
@@ -96,21 +95,21 @@ public class LocalPageLoader extends PageLoader {
         //寻找匹配文章标题的正则表达式，判断是否存在章节名
         boolean hasChapter = checkChapterType(bookStream);
         //加载章节
-        byte[] buffer = new byte[BUFFER_SIZE];
+        byte[] blockBuffer = new byte[BLOCK_BUFFER_SIZE];
         //获取到的块起始点，在文件中的位置
-        long curOffset = 0;
+        long blockOffset = 0;
         //block的个数
-        int blockPos = 0;
+        int blockCount = 0;
         //读取的长度
-        int length;
+        int blockLength;
 
         //获取文件中的数据到buffer，直到没有数据为止
-        while ((length = bookStream.read(buffer, 0, buffer.length)) > 0) {
-            ++blockPos;
+        while ((blockLength = bookStream.read(blockBuffer, 0, blockBuffer.length)) > 0) {
+            ++blockCount;
             //如果存在Chapter
             if (hasChapter) {
                 //将数据转换成String
-                String blockContent = new String(buffer, 0, length, mCharset.getName());
+                String blockContent = new String(blockBuffer, 0, blockLength, mCharset.getName());
                 //当前Block下使过的String的指针
                 int seekPos = 0;
                 //进行正则匹配
@@ -129,7 +128,7 @@ public class LocalPageLoader extends PageLoader {
                         seekPos += chapterContent.length();
 
                         //如果当前对整个文件的偏移位置为0的话，那么就是序章
-                        if (curOffset == 0) {
+                        if (blockOffset == 0) {
                             //创建序章
                             TxtChapter preChapter = new TxtChapter();
                             preChapter.title = "序章";
@@ -196,33 +195,35 @@ public class LocalPageLoader extends PageLoader {
                         }
                     }
                 }
-            }
-            //进行本地虚拟分章
-            else {
+            } else { //进行本地虚拟分章
                 //章节在buffer的偏移量
                 int chapterOffset = 0;
                 //当前剩余可分配的长度
-                int strLength = length;
-                //分章的位置
-                int chapterPos = 0;
+                int strLength = blockLength;
+                //分章的数量
+                int chapterCount = 0;
 
                 while (strLength > 0) {
-                    ++chapterPos;
+                    chapterCount++;
                     //是否长度超过一章
                     if (strLength > MAX_LENGTH_WITH_NO_CHAPTER) {
-                        //在buffer中一章的终止点
-                        int end = length;
+                        //极端情况，这段block都没有换行
+                        int end = blockLength;
                         //寻找换行符作为终止点
-                        for (int i = chapterOffset + MAX_LENGTH_WITH_NO_CHAPTER; i < length; ++i) {
-                            if (buffer[i] == Charset.BLANK) {
+                        for (int i = chapterOffset + MAX_LENGTH_WITH_NO_CHAPTER; i < blockLength; i++) {
+                            //这里靠0x0a来划分段落其实并不严谨，例如“上”字在utf-16le编码中就是 0x0a 0x4e
+                            //就会造成有些章节不是以完整的段落结尾的情况
+                            if (blockBuffer[i] == Charset.BLANK) {
                                 end = i;
                                 break;
                             }
                         }
                         TxtChapter chapter = new TxtChapter();
-                        chapter.title = "第" + blockPos + "章" + "(" + chapterPos + ")";
-                        chapter.start = curOffset + chapterOffset + 1;
-                        chapter.end = curOffset + end;
+                        chapter.title = "第" + blockCount + "章" + "(" + chapterCount + ")";
+                        // 这里不能是chapter.start = blockOffset + chapterOffset + 1;
+                        // 因为读取章节是读取[chapter.start, chapter.end)，+1会丢失chapter.end处的字节
+                        chapter.start = blockOffset + chapterOffset;
+                        chapter.end = blockOffset + end;
                         chapters.add(chapter);
                         //减去已经被分配的长度
                         strLength = strLength - (end - chapterOffset);
@@ -230,9 +231,9 @@ public class LocalPageLoader extends PageLoader {
                         chapterOffset = end;
                     } else {
                         TxtChapter chapter = new TxtChapter();
-                        chapter.title = "第" + blockPos + "章" + "(" + chapterPos + ")";
-                        chapter.start = curOffset + chapterOffset + 1;
-                        chapter.end = curOffset + length;
+                        chapter.title = "第" + blockCount + "章" + "(" + chapterCount + ")";
+                        chapter.start = blockOffset + chapterOffset;
+                        chapter.end = blockOffset + blockLength;
                         chapters.add(chapter);
                         strLength = 0;
                     }
@@ -240,16 +241,16 @@ public class LocalPageLoader extends PageLoader {
             }
 
             //block的偏移点
-            curOffset += length;
+            blockOffset += blockLength;
 
             if (hasChapter) {
                 //设置上一章的结尾
                 TxtChapter lastChapter = chapters.get(chapters.size() - 1);
-                lastChapter.end = curOffset;
+                lastChapter.end = blockOffset;
             }
 
             //当添加的block太多的时候，执行GC
-            if (blockPos % 15 == 0) {
+            if (blockCount % 15 == 0) {
                 System.gc();
                 System.runFinalization();
             }
@@ -296,7 +297,7 @@ public class LocalPageLoader extends PageLoader {
      */
     private boolean checkChapterType(RandomAccessFile bookStream) throws IOException {
         //首先获取128k的数据
-        byte[] buffer = new byte[BUFFER_SIZE / 4];
+        byte[] buffer = new byte[BLOCK_BUFFER_SIZE / 4];
         int length = bookStream.read(buffer, 0, buffer.length);
         //进行章节匹配
         for (String str : CHAPTER_PATTERNS) {
