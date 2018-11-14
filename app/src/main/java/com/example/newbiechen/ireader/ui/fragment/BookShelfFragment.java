@@ -350,4 +350,10 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
         super.onResume();
         mPresenter.refreshCollBooks();
     }
+
+    @Override
+    public void onDestroy() {
+        mRvContent.setAdapter(null);
+        super.onDestroy();
+    }
 }
