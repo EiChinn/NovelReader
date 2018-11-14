@@ -123,7 +123,7 @@ public class LogUtils {
      * @param level
      */
     private static void log(String tag, String msg, Throwable tr, char level) {
-        if (tag == null || msg == null || tr == null) return;
+        if (tag == null || msg == null) return;
         if (LOG_SWITCH) {
             if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) { // 输出错误信息
                 Log.e(tag, createMessage(msg), tr);
