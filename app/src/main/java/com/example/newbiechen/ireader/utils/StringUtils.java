@@ -1,5 +1,6 @@
 package com.example.newbiechen.ireader.utils;
 
+import android.content.Context;
 import android.support.annotation.StringRes;
 
 import com.example.newbiechen.ireader.App;
@@ -9,12 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import android.content.Context;
-import com.zqc.opencc.android.lib.ChineseConverter;
-import com.zqc.opencc.android.lib.ConversionType;
-
-import static com.example.newbiechen.ireader.model.local.ReadSettingManager.SHARED_READ_CONVERT_TYPE;
 
 /**
  * Created by newbiechen on 17-4-22.
@@ -104,8 +99,7 @@ public class StringUtils {
      * @param input
      * @return
      */
-    public static String halfToFull(String input)
-    {
+    public static String halfToFull(String input) {
         char[] c = input.toCharArray();
         for (int i = 0; i< c.length; i++)
         {
@@ -143,14 +137,14 @@ public class StringUtils {
     }
 
     //繁簡轉換
-    public static String convertCC(String input, Context context)
-    {
+    public static String convertCC(String input, Context context) {
+        return input;
+        /*input = input.trim();
         ConversionType currentConversionType = ConversionType.S2TWP;
         int convertType = SharedPreUtils.getInstance().getInt(SHARED_READ_CONVERT_TYPE, 0);
 
         if (input.length() == 0)
             return "";
-
         switch (convertType) {
             case 1:
                 currentConversionType = ConversionType.TW2SP;
@@ -184,6 +178,6 @@ public class StringUtils {
                 break;
         }
 
-        return (convertType != 0)?ChineseConverter.convert(input, currentConversionType, context):input;
+        return (convertType != 0)?ChineseConverter.convert(input, currentConversionType, context):input;*/
     }
 }
