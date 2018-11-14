@@ -10,7 +10,9 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
+import android.widget.Toast;
 
+import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.model.bean.BookRecordBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
@@ -24,7 +26,6 @@ import com.example.newbiechen.ireader.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1026,6 +1027,8 @@ public abstract class PageLoader {
         }
 
         if (!hasNextChapter()) {
+            //如果当前章节没有下一页，也没有下一张时，可以判断是看到小说最后了
+            Toast.makeText(App.getContext(), "已经看到最后啦", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -1254,6 +1257,7 @@ public abstract class PageLoader {
                 }
                 int wordCount = 0;
                 String subStr = null;
+                // TODO: 2018/11/13 当paragraph太长（如paragraph.length() == 37599，而正常为小于300）时，下面的while将循环过多次，而且代码是在主线程中执行，所以会引发ANR
                 while (paragraph.length() > 0) {
                     //当前空间，是否容得下一行文字
                     if (showTitle) {
