@@ -1,16 +1,15 @@
 package com.example.newbiechen.ireader.model.remote;
 
-import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
-import com.example.newbiechen.ireader.model.bean.ChapterInfoBean;
+import com.example.newbiechen.ireader.model.bean.BookSourcesBean;
 import com.example.newbiechen.ireader.model.bean.packages.BillBookPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookChapterPackage;
+import com.example.newbiechen.ireader.model.bean.packages.BookCommentPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookHelpsPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookListDetailPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookListPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookReviewPackage;
-import com.example.newbiechen.ireader.model.bean.packages.BookCommentPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookSubSortPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookTagPackage;
@@ -28,9 +27,9 @@ import com.example.newbiechen.ireader.model.bean.packages.SearchBookPackage;
 import com.example.newbiechen.ireader.model.bean.packages.SortBookPackage;
 import com.example.newbiechen.ireader.model.bean.packages.TagSearchPackage;
 
-import io.reactivex.Observable;
+import java.util.List;
+
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -53,12 +52,29 @@ public interface BookApi {
 
     /**
      * 获取书籍的章节总列表
-     * @param bookId
+     * @param bookMixId
      * @param view 默认参数为:chapters
      * @return
      */
-    @GET("/mix-atoc/{bookId}")
-    Single<BookChapterPackage> getBookChapterPackage(@Path("bookId") String bookId, @Query("view") String view);
+    @GET("/mix-atoc/{bookMixId}")
+    Single<BookChapterPackage> getBookMixChapterPackage(@Path("bookMixId") String bookMixId, @Query("view") String view);
+
+    /**
+     * 获取书籍的章节总列表
+     * @param bookSourceId
+     * @param view 默认参数为:chapters
+     * @return
+     */
+    @GET("/atoc/{bookSourceId}")
+    Single<BookChapterPackage.MixTocBean> getBookSourceChapterPackage(@Path("bookSourceId") String bookSourceId, @Query("view") String view);
+
+
+    /**
+     * 获取小说正版源与盗版源(混合)
+     */
+    @GET("/atoc")
+    Single<List<BookSourcesBean>> getBookSources(@Query("book") String bookId, @Query("view") String view);
+
 
     /**
      * 章节的内容

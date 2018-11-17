@@ -104,6 +104,10 @@ public class BookRepository {
         mCollBookDao.insertOrReplaceInTx(beans);
     }
 
+    public void changeBookSource(CollBookBean collBookBean) {
+        mCollBookDao.update(collBookBean);
+    }
+
     /**
      * 异步存储BookChapter
      * @param beans
@@ -112,12 +116,21 @@ public class BookRepository {
         mSession.startAsyncSession()
                 .runInTx(
                         () -> {
+                            // 清空旧目录
                             //存储BookChapterBean
                             mSession.getBookChapterBeanDao()
                                     .insertOrReplaceInTx(beans);
                             Log.d(TAG, "saveBookChaptersWithAsync: "+"进行存储");
                         }
                 );
+    }
+    /**
+     * 异步存储BookChapter
+     * @param beans
+     */
+    public void resetBookChaptersWithAsync(String bookId, List<BookChapterBean> beans){
+        deleteBookChapter(bookId);
+        saveBookChaptersWithAsync(beans);
     }
 
     /**
@@ -227,6 +240,8 @@ public class BookRepository {
                 deleteDownloadTask(bean.get_id());
                 //删除目录
                 deleteBookChapter(bean.get_id());
+                // 删除 book record
+                deleteBookRecord(bean.get_id());
                 //删除CollBook
                 mCollBookDao.delete(bean);
                 e.onSuccess(new Void());

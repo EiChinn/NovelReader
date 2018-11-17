@@ -36,16 +36,43 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
     private Subscription mChapterSub;
 
     @Override
-    public void loadCategory(String bookId) {
+    public void loadMixCategory(String bookMixId) {
         Disposable disposable = RemoteRepository.getInstance()
-                .getBookChapters(bookId)
+                .getBookMixChapters(bookMixId)
                 .doOnSuccess(new Consumer<List<BookChapterBean>>() {
                     @Override
                     public void accept(List<BookChapterBean> bookChapterBeen) throws Exception {
                         //进行设定BookChapter所属的书的id。
                         for (BookChapterBean bookChapter : bookChapterBeen) {
                             bookChapter.setId(MD5Utils.strToMd5By16(bookChapter.getLink()));
-                            bookChapter.setBookId(bookId);
+                            bookChapter.setBookId(bookMixId);
+                        }
+                    }
+                })
+                .compose(RxUtils::toSimpleSingle)
+                .subscribe(
+                        beans -> {
+                            mView.showCategory(beans);
+                        }
+                        ,
+                        e -> {
+                            //TODO: Haven't grate conversation method.
+                            LogUtils.e(e);
+                        }
+                );
+        addDisposable(disposable);
+    }
+    @Override
+    public void loadSourceCategory(String bookSourceId, String bookMixId) {
+        Disposable disposable = RemoteRepository.getInstance()
+                .getBookSourceChapters(bookSourceId)
+                .doOnSuccess(new Consumer<List<BookChapterBean>>() {
+                    @Override
+                    public void accept(List<BookChapterBean> bookChapterBeen) throws Exception {
+                        //进行设定BookChapter所属的书的id。
+                        for (BookChapterBean bookChapter : bookChapterBeen) {
+                            bookChapter.setId(MD5Utils.strToMd5By16(bookChapter.getLink()));
+                            bookChapter.setBookId(bookMixId);
                         }
                     }
                 })

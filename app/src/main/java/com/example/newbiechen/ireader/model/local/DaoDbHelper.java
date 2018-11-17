@@ -20,7 +20,8 @@ public class DaoDbHelper {
 
     private DaoDbHelper(){
         //封装数据库的创建、更新、删除
-        DaoMaster.DevOpenHelper openHelper = new MyOpenHelper(App.getContext(),DB_NAME,null);
+        // TODO: 2018/11/17 先将数据库升级改成删表重建，等换源重建后再改回来
+        DaoMaster.DevOpenHelper openHelper = new DaoMaster.DevOpenHelper(App.getContext(),DB_NAME,null);
         //获取数据库
         mDb = openHelper.getWritableDatabase();
         //封装数据库中表的创建、更新、删除

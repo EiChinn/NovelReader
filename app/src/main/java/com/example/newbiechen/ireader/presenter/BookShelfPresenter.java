@@ -1,5 +1,7 @@
 package com.example.newbiechen.ireader.presenter;
 
+import android.text.TextUtils;
+
 import com.example.newbiechen.ireader.RxBus;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
@@ -86,7 +88,10 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
     //需要修改
     @Override
     public void updateCollBooks(List<CollBookBean> collBookBeans) {
-        if (collBookBeans == null || collBookBeans.isEmpty()) return;
+        if (collBookBeans == null || collBookBeans.isEmpty()) {
+            mView.showError();
+            return;
+        }
         List<CollBookBean> collBooks = new ArrayList<>(collBookBeans);
         List<Single<BookDetailBean>> observables = new ArrayList<>(collBooks.size());
         Iterator<CollBookBean> it = collBooks.iterator();
@@ -95,8 +100,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
             //删除本地文件
             if (collBook.isLocal()) {
                 it.remove();
-            }
-            else {
+            } else {
                 observables.add(RemoteRepository.getInstance()
                         .getBookDetail(collBook.get_id()));
             }
@@ -118,6 +122,9 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
                         newCollBook.setUpdate(false);
                     }
                     newCollBook.setLastRead(oldCollBook.getLastRead());
+                    // 保留当前书籍源
+					newCollBook.setCurrentSourceId(oldCollBook.getCurrentSourceId());
+					newCollBook.setCurrentSourceName(oldCollBook.getCurrentSourceName());
                     newCollBooks.add(newCollBook);
                     //存储到数据库中
                     BookRepository.getInstance()
@@ -154,9 +161,17 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
     private void updateCategory(List<CollBookBean> collBookBeans){
         List<Single<List<BookChapterBean>>> observables = new ArrayList<>(collBookBeans.size());
         for (CollBookBean bean : collBookBeans){
-            observables.add(
-                    RemoteRepository.getInstance().getBookChapters(bean.get_id())
-            );
+            String bookSourceId = bean.getCurrentSourceId();
+			String bookMixId = bean.get_id();
+			if (TextUtils.isEmpty(bookSourceId)) {
+				observables.add(
+						RemoteRepository.getInstance().getBookSourceChapters(bookSourceId)
+				);
+			} else{
+				observables.add(
+						RemoteRepository.getInstance().getBookMixChapters(bookMixId)
+				);
+			}
         }
         Iterator<CollBookBean> it = collBookBeans.iterator();
         //执行在上一个方法中的子线程中

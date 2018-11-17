@@ -136,7 +136,9 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
         addDisposable(deleteDisp);
 
         mRvContent.setOnRefreshListener(
-                () -> mPresenter.updateCollBooks(mCollBookAdapter.getItems())
+                () -> {
+                    mPresenter.updateCollBooks(mCollBookAdapter.getItems());
+                }
         );
 
         mCollBookAdapter.setOnItemClickListener(
@@ -186,7 +188,7 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
     @Override
     protected void processLogic() {
         super.processLogic();
-        mRvContent.startRefresh();
+
     }
 
     private void openItemDialog(CollBookBean collBook) {
@@ -287,6 +289,10 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
     @Override
     public void showError() {
 
+        if (mRvContent.isRefreshing()) {
+            mRvContent.finishRefresh();
+        }
+
     }
 
     @Override
@@ -303,14 +309,18 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
 
     @Override
     public void finishRefresh(List<CollBookBean> collBookBeans) {
-        mCollBookAdapter.refreshItems(collBookBeans);
-        //如果是初次进入，则更新书籍信息
-        if (isInit) {
-            isInit = false;
-            mRvContent.post(
-                    () -> mPresenter.updateCollBooks(mCollBookAdapter.getItems())
-            );
+        if (!collBookBeans.isEmpty()) {
+            mCollBookAdapter.refreshItems(collBookBeans);
+            //如果是初次进入，则更新书籍信息
+            if (isInit) {
+                isInit = false;
+                mRvContent.startRefresh();
+                mRvContent.post(
+                        () -> mPresenter.updateCollBooks(mCollBookAdapter.getItems())
+                );
+            }
         }
+
     }
 
     @Override
@@ -348,6 +358,18 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
     @Override
     public void onResume() {
         super.onResume();
+        if (getUserVisibleHint()) {//当前fragement显示且在登录状态下才显示引导页
+            refreshCollBooks();
+        }
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed()) {//当前fragement显示且在登录状态下才显示引导页
+            refreshCollBooks();
+        }
+    }
+    private void refreshCollBooks() {
         mPresenter.refreshCollBooks();
     }
 

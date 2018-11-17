@@ -8,11 +8,14 @@
 
     <ImageView
         android:id="@+id/choose_iv_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/ic_close_window"/>
+        android:background="@drawable/ic_close_window"
+        android:scaleType="centerInside"
+        android:padding="20dp"
+        />
 
     <ImageView
         android:id="@+id/choose_iv_ic_sex"

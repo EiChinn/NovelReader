@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.newbiechen.ireader.model.gen.DaoMaster;
-import com.example.newbiechen.ireader.model.local.update.MigrationHelper;
 import com.example.newbiechen.ireader.model.local.update.Update2Helper;
 
 import org.greenrobot.greendao.database.Database;

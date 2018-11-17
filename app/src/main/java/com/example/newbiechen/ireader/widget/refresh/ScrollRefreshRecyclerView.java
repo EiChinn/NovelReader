@@ -31,7 +31,9 @@ public class ScrollRefreshRecyclerView extends ScrollRefreshLayout {
 
     public void setAdapter(RecyclerView.Adapter adapter){
         mRecyclerView.setAdapter(adapter);
-        adapter.registerAdapterDataObserver(new MyAdapterDataObserver());
+        if (adapter != null) {
+            adapter.registerAdapterDataObserver(new MyAdapterDataObserver());
+        }
     }
 
     /**

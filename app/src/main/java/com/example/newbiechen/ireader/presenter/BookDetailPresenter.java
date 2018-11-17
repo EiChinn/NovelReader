@@ -1,7 +1,5 @@
 package com.example.newbiechen.ireader.presenter;
 
-import android.util.Log;
-
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
@@ -38,7 +36,7 @@ public class BookDetailPresenter extends RxPresenter<BookDetailContract.View>
     @Override
     public void addToBookShelf(CollBookBean collBookBean)  {
         Disposable disposable = RemoteRepository.getInstance()
-                .getBookChapters(collBookBean.get_id())
+                .getBookMixChapters(collBookBean.get_id())
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(
                         (d) -> mView.waitToBookShelf() //等待加载

@@ -24,8 +24,8 @@ android {
     }
 }
 
-greendao{
-    schemaVersion 3
+greendao {
+    schemaVersion 5
     daoPackage 'com.example.newbiechen.ireader.model.gen'
     targetGenDir 'src/main/java'
 }
@@ -38,6 +38,7 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -53,6 +54,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     // NetWork
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    //引入Log拦截器，方便DEBUG模式输出log信息
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     implementation "com.squareup.okio:okio:$rootProject.okioVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"

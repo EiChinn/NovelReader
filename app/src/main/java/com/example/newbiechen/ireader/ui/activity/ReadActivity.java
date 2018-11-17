@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -90,6 +91,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     /*************top_menu_view*******************/
     @BindView(R.id.read_abl_top_menu)
     AppBarLayout mAblTopMenu;
+    @BindView(R.id.read_tv_change_source)
+    TextView mTvChangeSource;
     @BindView(R.id.read_tv_community)
     TextView mTvCommunity;
     @BindView(R.id.read_tv_brief)
@@ -198,6 +201,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     private boolean isRegistered = false;
 
     private String mBookId;
+    private String mBookSourceId;
+    private boolean isSourceId = true;
 
     public static void startActivity(Context context, CollBookBean collBook, boolean isCollected) {
         context.startActivity(new Intent(context, ReadActivity.class)
@@ -223,6 +228,11 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         isNightMode = ReadSettingManager.getInstance().isNightMode();
         isFullScreen = ReadSettingManager.getInstance().isFullScreen();
 
+        mBookSourceId = mCollBook.getCurrentSourceId();
+        if (TextUtils.isEmpty(mBookSourceId)) {
+            isSourceId = false;
+            mBookSourceId = mCollBook.get_id();
+        }
         mBookId = mCollBook.get_id();
     }
 
@@ -273,7 +283,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         //初始化屏幕常亮类
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "keep bright");
+        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "NovelReader:keep bright");
 
         //隐藏StatusBar
         mPvPage.post(
@@ -476,14 +486,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         mTvCategory.setOnClickListener(
                 (v) -> {
-                    //移动到指定位置
-                    if (mCategoryAdapter.getCount() > 0) {
-                        mLvCategory.setSelection(mPageLoader.getChapterPos());
-                    }
-                    //切换菜单
-                    toggleMenu(true);
-                    //打开侧滑动栏
-                    mDlSlide.openDrawer(Gravity.START);
+                    loadCategory();
+                    isOpen = true;
                 }
         );
         mTvSetting.setOnClickListener(
@@ -529,6 +533,15 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 (v) -> {
                     Intent intent = new Intent(this, CommunityActivity.class);
                     startActivity(intent);
+                }
+        );
+
+        mTvChangeSource.setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent(this, ChangeSourceActivity.class);
+                    intent.putExtra("book_id", mBookId);
+                    intent.putExtra("current_source_name", mCollBook.getCurrentSourceName());
+                    startActivityForResult(intent, 0xff01);
                 }
         );
 
@@ -627,7 +640,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                                 mPageLoader.refreshChapterList();
                                 // 如果是网络小说并被标记更新的，则从网络下载目录
                                 if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
-                                    mPresenter.loadCategory(mBookId);
+                                    loadCategory();
                                 }
                                 LogUtils.e(throwable);
                             }
@@ -635,7 +648,15 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             addDisposable(disposable);
         } else {
             // 从网络中获取目录
-            mPresenter.loadCategory(mBookId);
+            loadCategory();
+        }
+    }
+
+    private void loadCategory() {
+        if (isSourceId) {
+            mPresenter.loadSourceCategory(mBookSourceId, mBookId);
+        } else {
+            mPresenter.loadMixCategory(mBookId);
         }
     }
 
@@ -650,15 +671,34 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
     }
 
+    private boolean isOpen;
+    private boolean isChangeSource;
     @Override
     public void showCategory(List<BookChapterBean> bookChapters) {
         mPageLoader.getCollBook().setBookChapters(bookChapters);
         mPageLoader.refreshChapterList();
 
         // 如果是目录更新的情况，那么就需要存储更新数据
-        if (mCollBook.isUpdate() && isCollected) {
+        if (isChangeSource) {
+            isChangeSource = false;
+            BookRepository.getInstance()
+                    .resetBookChaptersWithAsync(mBookId, bookChapters);
+        } else if(mCollBook.isUpdate() && isCollected) {
             BookRepository.getInstance()
                     .saveBookChaptersWithAsync(bookChapters);
+        }
+
+
+        if (isOpen) {
+            isOpen = false;
+            //移动到指定位置
+            if (mCategoryAdapter.getCount() > 0) {
+                mLvCategory.setSelection(mPageLoader.getChapterPos());
+            }
+            //切换菜单
+            toggleMenu(true);
+            //打开侧滑动栏
+            mDlSlide.openDrawer(Gravity.START);
         }
     }
 
@@ -694,8 +734,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             return;
         }
 
-        if (!mCollBook.isLocal() && !isCollected
-                && !mCollBook.getBookChapters().isEmpty()) {
+        if (!mCollBook.isLocal() && !isCollected) {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle("加入书架")
                     .setMessage("喜欢本书就加入书架吧")
@@ -805,6 +844,17 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 SystemBarUtils.hideStableNavBar(this);
             } else {
                 SystemBarUtils.showStableNavBar(this);
+            }
+        } else if (resultCode == 0xff02) {
+            String currentSourceName = data.getStringExtra("current_source_name");
+            String currentSourceBookId = data.getStringExtra("current_source_book_id");
+            if (!TextUtils.isEmpty(currentSourceBookId)) {
+                mBookSourceId = currentSourceBookId;
+                isSourceId = true;
+                isChangeSource = true;
+                mCollBook.setCurrentSourceId(currentSourceBookId);
+                mCollBook.setCurrentSourceName(currentSourceName);
+                BookRepository.getInstance().changeBookSource(mCollBook);
             }
         }
     }

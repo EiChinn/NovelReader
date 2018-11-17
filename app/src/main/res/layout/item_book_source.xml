@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--通用的书籍介绍界面-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_common_bg"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/change_source_iv_portrait"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_book_loading"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/change_source_iv_portrait"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/change_source_tv_book_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="宦官哈哈"
+            android:textColor="@color/nb.text.default"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/change_source_tv_update_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="xxxxxxxxxxxxxxxx"
+            android:textColor="@color/nb.text.common_h2" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/change_source_iv_current_chose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_check_black_24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

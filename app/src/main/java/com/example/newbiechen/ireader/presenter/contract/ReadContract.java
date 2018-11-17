@@ -18,7 +18,8 @@ public interface ReadContract extends BaseContract{
     }
 
     interface Presenter extends BaseContract.BasePresenter<View>{
-        void loadCategory(String bookId);
+        void loadMixCategory(String bookMixId);
+        void loadSourceCategory(String bookBookId, String bookMixId);
         void loadChapter(String bookId,List<TxtChapter> bookChapterList);
     }
 }

@@ -1,34 +1,28 @@
 package com.example.newbiechen.ireader.model.bean;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.example.newbiechen.ireader.App;
-import com.example.newbiechen.ireader.utils.StringUtils;
-import com.google.gson.annotations.SerializedName;
-
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.OrderBy;
-import org.greenrobot.greendao.annotation.ToMany;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import org.greenrobot.greendao.DaoException;
-import com.example.newbiechen.ireader.model.gen.DaoSession;
 import com.example.newbiechen.ireader.model.gen.BookChapterBeanDao;
 import com.example.newbiechen.ireader.model.gen.CollBookBeanDao;
+import com.example.newbiechen.ireader.model.gen.DaoSession;
+import com.example.newbiechen.ireader.utils.StringUtils;
+
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToMany;
+
+import java.util.List;
 
 /**
  * Created by newbiechen on 17-5-8.
  * 收藏的书籍
  */
 @Entity
-public class CollBookBean implements Parcelable{
+public class CollBookBean implements Parcelable {
 
     public static final int STATUS_UNCACHE = 0; //未缓存
     public static final int STATUS_CACHING = 1; //正在缓存
@@ -69,17 +63,40 @@ public class CollBookBean implements Parcelable{
 
     @ToMany(referencedJoinProperty = "bookId")
     private List<BookChapterBean> bookChapterList;
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /** Used for active entity operations. */
-    @Generated(hash = 1552163441)
-    private transient CollBookBeanDao myDao;
 
-    @Generated(hash = 757968961)
+    // 获取目录和章节时使用
+    private String currentSourceName;
+    private String currentSourceId;
+
+
+
+    public CollBookBean() {
+    }
+
+    protected CollBookBean(Parcel in) {
+        _id = in.readString();
+        title = in.readString();
+        author = in.readString();
+        shortIntro = in.readString();
+        cover = in.readString();
+        hasCp = in.readByte() != 0;
+        latelyFollower = in.readInt();
+        retentionRatio = in.readDouble();
+        updated = in.readString();
+        lastRead = in.readString();
+        chaptersCount = in.readInt();
+        lastChapter = in.readString();
+        isUpdate = in.readByte() != 0;
+        isLocal = in.readByte() != 0;
+        currentSourceName = in.readString();
+        currentSourceId = in.readString();
+    }
+
+    @Generated(hash = 485669497)
     public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
             boolean hasCp, int latelyFollower, double retentionRatio, String updated, String lastRead,
-            int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal) {
+            int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
+            String currentSourceName, String currentSourceId) {
         this._id = _id;
         this.title = title;
         this.author = author;
@@ -94,10 +111,27 @@ public class CollBookBean implements Parcelable{
         this.lastChapter = lastChapter;
         this.isUpdate = isUpdate;
         this.isLocal = isLocal;
+        this.currentSourceName = currentSourceName;
+        this.currentSourceId = currentSourceId;
     }
 
-    public CollBookBean() {
-    }
+    public static final Creator<CollBookBean> CREATOR = new Creator<CollBookBean>() {
+        @Override
+        public CollBookBean createFromParcel(Parcel in) {
+            return new CollBookBean(in);
+        }
+
+        @Override
+        public CollBookBean[] newArray(int size) {
+            return new CollBookBean[size];
+        }
+    };
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+    /** Used for active entity operations. */
+    @Generated(hash = 1552163441)
+    private transient CollBookBeanDao myDao;
 
     public String get_id() {
         return _id;
@@ -233,10 +267,60 @@ public class CollBookBean implements Parcelable{
     public List<BookChapterBean> getBookChapters(){
         if (daoSession == null){
             return bookChapterList;
-        }
-        else {
+        } else {
             return getBookChapterList();
         }
+    }
+
+
+    public boolean getIsLocal() {
+        return this.isLocal;
+    }
+
+    public void setIsLocal(boolean isLocal) {
+        this.isLocal = isLocal;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(title);
+        dest.writeString(author);
+        dest.writeString(shortIntro);
+        dest.writeString(cover);
+        dest.writeByte((byte) (hasCp ? 1 : 0));
+        dest.writeInt(latelyFollower);
+        dest.writeDouble(retentionRatio);
+        dest.writeString(updated);
+        dest.writeString(lastRead);
+        dest.writeInt(chaptersCount);
+        dest.writeString(lastChapter);
+        dest.writeByte((byte) (isUpdate ? 1 : 0));
+        dest.writeByte((byte) (isLocal ? 1 : 0));
+        dest.writeString(currentSourceName);
+        dest.writeString(currentSourceId);
+    }
+
+    public String getCurrentSourceName() {
+        return this.currentSourceName;
+    }
+
+    public void setCurrentSourceName(String currentSourceName) {
+        this.currentSourceName = currentSourceName;
+    }
+
+    public String getCurrentSourceId() {
+        return this.currentSourceId;
+    }
+
+    public void setCurrentSourceId(String currentSourceId) {
+        this.currentSourceId = currentSourceId;
     }
 
     /**
@@ -262,13 +346,11 @@ public class CollBookBean implements Parcelable{
         return bookChapterList;
     }
 
-
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1077762221)
     public synchronized void resetBookChapterList() {
         bookChapterList = null;
     }
-
 
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
@@ -282,7 +364,6 @@ public class CollBookBean implements Parcelable{
         myDao.delete(this);
     }
 
-
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
      * Entity must attached to an entity context.
@@ -294,7 +375,6 @@ public class CollBookBean implements Parcelable{
         }
         myDao.refresh(this);
     }
-
 
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
@@ -308,7 +388,6 @@ public class CollBookBean implements Parcelable{
         myDao.update(this);
     }
 
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 159260324)
     public void __setDaoSession(DaoSession daoSession) {
@@ -316,63 +395,5 @@ public class CollBookBean implements Parcelable{
         myDao = daoSession != null ? daoSession.getCollBookBeanDao() : null;
     }
 
-    public boolean getIsLocal() {
-        return this.isLocal;
-    }
 
-    public void setIsLocal(boolean isLocal) {
-        this.isLocal = isLocal;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this._id);
-        dest.writeString(this.title);
-        dest.writeString(this.author);
-        dest.writeString(this.shortIntro);
-        dest.writeString(this.cover);
-        dest.writeByte(this.hasCp ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.latelyFollower);
-        dest.writeDouble(this.retentionRatio);
-        dest.writeString(this.updated);
-        dest.writeString(this.lastRead);
-        dest.writeInt(this.chaptersCount);
-        dest.writeString(this.lastChapter);
-        dest.writeByte(this.isUpdate ? (byte) 1 : (byte) 0);
-        dest.writeByte(this.isLocal ? (byte) 1 : (byte) 0);
-    }
-
-    protected CollBookBean(Parcel in) {
-        this._id = in.readString();
-        this.title = in.readString();
-        this.author = in.readString();
-        this.shortIntro = in.readString();
-        this.cover = in.readString();
-        this.hasCp = in.readByte() != 0;
-        this.latelyFollower = in.readInt();
-        this.retentionRatio = in.readDouble();
-        this.updated = in.readString();
-        this.lastRead = in.readString();
-        this.chaptersCount = in.readInt();
-        this.lastChapter = in.readString();
-        this.isUpdate = in.readByte() != 0;
-        this.isLocal = in.readByte() != 0;
-    }
-
-    public static final Creator<CollBookBean> CREATOR = new Creator<CollBookBean>() {
-        @Override
-        public CollBookBean createFromParcel(Parcel source) {
-            return new CollBookBean(source);
-        }
-
-        @Override
-        public CollBookBean[] newArray(int size) {
-            return new CollBookBean[size];
-        }
-    };
 }
