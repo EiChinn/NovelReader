@@ -98,6 +98,7 @@ public class ChangeSourceActivity extends BaseMVPActivity<ChangeSourceContract.P
 	@Override
 	protected void onDestroy() {
 		rv_book_sources.setAdapter(null);
+		adapter.setOnItemClickListener(null);
 		super.onDestroy();
 	}
 }
