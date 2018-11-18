@@ -105,7 +105,10 @@ public class BookRepository {
     }
 
     public void changeBookSource(CollBookBean collBookBean) {
+        // 更新数据库信息，主要是更新currentSourceId，currentSourceName这两个字段
         mCollBookDao.update(collBookBean);
+        // 换源之后删除本地章节缓存
+        deleteBookCache(collBookBean.get_id());
     }
 
     /**
@@ -235,7 +238,7 @@ public class BookRepository {
             @Override
             public void subscribe(SingleEmitter<Void> e) throws Exception {
                 //查看文本中是否存在删除的数据
-                deleteBook(bean.get_id());
+                deleteBookCache(bean.get_id());
                 //删除任务
                 deleteDownloadTask(bean.get_id());
                 //删除目录
@@ -263,7 +266,7 @@ public class BookRepository {
     }
 
     //删除书籍
-    public void deleteBook(String bookId){
+    public void deleteBookCache(String bookId){
         FileUtils.deleteFile(Constant.BOOK_CACHE_PATH+bookId);
     }
 
