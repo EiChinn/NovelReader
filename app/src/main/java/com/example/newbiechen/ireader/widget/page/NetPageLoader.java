@@ -11,7 +11,6 @@ import com.example.newbiechen.ireader.utils.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class NetPageLoader extends PageLoader {
     @Override
     public void refreshChapterList() {
         if (mCollBook.getBookChapters() == null) return;
+        checkRecordValid();
 
         // 将 BookChapter 转换成当前可用的 Chapter
         mChapterList = convertTxtChapter(mCollBook.getBookChapters());

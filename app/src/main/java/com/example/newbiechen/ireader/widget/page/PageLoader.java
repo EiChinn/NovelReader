@@ -22,6 +22,7 @@ import com.example.newbiechen.ireader.utils.IOUtils;
 import com.example.newbiechen.ireader.utils.RxUtils;
 import com.example.newbiechen.ireader.utils.ScreenUtils;
 import com.example.newbiechen.ireader.utils.StringUtils;
+import com.example.newbiechen.ireader.utils.ToastUtils;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -1410,6 +1411,18 @@ public abstract class PageLoader {
             mStatus = STATUS_LOADING;
         }
         return true;
+    }
+
+    /**
+     * //如果上次退出时阅读的章节mCurChapterPos大于小说章节（可能是换源的时候出了点问题），清空BookRecord
+     */
+    protected void checkRecordValid() {
+        if (mCurChapterPos >= mCollBook.getBookChapters().size() || mCurChapterPos < 0) {
+            mBookRecord = new BookRecordBean();
+            mLastChapterPos = mCurChapterPos = 0;
+            BookRepository.getInstance().deleteBookRecord(mCollBook.get_id());
+            ToastUtils.show("上次阅读章节大于小说总章节，检查是否换源的时候出了问题");
+        }
     }
 
     /*****************************************interface*****************************************/

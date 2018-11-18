@@ -678,16 +678,6 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         mPageLoader.getCollBook().setBookChapters(bookChapters);
         mPageLoader.refreshChapterList();
 
-        // 如果是目录更新的情况，那么就需要存储更新数据
-        if (isChangeSource) {
-            isChangeSource = false;
-            BookRepository.getInstance()
-                    .resetBookChaptersWithAsync(mBookId, bookChapters);
-        } else if(mCollBook.isUpdate() && isCollected) {
-            BookRepository.getInstance()
-                    .saveBookChaptersWithAsync(bookChapters);
-        }
-
 
         if (isOpen) {
             isOpen = false;
@@ -699,6 +689,17 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             toggleMenu(true);
             //打开侧滑动栏
             mDlSlide.openDrawer(Gravity.START);
+        }
+
+        // TODO: 2018/11/18 这里几乎每次都要更新数据库，而且是先删除所有旧章节在插入新的，需优化
+        // 如果是目录更新的情况，那么就需要存储更新数据
+        if (isChangeSource) {
+            isChangeSource = false;
+            BookRepository.getInstance()
+                    .resetBookChaptersWithAsync(mBookId, bookChapters);
+        } else if(isCollected) {
+            BookRepository.getInstance()
+                    .resetBookChaptersWithAsync(mBookId, bookChapters);
         }
     }
 
@@ -855,6 +856,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 mCollBook.setCurrentSourceId(currentSourceBookId);
                 mCollBook.setCurrentSourceName(currentSourceName);
                 BookRepository.getInstance().changeBookSource(mCollBook);
+                // 换源之后要清除BookRecord表，以防有换源之后的总章节数小于当前阅读章节数导致IndexOutOfBoundsException
+//                BookRepository.getInstance().deleteBookRecord(mBookId); // 退出阅读时也会更新BookRecord表
             }
         }
     }

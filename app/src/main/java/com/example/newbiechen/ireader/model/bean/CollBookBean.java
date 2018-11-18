@@ -54,6 +54,7 @@ public class CollBookBean implements Parcelable {
     private String updated;
     //最新阅读日期
     private String lastRead;
+    // 小说章节数， 需要注意的是：这个章节数是mix的章节数而不是源小说的章节数
     private int chaptersCount;
     private String lastChapter;
     //是否更新或未阅读
