@@ -71,4 +71,11 @@ public class CommunityFragment extends BaseFragment implements BaseListAdapter.O
         CommunityType type = CommunityType.values()[pos];
         BookDiscussionActivity.startActivity(getContext(),type);
     }
+
+    @Override
+    public void onDestroy() {
+        mAdapter.setOnItemClickListener(null);
+        mRvContent.setAdapter(null);
+        super.onDestroy();
+    }
 }

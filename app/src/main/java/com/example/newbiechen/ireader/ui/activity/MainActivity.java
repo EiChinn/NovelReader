@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,21 +18,19 @@ import android.widget.Toast;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity;
+import com.example.newbiechen.ireader.ui.dialog.SexChooseDialog;
 import com.example.newbiechen.ireader.ui.fragment.BookShelfFragment;
 import com.example.newbiechen.ireader.ui.fragment.CommunityFragment;
 import com.example.newbiechen.ireader.ui.fragment.FindFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.PermissionsChecker;
 import com.example.newbiechen.ireader.utils.SharedPreUtils;
-import com.example.newbiechen.ireader.ui.dialog.SexChooseDialog;
 import com.example.newbiechen.ireader.utils.ToastUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends BaseTabActivity{
     /*************Constant**********/
@@ -210,5 +207,13 @@ public class MainActivity extends BaseTabActivity{
         else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (int i = 0; i < mFragmentList.size(); i++) {
+            mFragmentList.set(i, null);
+        }
+        super.onDestroy();
     }
 }

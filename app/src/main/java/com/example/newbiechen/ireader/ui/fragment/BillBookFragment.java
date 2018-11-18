@@ -106,4 +106,10 @@ public class BillBookFragment extends BaseMVPFragment<BillBookContract.Presenter
     public void complete() {
         mRefreshLayout.showFinish();
     }
+
+    @Override
+    public void onDestroy() {
+        mRvContent.setAdapter(null);
+        super.onDestroy();
+    }
 }

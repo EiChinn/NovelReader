@@ -164,4 +164,15 @@ public abstract class RefreshLayout extends FrameLayout {
     public interface OnReloadingListener{
         void onReload();
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mContentView = null;
+        mEmptyView = null;
+        mErrorView = null;
+        mLoadingView = null;
+        mListener = null;
+        mContext = null;
+    }
 }

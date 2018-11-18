@@ -3,7 +3,6 @@ package com.example.newbiechen.ireader.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
@@ -144,5 +143,13 @@ public class ReboundScrollView extends ScrollView{
      */
     private boolean isCanPullUp() {
         return mContentView.getHeight() <= getHeight() + getScrollY();
+    }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mScroller = null;
+        mContentView = null;
     }
 }

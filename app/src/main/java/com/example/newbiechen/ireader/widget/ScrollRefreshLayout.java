@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.newbiechen.ireader.R;
@@ -180,5 +179,14 @@ public class ScrollRefreshLayout extends SwipeRefreshLayout {
             throw new IllegalStateException("RefreshLayout can host only one direct child");
         }
         super.addView(child, index, params);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mEmptyView = null;
+        mContentView = null;
+        mContext = null;
+
     }
 }

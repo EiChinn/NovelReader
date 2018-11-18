@@ -375,6 +375,7 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
 
     @Override
     public void onDestroy() {
+        mRvContent.setOnRefreshListener(null);
         mRvContent.setAdapter(null);
         super.onDestroy();
     }

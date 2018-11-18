@@ -3,9 +3,7 @@ package com.example.newbiechen.ireader.widget.refresh;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.LayoutRes;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,5 +147,15 @@ public abstract class ScrollRefreshLayout extends SwipeRefreshLayout {
     private View inflateId(ViewGroup parent,@LayoutRes int id){
         return LayoutInflater.from(mContext)
                 .inflate(id,parent,false);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mFlContent = null;
+        mContentView = null;
+        mEmptyView = null;
+        mContext = null;
+
     }
 }

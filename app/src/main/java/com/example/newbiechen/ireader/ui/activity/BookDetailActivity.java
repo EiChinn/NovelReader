@@ -301,6 +301,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
     public void errorToBookShelf() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+            mProgressDialog = null;
         }
         ToastUtils.show("加入书架失败，请检查网络");
     }
@@ -309,6 +310,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
     public void succeedToBookShelf() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+            mProgressDialog = null;
         }
         ToastUtils.show("加入书架成功");
     }

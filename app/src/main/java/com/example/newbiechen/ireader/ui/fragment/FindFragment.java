@@ -80,4 +80,10 @@ public class FindFragment extends BaseFragment {
         );
 
     }
+
+    @Override
+    public void onDestroy() {
+        mRvContent.setAdapter(null);
+        super.onDestroy();
+    }
 }

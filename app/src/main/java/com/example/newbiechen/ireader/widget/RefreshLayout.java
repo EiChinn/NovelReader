@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -265,5 +264,14 @@ public class RefreshLayout extends FrameLayout {
     //添加错误重新加载的监听
     public interface OnReloadingListener{
         void onReload();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mErrorView = null;
+        mLoadingView = null;
+        mContentView = null;
+        mContext = null;
     }
 }
