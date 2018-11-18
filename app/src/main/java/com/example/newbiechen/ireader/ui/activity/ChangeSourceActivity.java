@@ -94,4 +94,10 @@ public class ChangeSourceActivity extends BaseMVPActivity<ChangeSourceContract.P
 		outState.putString("book_id", bookId);
 		outState.putString("current_source_name", currentSource);
 	}
+
+	@Override
+	protected void onDestroy() {
+		rv_book_sources.setAdapter(null);
+		super.onDestroy();
+	}
 }
