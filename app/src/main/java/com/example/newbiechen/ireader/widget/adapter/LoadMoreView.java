@@ -1,12 +1,11 @@
 package com.example.newbiechen.ireader.widget.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.LayoutRes;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import androidx.annotation.LayoutRes;
 
 /**
  * Created by newbiechen on 17-4-19.

@@ -1,17 +1,16 @@
 package com.example.newbiechen.ireader.ui.base;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 
 import com.example.newbiechen.ireader.R;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * Created by newbiechen on 17-4-24.
@@ -63,7 +62,7 @@ public abstract class BaseTabActivity extends BaseActivity {
     }
 
     /******************inner class*****************/
-    class TabFragmentPageAdapter extends FragmentPagerAdapter{
+    class TabFragmentPageAdapter extends FragmentPagerAdapter {
 
         public TabFragmentPageAdapter(FragmentManager fm) {
             super(fm);

@@ -2,8 +2,6 @@ package com.example.newbiechen.ireader.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.bean.BookSourcesBean;
@@ -13,6 +11,9 @@ import com.example.newbiechen.ireader.ui.adapter.ChangeSourceAdapter;
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ChangeSourceActivity extends BaseMVPActivity<ChangeSourceContract.Presenter>
 		implements ChangeSourceContract.View {

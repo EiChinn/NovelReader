@@ -1,11 +1,5 @@
 package com.example.newbiechen.ireader.ui.base;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-
 /**
  * Created by newbiechen on 17-4-25.
  */

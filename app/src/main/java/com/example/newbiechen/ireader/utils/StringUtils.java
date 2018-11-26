@@ -1,7 +1,6 @@
 package com.example.newbiechen.ireader.utils;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 
 import com.example.newbiechen.ireader.App;
 
@@ -10,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.annotation.StringRes;
 
 /**
  * Created by newbiechen on 17-4-22.

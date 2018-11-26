@@ -2,7 +2,7 @@ package com.example.newbiechen.ireader.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by newbiechen on 2017/10/8.

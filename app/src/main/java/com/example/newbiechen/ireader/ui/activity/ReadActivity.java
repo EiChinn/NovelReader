@@ -15,14 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,15 +47,21 @@ import com.example.newbiechen.ireader.utils.SystemBarUtils;
 import com.example.newbiechen.ireader.widget.page.PageLoader;
 import com.example.newbiechen.ireader.widget.page.PageView;
 import com.example.newbiechen.ireader.widget.page.TxtChapter;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 
-import static android.support.v4.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 
 /**
  * Created by newbiechen on 17-5-16.
@@ -479,7 +479,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         mLvCategory.setOnItemClickListener(
                 (parent, view, position, id) -> {
-                    mDlSlide.closeDrawer(Gravity.START);
+                    mDlSlide.closeDrawer(GravityCompat.START);
                     mPageLoader.skipToChapter(position);
                 }
         );
@@ -688,7 +688,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             //切换菜单
             toggleMenu(true);
             //打开侧滑动栏
-            mDlSlide.openDrawer(Gravity.START);
+            mDlSlide.openDrawer(GravityCompat.START);
         }
 
         // TODO: 2018/11/18 这里几乎每次都要更新数据库，而且是先删除所有旧章节在插入新的，需优化
@@ -730,8 +730,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         } else if (mSettingDialog.isShowing()) {
             mSettingDialog.dismiss();
             return;
-        } else if (mDlSlide.isDrawerOpen(Gravity.START)) {
-            mDlSlide.closeDrawer(Gravity.START);
+        } else if (mDlSlide.isDrawerOpen(GravityCompat.START)) {
+            mDlSlide.closeDrawer(GravityCompat.START);
             return;
         }
 

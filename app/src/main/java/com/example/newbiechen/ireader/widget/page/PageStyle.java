@@ -1,8 +1,9 @@
 package com.example.newbiechen.ireader.widget.page;
 
-import android.support.annotation.ColorRes;
 
 import com.example.newbiechen.ireader.R;
+
+import androidx.annotation.ColorRes;
 
 /**
  * Created by newbiechen on 2018/2/5.

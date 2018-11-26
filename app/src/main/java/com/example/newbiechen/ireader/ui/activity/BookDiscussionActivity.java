@@ -1,17 +1,12 @@
 package com.example.newbiechen.ireader.ui.activity;
 
-import static com.example.newbiechen.ireader.model.flag.BookSelection.*;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.RxBus;
 import com.example.newbiechen.ireader.event.SelectorEvent;
-
 import com.example.newbiechen.ireader.model.flag.BookDistillate;
 import com.example.newbiechen.ireader.model.flag.BookSort;
 import com.example.newbiechen.ireader.model.flag.BookType;
@@ -23,7 +18,13 @@ import com.example.newbiechen.ireader.ui.fragment.DiscReviewFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.widget.SelectorView;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
+
+import static com.example.newbiechen.ireader.model.flag.BookSelection.BOOK_TYPE;
+import static com.example.newbiechen.ireader.model.flag.BookSelection.DISTILLATE;
+import static com.example.newbiechen.ireader.model.flag.BookSelection.SORT_TYPE;
 
 /**
  * Created by newbiechen on 17-4-17.

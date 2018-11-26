@@ -1,9 +1,6 @@
 package com.example.newbiechen.ireader.widget.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +9,10 @@ import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by newbiechen on 17-4-19.
@@ -174,7 +175,8 @@ public abstract class WholeAdapter<T> extends BaseListAdapter<T>{
     }
 
     public static class Options{
-        @LayoutRes public int loadMoreId = R.layout.view_load_more;
+        @LayoutRes
+        public int loadMoreId = R.layout.view_load_more;
         @LayoutRes public int errorId = R.layout.view_error;
         @LayoutRes public int noMoreId = R.layout.view_nomore;
     }

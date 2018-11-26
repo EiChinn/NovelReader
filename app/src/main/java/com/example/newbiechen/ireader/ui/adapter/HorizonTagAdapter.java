@@ -1,12 +1,13 @@
 package com.example.newbiechen.ireader.ui.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.newbiechen.ireader.ui.adapter.view.HorizonTagHolder;
 import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter;
-import com.example.newbiechen.ireader.ui.base.adapter.IViewHolder;
 import com.example.newbiechen.ireader.ui.base.adapter.BaseViewHolder;
+import com.example.newbiechen.ireader.ui.base.adapter.IViewHolder;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by newbiechen on 17-5-2.

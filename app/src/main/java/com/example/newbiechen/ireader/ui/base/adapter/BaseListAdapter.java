@@ -1,13 +1,14 @@
 package com.example.newbiechen.ireader.ui.base.adapter;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by newbiechen on 17-3-21.

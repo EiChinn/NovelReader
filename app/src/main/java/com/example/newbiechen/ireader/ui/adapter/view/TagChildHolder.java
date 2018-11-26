@@ -1,6 +1,6 @@
 package com.example.newbiechen.ireader.ui.adapter.view;
 
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 
 import com.example.newbiechen.ireader.R;

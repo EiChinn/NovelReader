@@ -1,20 +1,19 @@
 package com.example.newbiechen.ireader.ui.base;
 
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.Adapter;
-import static android.support.v7.widget.RecyclerView.ViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 /**
  * Created by PC on 2016/9/9.
  * 1、默认使用List作为容器
  */
-public abstract class BaseAdapter <E,VH extends ViewHolder> extends Adapter<VH> {
+public abstract class BaseAdapter <E,VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     //在Adapter中建立一个容器
     protected final List<E> mItemList = new ArrayList<>();

@@ -1,11 +1,6 @@
 package com.example.newbiechen.ireader.ui.activity;
 
-import static com.example.newbiechen.ireader.ui.fragment.BaseFileFragment.*;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.CheckBox;
 
@@ -26,7 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
+
+import static com.example.newbiechen.ireader.ui.fragment.BaseFileFragment.OnFileCheckedListener;
 
 /**
  * Created by newbiechen on 17-5-27.

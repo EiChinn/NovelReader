@@ -1,10 +1,11 @@
 package com.example.newbiechen.ireader.model.flag;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 
 import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.R;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 /**
  * Created by newbiechen on 17-4-24.
@@ -21,7 +22,7 @@ public enum CommunityType {
     private String typeName;
     private String netName;
     private int iconId;
-    CommunityType(@StringRes int typeId,String netName,@DrawableRes int iconId){
+    CommunityType(@StringRes int typeId, String netName, @DrawableRes int iconId){
         this.typeName = App.getContext().getResources().getString(typeId);
         this.netName = netName;
         this.iconId = iconId;

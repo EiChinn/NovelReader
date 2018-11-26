@@ -1,11 +1,12 @@
 package com.example.newbiechen.ireader.widget.refresh;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by newbiechen on 17-4-18.

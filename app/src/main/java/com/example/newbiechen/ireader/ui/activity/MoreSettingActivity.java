@@ -1,20 +1,19 @@
 package com.example.newbiechen.ireader.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.view.View;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.local.ReadSettingManager;
 import com.example.newbiechen.ireader.ui.base.BaseActivity;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 /**
  * Created by newbiechen on 17-6-6.

@@ -2,8 +2,6 @@ package com.example.newbiechen.ireader.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.LayoutRes;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,8 @@ import android.widget.TextView;
 
 import com.example.newbiechen.ireader.R;
 
-import butterknife.ButterKnife;
+import androidx.annotation.LayoutRes;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Created by newbiechen on 17-5-5.
@@ -123,7 +122,7 @@ public class ScrollRefreshLayout extends SwipeRefreshLayout {
         addView(mEmptyView);
         addView(tipView);
 
-        mTvTip = ButterKnife.findById(tipView, R.id.scroll_refresh_tv_tip);
+        mTvTip = tipView.findViewById(R.id.scroll_refresh_tv_tip);
         //设置提示语句
         mTvTip.setText(mTipStr);
         mEmptyView.setVisibility(GONE);

@@ -1,14 +1,13 @@
 package com.example.newbiechen.ireader.utils;
 
-import android.support.annotation.StringDef;
 
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.StringDef;
 
 /**
  * Created by newbiechen on 17-4-16.

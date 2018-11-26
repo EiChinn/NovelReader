@@ -1,13 +1,11 @@
 package com.example.newbiechen.ireader.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.newbiechen.ireader.R;
-import com.example.newbiechen.ireader.model.flag.CommunityType;
 import com.example.newbiechen.ireader.model.bean.SectionBean;
+import com.example.newbiechen.ireader.model.flag.CommunityType;
 import com.example.newbiechen.ireader.ui.activity.BookDiscussionActivity;
 import com.example.newbiechen.ireader.ui.adapter.SectionAdapter;
 import com.example.newbiechen.ireader.ui.base.BaseFragment;
@@ -16,6 +14,8 @@ import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoratio
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**

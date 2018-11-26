@@ -1,10 +1,11 @@
 package com.example.newbiechen.ireader.model.flag;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 
 import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.R;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 /**
  * Created by newbiechen on 17-4-25.
@@ -19,7 +20,7 @@ public enum FindType {
     private String typeName;
     private int iconId;
 
-    private FindType(@StringRes int typeNameId,@DrawableRes int iconId){
+    private FindType(@StringRes int typeNameId, @DrawableRes int iconId){
         this.typeName = App.getContext().getResources().getString(typeNameId);
         this.iconId = iconId;
     }

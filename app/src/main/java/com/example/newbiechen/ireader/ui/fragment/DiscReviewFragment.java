@@ -1,7 +1,6 @@
 package com.example.newbiechen.ireader.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.RxBus;
@@ -23,6 +22,7 @@ import com.example.newbiechen.ireader.widget.refresh.ScrollRefreshRecyclerView;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

@@ -1,7 +1,8 @@
 package com.example.newbiechen.ireader.ui.base.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by newbiechen on 17-5-17.

@@ -1,9 +1,10 @@
 package com.example.newbiechen.ireader.model.flag;
 
-import android.support.annotation.StringRes;
 
 import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.R;
+
+import androidx.annotation.StringRes;
 
 /**
  * Created by newbiechen on 17-5-1.

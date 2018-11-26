@@ -1,8 +1,6 @@
 package com.example.newbiechen.ireader.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.local.BookRepository;
@@ -11,9 +9,8 @@ import com.example.newbiechen.ireader.utils.media.MediaStoreHelper;
 import com.example.newbiechen.ireader.widget.RefreshLayout;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
 
-import java.io.File;
-import java.util.List;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**

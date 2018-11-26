@@ -1,23 +1,17 @@
 package com.example.newbiechen.ireader.ui.base;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.example.newbiechen.ireader.BuildConfig;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.utils.StatusBarCompat;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
@@ -90,7 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //更严谨是通过反射判断是否存在Toolbar
-        mToolbar = ButterKnife.findById(this, R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null){
             supportActionBar(mToolbar);
             setUpToolbar(mToolbar);

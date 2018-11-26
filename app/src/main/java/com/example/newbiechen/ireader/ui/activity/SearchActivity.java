@@ -1,9 +1,6 @@
 package com.example.newbiechen.ireader.ui.activity;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -25,6 +22,9 @@ import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoratio
 
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import me.gujun.android.taggroup.TagGroup;
 
