@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.newbiechen.ireader.ConstantsKt;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
@@ -539,9 +540,9 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         mTvChangeSource.setOnClickListener(
                 (v) -> {
                     Intent intent = new Intent(this, ChangeSourceActivity.class);
-                    intent.putExtra("book_id", mBookId);
-                    intent.putExtra("current_source_name", mCollBook.getCurrentSourceName());
-                    startActivityForResult(intent, 0xff01);
+                    intent.putExtra(ConstantsKt.BOOK_ID, mBookId);
+                    intent.putExtra(ChangeSourceActivity.CURRENT_SOURCE_NAME, mCollBook.getCurrentSourceName());
+                    startActivityForResult(intent, ChangeSourceActivity.REQUEST_CODE);
                 }
         );
 
@@ -846,9 +847,9 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             } else {
                 SystemBarUtils.showStableNavBar(this);
             }
-        } else if (resultCode == 0xff02) {
-            String currentSourceName = data.getStringExtra("current_source_name");
-            String currentSourceBookId = data.getStringExtra("current_source_book_id");
+        } else if (resultCode == ChangeSourceActivity.RESULT_CODE) {
+            String currentSourceName = data.getStringExtra(ChangeSourceActivity.CURRENT_SOURCE_NAME);
+            String currentSourceBookId = data.getStringExtra(ChangeSourceActivity.CURRENT_SOURCE_BOOK_ID);
             if (!TextUtils.isEmpty(currentSourceBookId)) {
                 mBookSourceId = currentSourceBookId;
                 isSourceId = true;
