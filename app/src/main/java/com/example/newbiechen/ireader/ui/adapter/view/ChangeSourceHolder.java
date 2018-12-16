@@ -39,7 +39,7 @@ public class ChangeSourceHolder extends ViewHolderImpl<BookSourcesBean> {
 	public void onBind(BookSourcesBean value, int pos) {
 
 		//头像
-//		Glide.with(App.getContext())
+//		Glide.with(App.Companion.getInstance())
 //				.load(Constant.IMG_BASE_URL + value.getCover())
 //				.placeholder(R.drawable.ic_default_portrait)
 //				.error(R.drawable.ic_load_error)

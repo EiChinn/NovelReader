@@ -19,7 +19,7 @@ public enum  BookListType{
     private String netName;
 
     BookListType(@StringRes int typeName, String netName){
-        this.typeName = App.getContext().getString(typeName);
+        this.typeName = App.Companion.getInstance().getString(typeName);
         this.netName = netName;
     }
 

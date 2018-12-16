@@ -212,11 +212,11 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
             //描述
             tvDesc.setText(detailBean.getDesc());
             //头像
-            Glide.with(App.getContext())
+            Glide.with(App.Companion.getInstance())
                     .load(Constant.IMG_BASE_URL+detailBean.getAuthor().getAvatar())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
-                    .transform(new CircleTransform(App.getContext()))
+                    .transform(new CircleTransform(App.Companion.getInstance()))
                     .into(ivPortrait);
             //作者
             tvAuthor.setText(detailBean.getAuthor().getNickname());

@@ -92,4 +92,8 @@ dependencies {
     // optional - Test helpers
     // this library depends on the Kotlin standard library
     androidTestImplementation "android.arch.navigation:navigation-testing:$rootProject.nav_version"
+
+    implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+
+
 }

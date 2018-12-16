@@ -42,7 +42,7 @@ public class DiscReviewHolder extends ViewHolderImpl<BookReviewBean>{
     @Override
     public void onBind(BookReviewBean value, int pos) {
         //头像
-        Glide.with(App.getContext())
+        Glide.with(App.Companion.getInstance())
                 .load(Constant.IMG_BASE_URL+value.getBookBean().getCover())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)

@@ -1029,7 +1029,7 @@ public abstract class PageLoader {
 
         if (!hasNextChapter()) {
             //如果当前章节没有下一页，也没有下一张时，可以判断是看到小说最后了
-            Toast.makeText(App.getContext(), "已经看到最后啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.Companion.getInstance(), "已经看到最后啦", Toast.LENGTH_SHORT).show();
             return false;
         }
 

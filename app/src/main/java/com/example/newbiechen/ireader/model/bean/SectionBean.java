@@ -20,7 +20,7 @@ public class SectionBean {
     }
 
     public SectionBean(@StringRes int strRes, @DrawableRes int drawableId){
-        this.name = App.getContext()
+        this.name = App.Companion.getInstance()
                 .getString(strRes);
 
         this.drawableId = drawableId;

@@ -40,7 +40,7 @@ public class BillBookHolder extends ViewHolderImpl<BillBookBean> {
     public void onBind(BillBookBean value, int pos) {
 
         //头像
-        Glide.with(App.getContext())
+        Glide.with(App.Companion.getInstance())
                 .load(Constant.IMG_BASE_URL+value.getCover())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
@@ -53,7 +53,7 @@ public class BillBookHolder extends ViewHolderImpl<BillBookBean> {
         //简介
         mTvBrief.setText(value.getShortIntro());
         //信息
-        mTvMsg.setText(App.getContext().getString(R.string.nb_book_message,
+        mTvMsg.setText(App.Companion.getInstance().getString(R.string.nb_book_message,
                 value.getLatelyFollower(),value.getRetentionRatio()));
     }
 }

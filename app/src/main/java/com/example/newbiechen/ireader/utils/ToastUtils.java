@@ -11,6 +11,6 @@ import com.example.newbiechen.ireader.App;
 public class ToastUtils {
 
     public static void show(String msg){
-        Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(App.Companion.getInstance(), msg, Toast.LENGTH_SHORT).show();
     }
 }

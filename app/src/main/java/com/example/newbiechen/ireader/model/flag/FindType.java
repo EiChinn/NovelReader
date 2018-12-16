@@ -21,7 +21,7 @@ public enum FindType {
     private int iconId;
 
     private FindType(@StringRes int typeNameId, @DrawableRes int iconId){
-        this.typeName = App.getContext().getResources().getString(typeNameId);
+        this.typeName = App.Companion.getInstance().getResources().getString(typeNameId);
         this.iconId = iconId;
     }
 

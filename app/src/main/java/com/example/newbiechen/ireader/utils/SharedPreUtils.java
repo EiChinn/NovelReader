@@ -16,7 +16,7 @@ public class SharedPreUtils {
     private SharedPreferences.Editor sharedWritable;
 
     private SharedPreUtils(){
-        sharedReadable = App.getContext()
+        sharedReadable = App.Companion.getInstance()
                 .getSharedPreferences(SHARED_NAME, Context.MODE_MULTI_PROCESS);
         sharedWritable = sharedReadable.edit();
     }

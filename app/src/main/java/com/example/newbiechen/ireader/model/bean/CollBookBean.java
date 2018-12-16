@@ -143,7 +143,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getTitle() {
-        return StringUtils.convertCC(title, App.getContext());
+        return StringUtils.convertCC(title, App.Companion.getInstance());
     }
 
     public void setTitle(String title) {
@@ -151,7 +151,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getAuthor() {
-        return StringUtils.convertCC(author, App.getContext());
+        return StringUtils.convertCC(author, App.Companion.getInstance());
     }
 
     public void setAuthor(String author) {
@@ -159,7 +159,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getShortIntro() {
-        return StringUtils.convertCC(shortIntro, App.getContext());
+        return StringUtils.convertCC(shortIntro, App.Companion.getInstance());
     }
 
     public void setShortIntro(String shortIntro) {
@@ -167,7 +167,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getCover() {
-        return StringUtils.convertCC(cover, App.getContext());
+        return StringUtils.convertCC(cover, App.Companion.getInstance());
     }
 
     public void setCover(String cover) {
@@ -199,7 +199,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getUpdated() {
-        return StringUtils.convertCC(updated, App.getContext());
+        return StringUtils.convertCC(updated, App.Companion.getInstance());
     }
 
     public void setUpdated(String updated) {
@@ -215,7 +215,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getLastChapter() {
-        return StringUtils.convertCC(lastChapter, App.getContext());
+        return StringUtils.convertCC(lastChapter, App.Companion.getInstance());
     }
 
     public void setLastChapter(String lastChapter) {
@@ -251,7 +251,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getLastRead() {
-        return StringUtils.convertCC(lastRead, App.getContext());
+        return StringUtils.convertCC(lastRead, App.Companion.getInstance());
     }
 
     public void setLastRead(String lastRead) {

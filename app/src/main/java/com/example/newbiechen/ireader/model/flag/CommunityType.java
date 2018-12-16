@@ -23,7 +23,7 @@ public enum CommunityType {
     private String netName;
     private int iconId;
     CommunityType(@StringRes int typeId, String netName, @DrawableRes int iconId){
-        this.typeName = App.getContext().getResources().getString(typeId);
+        this.typeName = App.Companion.getInstance().getResources().getString(typeId);
         this.netName = netName;
         this.iconId = iconId;
     }

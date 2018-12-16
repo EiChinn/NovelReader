@@ -88,11 +88,11 @@ public class StringUtils {
     }
 
     public static String getString(@StringRes int id){
-        return App.getContext().getResources().getString(id);
+        return App.Companion.getInstance().getResources().getString(id);
     }
 
     public static String getString(@StringRes int id, Object... formatArgs){
-        return App.getContext().getResources().getString(id,formatArgs);
+        return App.Companion.getInstance().getResources().getString(id,formatArgs);
     }
 
     /**

@@ -1,11 +1,8 @@
 package com.example.newbiechen.ireader.utils;
 
-import android.app.Service;
-import android.app.usage.NetworkStatsManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 
 import com.example.newbiechen.ireader.App;
 
@@ -21,8 +18,7 @@ public class NetworkUtils {
      * @return NetworkInfo
      */
     public static NetworkInfo getNetworkInfo(){
-        ConnectivityManager cm = (ConnectivityManager) App
-                .getContext()
+        ConnectivityManager cm = (ConnectivityManager) App.Companion.getInstance()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo();
