@@ -1,7 +1,5 @@
 package com.example.newbiechen.ireader.utils;
 
-import com.example.newbiechen.ireader.R;
-import com.example.newbiechen.ireader.event.RecommendBookEvent;
 import com.example.newbiechen.ireader.model.bean.CommentBean;
 import com.example.newbiechen.ireader.model.bean.DetailBean;
 
@@ -9,7 +7,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
