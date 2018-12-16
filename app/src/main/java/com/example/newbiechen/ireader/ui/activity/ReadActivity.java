@@ -487,8 +487,13 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         mTvCategory.setOnClickListener(
                 (v) -> {
-                    loadCategory();
-                    isOpen = true;
+                    if (mCollBook.isLocal()) {
+                        openChapterDrawer();
+                    } else {
+
+                        loadCategory();
+                        isOpen = true;
+                    }
                 }
         );
         mTvSetting.setOnClickListener(
@@ -682,14 +687,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         if (isOpen) {
             isOpen = false;
-            //移动到指定位置
-            if (mCategoryAdapter.getCount() > 0) {
-                mLvCategory.setSelection(mPageLoader.getChapterPos());
-            }
-            //切换菜单
-            toggleMenu(true);
-            //打开侧滑动栏
-            mDlSlide.openDrawer(GravityCompat.START);
+            openChapterDrawer();
         }
 
         // TODO: 2018/11/18 这里几乎每次都要更新数据库，而且是先删除所有旧章节在插入新的，需优化
@@ -702,6 +700,18 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             BookRepository.getInstance()
                     .resetBookChaptersWithAsync(mBookId, bookChapters);
         }
+    }
+
+    private void openChapterDrawer() {
+        //移动到指定位置
+        if (mCategoryAdapter.getCount() > 0) {
+            mLvCategory.setSelection(mPageLoader.getChapterPos());
+        }
+        //切换菜单
+        toggleMenu(true);
+        //打开侧滑动栏
+        mDlSlide.openDrawer(GravityCompat.START);
+
     }
 
     @Override
