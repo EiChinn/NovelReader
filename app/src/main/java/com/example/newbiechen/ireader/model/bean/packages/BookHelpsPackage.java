@@ -13,6 +13,10 @@ public class BookHelpsPackage extends BaseBean {
 
     private List<BookHelpsBean> helps;
 
+    public BookHelpsPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookHelpsBean> getHelps() {
         return helps;
     }

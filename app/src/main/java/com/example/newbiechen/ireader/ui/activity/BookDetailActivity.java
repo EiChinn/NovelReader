@@ -40,7 +40,7 @@ import butterknife.BindView;
  * Created by newbiechen on 17-5-4.
  */
 
-public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Presenter>
+public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.View, BookDetailContract.Presenter>
         implements BookDetailContract.View {
     public static final String RESULT_IS_COLLECTED = "result_is_collected";
 

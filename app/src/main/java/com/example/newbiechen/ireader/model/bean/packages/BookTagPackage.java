@@ -13,6 +13,10 @@ public class BookTagPackage extends BaseBean {
 
     private List<BookTagBean> data;
 
+    public BookTagPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookTagBean> getData() {
         return data;
     }

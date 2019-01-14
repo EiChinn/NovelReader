@@ -16,6 +16,10 @@ public class CommentsPackage extends BaseBean {
      */
     private List<CommentBean> comments;
 
+    public CommentsPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<CommentBean> getComments() {
         return comments;
     }

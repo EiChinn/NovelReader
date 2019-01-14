@@ -18,6 +18,10 @@ public class BillboardPackage extends BaseBean {
     private List<BillboardBean> male;
     private List<BillboardBean> female;
 
+    public BillboardPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BillboardBean> getMale() {
         return male;
     }

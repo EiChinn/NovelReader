@@ -16,6 +16,10 @@ public class BookListDetailPackage extends BaseBean {
 
     private BookListDetailBean bookList;
 
+    public BookListDetailPackage(boolean ok) {
+        super(ok);
+    }
+
     public BookListDetailBean getBookList() {
         return bookList;
     }

@@ -20,6 +20,10 @@ public class BookSubSortPackage extends BaseBean {
     private List<BookSubSortBean> female;
     private List<BookSubSortBean> press;
 
+    public BookSubSortPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookSubSortBean> getMale() {
         return male;
     }

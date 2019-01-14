@@ -14,6 +14,10 @@ public class ReviewDetailPackage extends BaseBean {
 
     private ReviewDetailBean review;
 
+    public ReviewDetailPackage(boolean ok) {
+        super(ok);
+    }
+
     public ReviewDetailBean getReview() {
         return review;
     }

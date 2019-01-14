@@ -13,6 +13,10 @@ public class BookReviewPackage extends BaseBean {
 
     private List<BookReviewBean> reviews;
 
+    public BookReviewPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookReviewBean> getReviews() {
         return reviews;
     }

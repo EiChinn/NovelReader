@@ -14,6 +14,10 @@ public class BookSortPackage extends BaseBean {
     private List<BookSortBean> male;
     private List<BookSortBean> female;
 
+    public BookSortPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookSortBean> getMale() {
         return male;
     }

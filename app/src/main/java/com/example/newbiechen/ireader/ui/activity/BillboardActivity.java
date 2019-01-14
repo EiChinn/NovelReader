@@ -25,7 +25,7 @@ import butterknife.BindView;
  * 3. 制作数据获取类。
  */
 
-public class BillboardActivity extends BaseMVPActivity<BillboardContract.Presenter>
+public class BillboardActivity extends BaseMVPActivity<BillboardContract.View, BillboardContract.Presenter>
         implements BillboardContract.View,ExpandableListView.OnGroupClickListener{
     private static final String TAG = "BillboardActivity";
 

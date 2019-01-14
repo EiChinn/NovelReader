@@ -13,6 +13,10 @@ public class RecommendBookPackage extends BaseBean {
 
     private List<CollBookBean> books;
 
+    public RecommendBookPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<CollBookBean> getBooks() {
         return books;
     }

@@ -22,7 +22,7 @@ import butterknife.BindView;
  *
  */
 
-public class BookSortActivity extends BaseMVPActivity<BookSortContract.Presenter> implements BookSortContract.View{
+public class BookSortActivity extends BaseMVPActivity<BookSortContract.View, BookSortContract.Presenter> implements BookSortContract.View{
     /*******************Constant*********************/
     private static final String TAG = "SortActivity";
     private static final int SPAN_COUNT = 3;

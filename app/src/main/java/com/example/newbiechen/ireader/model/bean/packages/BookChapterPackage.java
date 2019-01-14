@@ -3,7 +3,6 @@ package com.example.newbiechen.ireader.model.bean.packages;
 import com.example.newbiechen.ireader.model.bean.BaseBean;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +16,10 @@ public class BookChapterPackage extends BaseBean {
      */
 
     private MixTocBean mixToc;
+
+    public BookChapterPackage(boolean ok) {
+        super(ok);
+    }
 
     public void setMixToc(MixTocBean mixToc) {
         this.mixToc = mixToc;

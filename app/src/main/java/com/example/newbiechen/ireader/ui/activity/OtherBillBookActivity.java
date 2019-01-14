@@ -25,7 +25,7 @@ import butterknife.BindView;
  * Created by newbiechen on 17-5-3.
  */
 
-public class OtherBillBookActivity extends BaseMVPActivity<BillBookContract.Presenter>
+public class OtherBillBookActivity extends BaseMVPActivity<BillBookContract.View, BillBookContract.Presenter>
         implements BillBookContract.View{
     private static final String EXTRA_BILL_ID = "extra_bill_id";
     private static final String EXTRA_BILL_NAME = "extra_bill_name";

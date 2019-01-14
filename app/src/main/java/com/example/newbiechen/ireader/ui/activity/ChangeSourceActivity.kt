@@ -13,7 +13,7 @@ import com.example.newbiechen.ireader.ui.adapter.ChangeSourceAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
 import kotlinx.android.synthetic.main.activity_change_source.*
 
-class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), ChangeSourceContract.View {
+class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.View, ChangeSourceContract.Presenter>(), ChangeSourceContract.View {
 
     private lateinit var bookId: String
     private lateinit var currentSourceName: String

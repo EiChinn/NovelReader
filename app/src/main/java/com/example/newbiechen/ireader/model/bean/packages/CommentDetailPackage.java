@@ -3,8 +3,6 @@ package com.example.newbiechen.ireader.model.bean.packages;
 import com.example.newbiechen.ireader.model.bean.BaseBean;
 import com.example.newbiechen.ireader.model.bean.CommentDetailBean;
 
-import java.util.List;
-
 /**
  * Created by newbiechen on 17-4-29.
  */
@@ -71,6 +69,10 @@ public class CommentDetailPackage extends BaseBean {
      */
 
     private CommentDetailBean post;
+
+    public CommentDetailPackage(boolean ok) {
+        super(ok);
+    }
 
     public CommentDetailBean getPost() {
         return post;

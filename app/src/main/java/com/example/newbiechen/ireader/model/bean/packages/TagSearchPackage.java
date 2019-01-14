@@ -18,6 +18,10 @@ public class TagSearchPackage extends BaseBean {
      */
     private List<TagBookBean> books;
 
+    public TagSearchPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<TagBookBean> getBooks() {
         return books;
     }

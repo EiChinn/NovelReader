@@ -12,6 +12,10 @@ public class SearchBookPackage extends BaseBean {
 
     private List<BooksBean> books;
 
+    public SearchBookPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BooksBean> getBooks() {
         return books;
     }

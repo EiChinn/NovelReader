@@ -32,7 +32,7 @@ import me.gujun.android.taggroup.TagGroup;
  * Created by newbiechen on 17-4-24.
  */
 
-public class SearchActivity extends BaseMVPActivity<SearchContract.Presenter>
+public class SearchActivity extends BaseMVPActivity<SearchContract.View, SearchContract.Presenter>
         implements SearchContract.View{
     private static final String TAG = "SearchActivity";
     private static final int TAG_LIMIT = 8;

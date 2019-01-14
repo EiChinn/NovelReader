@@ -19,6 +19,10 @@ public class BookListPackage extends BaseBean {
     private int total;
     private List<BookListBean> bookLists;
 
+    public BookListPackage(boolean ok) {
+        super(ok);
+    }
+
     public int getTotal() {
         return total;
     }

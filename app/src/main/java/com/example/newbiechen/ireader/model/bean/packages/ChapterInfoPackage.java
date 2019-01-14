@@ -14,6 +14,10 @@ public class ChapterInfoPackage extends BaseBean {
      */
     private ChapterInfoBean chapter;
 
+    public ChapterInfoPackage(boolean ok) {
+        super(ok);
+    }
+
     public ChapterInfoBean getChapter() {
         return chapter;
     }

@@ -13,6 +13,10 @@ public class HotWordPackage extends BaseBean {
 
     private List<String> hotWords;
 
+    public HotWordPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<String> getHotWords() {
         return hotWords;
     }

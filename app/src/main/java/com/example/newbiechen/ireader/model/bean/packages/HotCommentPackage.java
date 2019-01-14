@@ -13,6 +13,10 @@ public class HotCommentPackage extends BaseBean {
 
     private List<HotCommentBean> reviews;
 
+    public HotCommentPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<HotCommentBean> getReviews() {
         return reviews;
     }

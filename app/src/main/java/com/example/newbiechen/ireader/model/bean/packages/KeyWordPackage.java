@@ -12,6 +12,10 @@ public class KeyWordPackage extends BaseBean {
 
     private List<String> keywords;
 
+    public KeyWordPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<String> getKeywords() {
         return keywords;
     }

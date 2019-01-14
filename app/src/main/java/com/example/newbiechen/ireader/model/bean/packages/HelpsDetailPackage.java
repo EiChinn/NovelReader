@@ -14,6 +14,10 @@ public class HelpsDetailPackage extends BaseBean {
      */
     private HelpsDetailBean help;
 
+    public HelpsDetailPackage(boolean ok) {
+        super(ok);
+    }
+
     public HelpsDetailBean getHelp() {
         return help;
     }

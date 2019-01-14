@@ -37,7 +37,7 @@ import butterknife.Unbinder;
  * Created by newbiechen on 17-5-1.
  */
 
-public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContract.Presenter> implements BookListDetailContract.View {
+public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContract.View, BookListDetailContract.Presenter> implements BookListDetailContract.View {
 
     private static final String TAG = "BookListDetailActivity";
     private static final String EXTRA_DETAIL_ID = "extra_detail_id";

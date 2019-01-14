@@ -68,7 +68,7 @@ import static androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE;
  * Created by newbiechen on 17-5-16.
  */
 
-public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
+public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContract.Presenter>
         implements ReadContract.View {
     private static final String TAG = "ReadActivity";
     public static final int REQUEST_MORE_SETTING = 1;

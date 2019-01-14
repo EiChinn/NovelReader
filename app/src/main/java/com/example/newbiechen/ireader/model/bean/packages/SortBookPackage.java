@@ -19,6 +19,10 @@ public class SortBookPackage extends BaseBean {
     private int total;
     private List<SortBookBean> books;
 
+    public SortBookPackage(boolean ok) {
+        super(ok);
+    }
+
     public int getTotal() {
         return total;
     }

@@ -12,6 +12,10 @@ public class BookCommentPackage extends BaseBean {
 
     private List<BookCommentBean> posts;
 
+    public BookCommentPackage(boolean ok) {
+        super(ok);
+    }
+
     public List<BookCommentBean> getPosts() {
         return posts;
     }

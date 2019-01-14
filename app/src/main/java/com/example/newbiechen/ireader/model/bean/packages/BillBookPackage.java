@@ -15,6 +15,10 @@ public class BillBookPackage extends BaseBean {
 
     private RankingBean ranking;
 
+    public BillBookPackage(boolean ok) {
+        super(ok);
+    }
+
     public RankingBean getRanking() {
         return ranking;
     }
