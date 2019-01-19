@@ -112,9 +112,6 @@
     <string name="nb.menu.action.cache">緩存</string>
     <string name="nb.menu.action.delete">刪除</string>
     <string name="nb.menu.action.batch_manage">批量管理</string>
-    
-    <!--SplashActivity-->
-    <string name="nb.splash.skip">跳過</string>
 
     <!--user:用户的信息-->
     <string name="nb.user.lv">&#160;lv.%1$d</string>

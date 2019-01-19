@@ -12,11 +12,6 @@
     
     <style name="AppTheme" parent="BaseAppTheme"/>
     
-    <!--Splash-->
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:background">@color/transparent</item>
-    </style>
-    
     <!--Dialog-->
     <style name="CommonDialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
