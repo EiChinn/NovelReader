@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_change_source.*
 class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.View, ChangeSourceContract.Presenter>(), ChangeSourceContract.View {
 
     private lateinit var bookId: String
-    private lateinit var currentSourceName: String
+    private var currentSourceName: String? = null
     private lateinit var adapter: ChangeSourceAdapter
 
     override fun getContentId() = R.layout.activity_change_source
