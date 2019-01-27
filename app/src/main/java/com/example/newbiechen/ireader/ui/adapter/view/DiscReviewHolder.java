@@ -16,7 +16,7 @@ import com.example.newbiechen.ireader.utils.StringUtils;
  * Created by newbiechen on 17-4-21.
  */
 
-public class DiscReviewHolder extends ViewHolderImpl<BookReviewBean>{
+public class DiscReviewHolder extends ViewHolderImpl<BookReviewBean> {
 
     ImageView mIvPortrait;
     TextView mTvBookName;

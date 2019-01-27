@@ -18,7 +18,7 @@ import com.example.newbiechen.ireader.widget.transform.CircleTransform;
  * Created by newbiechen on 17-4-20.
  */
 
-public class DiscCommentHolder extends ViewHolderImpl<BookCommentBean>{
+public class DiscCommentHolder extends ViewHolderImpl<BookCommentBean> {
 
     private ImageView mIvPortrait;
     private TextView mTvName;

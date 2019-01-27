@@ -2,7 +2,6 @@ package com.example.newbiechen.ireader.ui.base;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
 
 import com.example.newbiechen.ireader.ui.base.adapter.IViewHolder;
 

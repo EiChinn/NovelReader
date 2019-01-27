@@ -10,7 +10,7 @@ import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
  * Created by newbiechen on 17-4-23.
  */
 
-public class BookSortHolder extends ViewHolderImpl<BookSortBean>{
+public class BookSortHolder extends ViewHolderImpl<BookSortBean> {
 
     private TextView mTvType;
     private TextView mTvCount;

@@ -1,6 +1,5 @@
 package com.example.newbiechen.ireader.ui.adapter;
 
-import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
 import com.example.newbiechen.ireader.ui.adapter.view.FileHolder;
 import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter;

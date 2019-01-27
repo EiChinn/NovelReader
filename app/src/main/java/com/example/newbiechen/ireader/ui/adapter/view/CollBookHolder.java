@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
-import com.example.newbiechen.ireader.model.local.BookRepository;
 import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.StringUtils;
@@ -18,7 +17,7 @@ import com.example.newbiechen.ireader.utils.StringUtils;
  * CollectionBookView
  */
 
-public class CollBookHolder extends ViewHolderImpl<CollBookBean>{
+public class CollBookHolder extends ViewHolderImpl<CollBookBean> {
 
     private static final String TAG = "CollBookView";
     private ImageView mIvCover;

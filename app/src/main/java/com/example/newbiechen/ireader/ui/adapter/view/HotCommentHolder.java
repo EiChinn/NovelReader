@@ -16,7 +16,7 @@ import com.example.newbiechen.ireader.widget.transform.CircleTransform;
  * Created by newbiechen on 17-5-4.
  */
 
-public class HotCommentHolder extends ViewHolderImpl<HotCommentBean>{
+public class HotCommentHolder extends ViewHolderImpl<HotCommentBean> {
 
     private ImageView mIvPortrait;
     private TextView mTvAuthor;

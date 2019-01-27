@@ -9,7 +9,7 @@ import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
  * Created by newbiechen on 17-6-2.
  */
 
-public class KeyWordHolder extends ViewHolderImpl<String>{
+public class KeyWordHolder extends ViewHolderImpl<String> {
 
     private TextView mTvName;
 

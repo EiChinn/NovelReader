@@ -11,7 +11,7 @@ import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
  * Created by newbiechen on 17-4-16.
  */
 
-public class SectionHolder extends ViewHolderImpl<SectionBean>{
+public class SectionHolder extends ViewHolderImpl<SectionBean> {
 
     private ImageView mIvIcon;
     private TextView mTvName;

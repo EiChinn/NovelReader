@@ -13,7 +13,7 @@ import com.example.newbiechen.ireader.utils.Constant;
  * Created by newbiechen on 17-5-3.
  */
 
-public class BookSortListHolder extends ViewHolderImpl<SortBookBean>{
+public class BookSortListHolder extends ViewHolderImpl<SortBookBean> {
 
     private ImageView mIvPortrait;
     private TextView mTvTitle;
