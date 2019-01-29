@@ -3,6 +3,7 @@ package com.example.newbiechen.ireader.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiechen.ireader.BOOK_ID
 import com.example.newbiechen.ireader.R
@@ -11,6 +12,7 @@ import com.example.newbiechen.ireader.presenter.ChangeSourcePresenter
 import com.example.newbiechen.ireader.presenter.contract.ChangeSourceContract
 import com.example.newbiechen.ireader.ui.adapter.ChangeSourceAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
+import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter
 import kotlinx.android.synthetic.main.activity_change_source.*
 
 class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.View, ChangeSourceContract.Presenter>(), ChangeSourceContract.View {
@@ -43,14 +45,17 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.View, ChangeSo
 
     override fun initClick() {
         super.initClick()
-        adapter.setOnItemClickListener { _, pos ->
-            val source = adapter.getItem(pos)
-            val intent = Intent()
-            intent.putExtra(CURRENT_SOURCE_NAME, source.name)
-            intent.putExtra(CURRENT_SOURCE_BOOK_ID, source._id)
-            setResult(RESULT_CODE, intent)
-            finish()
-        }
+        adapter.setOnItemClickListener(object : BaseListAdapter.OnItemClickListener{
+            override fun onItemClick(view: View, pos: Int) {
+                val source = adapter.getItem(pos)
+                val intent = Intent()
+                intent.putExtra(CURRENT_SOURCE_NAME, source.name)
+                intent.putExtra(CURRENT_SOURCE_BOOK_ID, source._id)
+                setResult(RESULT_CODE, intent)
+                finish()
+            }
+
+        })
     }
 
     override fun processLogic() {
