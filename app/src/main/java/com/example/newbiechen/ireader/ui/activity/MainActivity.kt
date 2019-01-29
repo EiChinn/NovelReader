@@ -3,6 +3,7 @@ package com.example.newbiechen.ireader.ui.activity
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +29,20 @@ class MainActivity : BaseTabActivity() {
         private const val WAIT_INTERVAL = 2000L
         private const val PERMISSIONS_REQUEST_STORAGE = 1
         private val PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            val permissionsChecker = PermissionsChecker(this)
+            //获取读取和写入SD卡的权限
+            if (permissionsChecker.lacksPermissions(*PERMISSIONS)) {
+                //请求权限
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSIONS_REQUEST_STORAGE)
+            }
+
+
+        }
     }
 
 
@@ -90,18 +105,6 @@ class MainActivity : BaseTabActivity() {
             R.id.action_search -> startActivity<SearchActivity>()
             R.id.action_download -> startActivity<DownloadActivity>()
             R.id.action_scan_local_book -> {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    val permissionsChecker = PermissionsChecker(this)
-                    //获取读取和写入SD卡的权限
-                    if (permissionsChecker.lacksPermissions(*PERMISSIONS)) {
-                        //请求权限
-                        ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSIONS_REQUEST_STORAGE)
-                        return super.onOptionsItemSelected(item)
-
-                    }
-
-
-                }
                 startActivity<FileSystemActivity>()
             }
         }
@@ -113,7 +116,6 @@ class MainActivity : BaseTabActivity() {
             PERMISSIONS_REQUEST_STORAGE -> {
                 // 如果取消权限，则返回的值为0
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivity<FileSystemActivity>()
                 } else {
                     toast("用户拒绝开启读写权限")
                 }
