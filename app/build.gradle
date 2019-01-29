@@ -6,6 +6,14 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'novel'
+            keyPassword '564579234'
+            storeFile file('D:/study/NovelReader.jks')
+            storePassword '564579234'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.newbiechen.ireader"
@@ -17,9 +25,15 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -44,7 +58,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -52,49 +66,54 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha02'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
     // View injection
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+
     // NetWork
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+
     //引入Log拦截器，方便DEBUG模式输出log信息
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation "com.squareup.okio:okio:$rootProject.okioVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
+
     // ImageLoader
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+
     // ORM Database
     implementation "org.greenrobot:greendao:$rootProject.greendaoVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     implementation 'com.facebook.stetho:stetho:1.5.0'
 
     // OpenCC to convert Simp. Chinese to Trad. Chinese
-    implementation "com.zqc.opencc.android.lib:lib-opencc-android:0.8.0@aar"
+    implementation 'com.zqc.opencc.android.lib:lib-opencc-android:0.8.0@aar'
 
     // AndroidTagGroup
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
-    // Android Leak Analysis
-//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
-    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
 
+    // Android Leak Analysis
+
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.nav_version" // use -ktx for Kotlin
-    implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.nav_version"
 
-    // optional - Test helpers
-    // this library depends on the Kotlin standard library
-    androidTestImplementation "android.arch.navigation:navigation-testing:$rootProject.nav_version"
+    // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.nav_version"
 
-    implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+    implementation 'com.tencent.bugly:crashreport:latest.release'
 
-
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
 }
