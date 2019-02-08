@@ -43,7 +43,7 @@ public class DiscReviewHolder extends ViewHolderImpl<BookReviewBean> {
     public void onBind(BookReviewBean value, int pos) {
         //头像
         Glide.with(App.Companion.getInstance())
-                .load(Constant.IMG_BASE_URL+value.getBookBean().getCover())
+                .load(Constant.IMG_BASE_URL +value.getBookBean().getCover())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .fitCenter()
@@ -51,12 +51,12 @@ public class DiscReviewHolder extends ViewHolderImpl<BookReviewBean> {
         //名字
         mTvBookName.setText(value.getBookBean().getTitle());
         //类型
-        String bookType = Constant.bookType.get(value.getBookBean().getType());
+        String bookType = Constant.INSTANCE.getBookType().get(value.getBookBean().getType());
         mTvBookType.setText(StringUtils.getString(R.string.nb_book_type,bookType));
         //简介
         mTvBrief.setText(value.getTitle());
         //time
-        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(),Constant.FORMAT_BOOK_DATE));
+        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(), Constant.FORMAT_BOOK_DATE));
         //label
         if (value.getState().equals(Constant.BOOK_STATE_DISTILLATE)){
             mTvLabelDistillate.setVisibility(View.VISIBLE);

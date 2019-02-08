@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import androidx.core.content.ContextCompat;
 import android.text.TextPaint;
 import android.widget.Toast;
 
@@ -18,7 +17,6 @@ import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
 import com.example.newbiechen.ireader.model.local.ReadSettingManager;
 import com.example.newbiechen.ireader.utils.Constant;
-import com.example.newbiechen.ireader.utils.IOUtils;
 import com.example.newbiechen.ireader.utils.RxUtils;
 import com.example.newbiechen.ireader.utils.ScreenUtils;
 import com.example.newbiechen.ireader.utils.StringUtils;
@@ -30,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
@@ -686,10 +685,9 @@ public abstract class PageLoader {
             return null;
         }
         // 获取章节的文本流
-        BufferedReader reader = getChapterReader(chapter);
-        List<TxtPage> chapters = loadPages(chapter, reader);
-
-        return chapters;
+        try (BufferedReader reader = getChapterReader(chapter)) {
+            return loadPages(chapter, reader);
+        }
     }
 
     /*******************************abstract method***************************************/
@@ -1245,13 +1243,12 @@ public abstract class PageLoader {
         String paragraph = chapter.getTitle();//默认展示标题
         try {
             while (showTitle || (paragraph = br.readLine()) != null) {
-                paragraph = StringUtils.convertCC(paragraph, mContext);
                 // 重置段落
                 if (!showTitle) {
                     paragraph = paragraph.replaceAll("\\s", "");
                     // 如果只有换行符，那么就不执行
                     if (paragraph.equals("")) continue;
-                    paragraph = StringUtils.halfToFull("  " + paragraph + "\n");
+                    paragraph = "  " + paragraph + "\n";
                 } else {
                     //设置 title 的顶部间距
                     rHeight -= mTitlePara;
@@ -1271,7 +1268,7 @@ public abstract class PageLoader {
                         // 创建Page
                         TxtPage page = new TxtPage();
                         page.position = pages.size();
-                        page.title = StringUtils.convertCC(chapter.getTitle(), mContext);
+                        page.title = chapter.getTitle();
                         page.lines = new ArrayList<>(lines);
                         page.titleLines = titleLinesCount;
                         pages.add(page);
@@ -1324,7 +1321,7 @@ public abstract class PageLoader {
                 //创建Page
                 TxtPage page = new TxtPage();
                 page.position = pages.size();
-                page.title = StringUtils.convertCC(chapter.getTitle(), mContext);
+                page.title = chapter.getTitle();
                 page.lines = new ArrayList<>(lines);
                 page.titleLines = titleLinesCount;
                 pages.add(page);
@@ -1335,8 +1332,6 @@ public abstract class PageLoader {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            IOUtils.close(br);
         }
         return pages;
     }

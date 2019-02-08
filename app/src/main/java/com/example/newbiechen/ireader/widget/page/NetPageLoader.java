@@ -63,7 +63,7 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     protected BufferedReader getChapterReader(TxtChapter chapter) throws Exception {
-        File file = new File(Constant.BOOK_CACHE_PATH + mCollBook.get_id()
+        File file = new File(Constant.INSTANCE.getBOOK_CACHE_PATH() + mCollBook.get_id()
                 + File.separator + chapter.title + FileUtils.SUFFIX_NB);
         if (!file.exists()) return null;
 

@@ -202,7 +202,7 @@ public class ReviewDetailFragment extends BaseMVPFragment<ReviewDetailContract.P
             AuthorBean authorBean = reviewDetailBean.getAuthor();
             //头像
             Glide.with(getContext())
-                    .load(Constant.IMG_BASE_URL+ authorBean.getAvatar())
+                    .load(Constant.IMG_BASE_URL + authorBean.getAvatar())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .transform(new CircleTransform(getContext()))
@@ -225,7 +225,7 @@ public class ReviewDetailFragment extends BaseMVPFragment<ReviewDetailContract.P
             ReviewBookBean bookBean = reviewDetailBean.getBook();
             //书籍封面
             Glide.with(getContext())
-                    .load(Constant.IMG_BASE_URL+ bookBean.getCover())
+                    .load(Constant.IMG_BASE_URL + bookBean.getCover())
                     .placeholder(R.drawable.ic_book_loading)
                     .error(R.drawable.ic_load_error)
                     .fitCenter()

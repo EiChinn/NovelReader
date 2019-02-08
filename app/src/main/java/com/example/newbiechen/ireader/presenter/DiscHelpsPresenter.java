@@ -44,7 +44,7 @@ public class DiscHelpsPresenter extends RxPresenter<DiscHelpsContract.View> impl
                             isLocalLoad = true;
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                         ,
                         ()-> {
@@ -70,7 +70,7 @@ public class DiscHelpsPresenter extends RxPresenter<DiscHelpsContract.View> impl
                         (e) ->{
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);
@@ -108,7 +108,7 @@ public class DiscHelpsPresenter extends RxPresenter<DiscHelpsContract.View> impl
                         ,
                         (e) -> {
                             mView.showError();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

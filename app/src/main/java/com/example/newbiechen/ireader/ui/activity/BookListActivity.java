@@ -170,7 +170,7 @@ public class BookListActivity extends BaseTabActivity {
                             refreshGroupTag(tagBeans);
                         },
                         (e) ->{
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         mDisposable.add(refreshDispo);
@@ -203,9 +203,8 @@ public class BookListActivity extends BaseTabActivity {
 
     private void refreshGroupTag(List<BookTagBean> tagBeans){
         //由于数据还有根据性别分配，所以需要加上去
-        BookTagBean bean = new BookTagBean();
-        bean.setName(getResources().getString(R.string.nb_tag_sex));
-        bean.setTags(Arrays.asList(getResources().getString(R.string.nb_tag_boy),getResources().getString(R.string.nb_tag_girl)));
+        BookTagBean bean = new BookTagBean(getResources().getString(R.string.nb_tag_sex),
+                Arrays.asList(getResources().getString(R.string.nb_tag_boy),getResources().getString(R.string.nb_tag_girl)));
         tagBeans.add(0,bean);
 
         mTagGroupAdapter.refreshItems(tagBeans);

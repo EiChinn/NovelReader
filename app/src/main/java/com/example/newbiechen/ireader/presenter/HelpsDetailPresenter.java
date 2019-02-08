@@ -44,7 +44,7 @@ public class HelpsDetailPresenter extends RxPresenter<HelpsDetailContract.View>
                         },
                         (e) -> {
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(detailDispo);
@@ -62,7 +62,7 @@ public class HelpsDetailPresenter extends RxPresenter<HelpsDetailContract.View>
                         },
                         (e) -> {
                             mView.showLoadError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

@@ -34,14 +34,14 @@ class SexChooseDialog(context: Context) : Dialog(context, R.style.CommonDialog) 
         }
         choose_btn_boy.setOnClickListener {
             //保存到SharePreference中
-            SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_BOY)
+            SharedPreUtils.putString(Constant.SHARED_SEX, Constant.SEX_BOY)
             RxBus.getInstance().post(RecommendBookEvent(Constant.SEX_BOY))
             dismiss()
 
         }
         choose_btn_boy.setOnClickListener {
             //保存到SharePreference中
-            SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_BOY)
+            SharedPreUtils.putString(Constant.SHARED_SEX, Constant.SEX_BOY)
             RxBus.getInstance().post(RecommendBookEvent(Constant.SEX_GIRL))
             dismiss()
 

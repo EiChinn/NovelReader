@@ -1,15 +1,10 @@
 package com.example.newbiechen.ireader;
 
-import com.example.newbiechen.ireader.utils.StringUtils;
-
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -44,7 +44,7 @@ public class BookSortPresenter extends RxPresenter<BookSortContract.View> implem
                         ,
                         (e) -> {
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disposable);

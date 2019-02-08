@@ -45,7 +45,7 @@ public class DiscHelpsHolder extends ViewHolderImpl<BookHelpsBean> {
     public void onBind(BookHelpsBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getAuthorBean().getAvatar())
+                .load(Constant.IMG_BASE_URL +value.getAuthorBean().getAvatar())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .transform(new CircleTransform(getContext()))

@@ -67,9 +67,9 @@ public class FileCategoryFragment extends BaseFileFragment {
                     if (file.isDirectory()){
                         //保存当前信息。
                         FileStack.FileSnapshot snapshot = new FileStack.FileSnapshot();
-                        snapshot.filePath = mTvPath.getText().toString();
-                        snapshot.files = new ArrayList<File>(mAdapter.getItems());
-                        snapshot.scrollOffset = mRvContent.computeVerticalScrollOffset();
+                        snapshot.setFilePath(mTvPath.getText().toString());
+                        snapshot.setFiles(new ArrayList(mAdapter.getItems()));
+                        snapshot.setScrollOffset(mRvContent.computeVerticalScrollOffset());
                         mFileStack.push(snapshot);
                         //切换下一个文件
                         toggleFileTree(file);
@@ -96,9 +96,9 @@ public class FileCategoryFragment extends BaseFileFragment {
                     FileStack.FileSnapshot snapshot = mFileStack.pop();
                     int oldScrollOffset = mRvContent.computeHorizontalScrollOffset();
                     if (snapshot == null) return;
-                    mTvPath.setText(snapshot.filePath);
-                    mAdapter.refreshItems(snapshot.files);
-                    mRvContent.scrollBy(0,snapshot.scrollOffset - oldScrollOffset);
+                    mTvPath.setText(snapshot.getFilePath());
+                    mAdapter.refreshItems(snapshot.getFiles());
+                    mRvContent.scrollBy(0,snapshot.getScrollOffset() - oldScrollOffset);
                     //反馈
                     if (mListener != null){
                         mListener.onCategoryChanged();

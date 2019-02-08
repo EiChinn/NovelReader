@@ -93,8 +93,8 @@ public class DiscHelpsFragment extends BaseMVPFragment<DiscHelpsContract.Present
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (event) ->{
-                            mBookSort = event.sort;
-                            mDistillate = event.distillate;
+                            mBookSort = event.getSort();
+                            mDistillate = event.getDistillate();
                             startRefresh();
                         }
                 );

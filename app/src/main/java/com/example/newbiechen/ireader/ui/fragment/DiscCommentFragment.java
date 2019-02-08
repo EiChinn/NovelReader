@@ -10,7 +10,7 @@ import com.example.newbiechen.ireader.model.flag.BookDistillate;
 import com.example.newbiechen.ireader.model.flag.BookSort;
 import com.example.newbiechen.ireader.model.flag.CommunityType;
 import com.example.newbiechen.ireader.presenter.DiscCommentPresenter;
-import com.example.newbiechen.ireader.presenter.contract.DiscCommentContact;
+import com.example.newbiechen.ireader.presenter.contract.DiscCommentContract;
 import com.example.newbiechen.ireader.ui.activity.DiscDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.DiscCommentAdapter;
 import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
@@ -34,7 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * 2. 初始化视图和逻辑的交互
  */
 
-public class DiscCommentFragment extends BaseMVPFragment<DiscCommentContact.Presenter> implements DiscCommentContact.View {
+public class DiscCommentFragment extends BaseMVPFragment<DiscCommentContract.Presenter> implements DiscCommentContract.View {
     private static final String TAG = "DiscCommentFragment";
     private static final String EXTRA_BLOCK = "extra_block";
     private static final String BUNDLE_BLOCK = "bundle_block";
@@ -116,8 +116,8 @@ public class DiscCommentFragment extends BaseMVPFragment<DiscCommentContact.Pres
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (event) -> {
-                            mBookSort = event.sort;
-                            mDistillate = event.distillate;
+                            mBookSort = event.getSort();
+                            mDistillate = event.getDistillate();
                             refreshData();
                         }
                 ));

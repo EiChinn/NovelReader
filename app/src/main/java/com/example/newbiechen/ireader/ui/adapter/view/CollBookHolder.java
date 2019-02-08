@@ -52,7 +52,7 @@ public class CollBookHolder extends ViewHolderImpl<CollBookBean> {
         else {
             //书的图片
             Glide.with(getContext())
-                    .load(Constant.IMG_BASE_URL+value.getCover())
+                    .load(Constant.IMG_BASE_URL +value.getCover())
                     .placeholder(R.drawable.ic_book_loading)
                     .error(R.drawable.ic_load_error)
                     .fitCenter()

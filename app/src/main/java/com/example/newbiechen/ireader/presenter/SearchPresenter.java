@@ -25,7 +25,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View>
                             mView.finishHotWords(bean);
                         },
                         e -> {
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disp);
@@ -41,7 +41,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View>
                             mView.finishKeyWords(bean);
                         },
                         e -> {
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disp);
@@ -57,7 +57,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View>
                             mView.finishBooks(bean);
                         },
                         e -> {
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                             mView.errorBooks();
                         }
                 );

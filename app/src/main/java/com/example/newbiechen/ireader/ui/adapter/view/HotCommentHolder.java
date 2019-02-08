@@ -43,7 +43,7 @@ public class HotCommentHolder extends ViewHolderImpl<HotCommentBean> {
     public void onBind(HotCommentBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getAuthor().getAvatar())
+                .load(Constant.IMG_BASE_URL +value.getAuthor().getAvatar())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .transform(new CircleTransform(getContext()))
@@ -61,7 +61,7 @@ public class HotCommentHolder extends ViewHolderImpl<HotCommentBean> {
         //点赞数
         mTvHelpful.setText(value.getLikeCount()+"");
         //时间
-        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(),Constant.FORMAT_BOOK_DATE));
+        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(), Constant.FORMAT_BOOK_DATE));
     }
 
     @Override

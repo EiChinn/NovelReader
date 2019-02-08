@@ -87,7 +87,7 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
                 .subscribe(
                         event -> {
                             mRvContent.startRefresh();
-                            mPresenter.loadRecommendBooks(event.sex);
+                            mPresenter.loadRecommendBooks(event.getSex());
                         }
                 );
         addDisposable(recommendDisp);
@@ -98,7 +98,7 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
                 .subscribe(
                         event -> {
                             //使用Toast提示
-                            ToastUtils.show(event.message);
+                            ToastUtils.show(event.getMessage());
                         }
                 );
         addDisposable(donwloadDisp);
@@ -109,15 +109,15 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         event -> {
-                            if (event.isDelete) {
+                            if (event.isDelete()) {
                                 ProgressDialog progressDialog = new ProgressDialog(getContext());
                                 progressDialog.setMessage("正在删除中");
                                 progressDialog.show();
-                                BookRepository.getInstance().deleteCollBookInRx(event.collBook)
+                                BookRepository.getInstance().deleteCollBookInRx(event.getCollBook())
                                         .compose(RxUtils::toSimpleSingle)
                                         .subscribe(
                                                 (Void) -> {
-                                                    mCollBookAdapter.removeItem(event.collBook);
+                                                    mCollBookAdapter.removeItem(event.getCollBook());
                                                     progressDialog.dismiss();
                                                 }
                                         );

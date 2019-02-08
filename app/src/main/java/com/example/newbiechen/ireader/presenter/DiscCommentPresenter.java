@@ -1,14 +1,12 @@
 package com.example.newbiechen.ireader.presenter;
 
-import static com.example.newbiechen.ireader.utils.LogUtils.*;
-
 import com.example.newbiechen.ireader.model.bean.BookCommentBean;
 import com.example.newbiechen.ireader.model.flag.BookDistillate;
 import com.example.newbiechen.ireader.model.flag.BookSort;
 import com.example.newbiechen.ireader.model.flag.CommunityType;
 import com.example.newbiechen.ireader.model.local.LocalRepository;
 import com.example.newbiechen.ireader.model.remote.RemoteRepository;
-import com.example.newbiechen.ireader.presenter.contract.DiscCommentContact;
+import com.example.newbiechen.ireader.presenter.contract.DiscCommentContract;
 import com.example.newbiechen.ireader.ui.base.RxPresenter;
 
 import java.util.List;
@@ -18,11 +16,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.newbiechen.ireader.utils.LogUtils.e;
+
 /**
  * Created by newbiechen on 17-4-20.
  */
 
-public class DiscCommentPresenter extends RxPresenter<DiscCommentContact.View> implements DiscCommentContact.Presenter{
+public class DiscCommentPresenter extends RxPresenter<DiscCommentContract.View> implements DiscCommentContract.Presenter{
     private static final String TAG = "DiscCommentPresenter";
     //是否采取直接从数据库加载
     private boolean isLocalLoad = true;
@@ -51,7 +51,7 @@ public class DiscCommentPresenter extends RxPresenter<DiscCommentContact.View> i
                             isLocalLoad = true;
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                         ,
                         ()-> {
@@ -80,7 +80,7 @@ public class DiscCommentPresenter extends RxPresenter<DiscCommentContact.View> i
                         (e) ->{
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);
@@ -115,7 +115,7 @@ public class DiscCommentPresenter extends RxPresenter<DiscCommentContact.View> i
                         ,
                         (e) -> {
                             mView.showError();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

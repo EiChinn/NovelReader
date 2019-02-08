@@ -44,7 +44,7 @@ public class CommentDetailPresenter extends RxPresenter<CommentDetailContract.Vi
                         },
                         (e) -> {
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(detailDispo);
@@ -62,7 +62,7 @@ public class CommentDetailPresenter extends RxPresenter<CommentDetailContract.Vi
                         },
                         (e) -> {
                             mView.showLoadError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

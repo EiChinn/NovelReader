@@ -357,7 +357,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
                 }
             }
         } catch (Throwable throwable) {
-            LogUtils.e(TAG, "register mBrightObserver error! " + throwable);
+            LogUtils.e(TAG, "register mBrightObserver error! ", throwable);
         }
     }
 
@@ -371,7 +371,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
                 }
             }
         } catch (Throwable throwable) {
-            LogUtils.e(TAG, "unregister BrightnessObserver error! " + throwable);
+            LogUtils.e(TAG, "unregister BrightnessObserver error! ", throwable);
         }
     }
 
@@ -398,7 +398,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
                     @Override
                     public void onCategoryFinish(List<TxtChapter> chapters) {
                         for (TxtChapter chapter : chapters) {
-                            chapter.setTitle(StringUtils.convertCC(chapter.getTitle(), mPvPage.getContext()));
+                            chapter.setTitle(chapter.getTitle());
                         }
                         mCategoryAdapter.refreshItems(chapters);
                     }
@@ -648,7 +648,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
                                 if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
                                     loadCategory();
                                 }
-                                LogUtils.e(throwable);
+                                LogUtils.e(throwable.toString());
                             }
                     );
             addDisposable(disposable);

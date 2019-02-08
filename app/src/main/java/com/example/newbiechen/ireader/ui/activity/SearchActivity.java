@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.newbiechen.ireader.R;
-import com.example.newbiechen.ireader.model.bean.packages.SearchBookPackage;
+import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean;
 import com.example.newbiechen.ireader.presenter.SearchPresenter;
 import com.example.newbiechen.ireader.presenter.contract.SearchContract;
 import com.example.newbiechen.ireader.ui.adapter.KeyWordAdapter;
@@ -265,7 +265,7 @@ public class SearchActivity extends BaseMVPActivity<SearchContract.View, SearchC
     }
 
     @Override
-    public void finishBooks(List<SearchBookPackage.BooksBean> books) {
+    public void finishBooks(List<SearchBooksBean> books) {
         mSearchAdapter.refreshItems(books);
         if (books.size() == 0){
             mRlRefresh.showEmpty();

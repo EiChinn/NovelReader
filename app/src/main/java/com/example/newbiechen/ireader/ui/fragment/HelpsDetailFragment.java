@@ -194,7 +194,7 @@ public class HelpsDetailFragment extends BaseMVPFragment<HelpsDetailContract.Pre
             }
             //头像
             Glide.with(getContext())
-                    .load(Constant.IMG_BASE_URL+ helpsDetailBean.getAuthor().getAvatar())
+                    .load(Constant.IMG_BASE_URL + helpsDetailBean.getAuthor().getAvatar())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .transform(new CircleTransform(getContext()))
@@ -202,7 +202,7 @@ public class HelpsDetailFragment extends BaseMVPFragment<HelpsDetailContract.Pre
             //名字
             tvName.setText(helpsDetailBean.getAuthor().getNickname());
             //日期
-            tvTime.setText(StringUtils.dateConvert(helpsDetailBean.getCreated(),Constant.FORMAT_BOOK_DATE));
+            tvTime.setText(StringUtils.dateConvert(helpsDetailBean.getCreated(), Constant.FORMAT_BOOK_DATE));
             //标题
             tvTitle.setText(helpsDetailBean.getTitle());
             //内容

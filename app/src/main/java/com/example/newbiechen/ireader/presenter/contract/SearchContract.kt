@@ -1,6 +1,6 @@
 package com.example.newbiechen.ireader.presenter.contract
 
-import com.example.newbiechen.ireader.model.bean.packages.SearchBookPackage
+import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean
 import com.example.newbiechen.ireader.ui.base.BaseContract
 
 interface SearchContract {
@@ -9,7 +9,7 @@ interface SearchContract {
 
         fun finishKeyWords(hotWords: List<String>)
 
-        fun finishBooks(books: List<@JvmSuppressWildcards SearchBookPackage.BooksBean>)
+        fun finishBooks(books: List<@JvmSuppressWildcards SearchBooksBean>)
 
         fun errorBooks()
     }

@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.bean.BookListDetailBean;
+import com.example.newbiechen.ireader.model.bean.DetailBookBean;
+import com.example.newbiechen.ireader.model.bean.DetailBooksBean;
 import com.example.newbiechen.ireader.presenter.BookListDetailPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BookListDetailContract;
 import com.example.newbiechen.ireader.ui.adapter.BookListDetailAdapter;
@@ -48,7 +50,7 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
     /****************************/
     private BookListDetailAdapter mDetailAdapter;
     private DetailHeader mDetailHeader;
-    private List<BookListDetailBean.BooksBean> mBooksList;
+    private List<DetailBooksBean> mBooksList;
     /***********params****************/
     private String mDetailId;
     private int start = 0;
@@ -114,7 +116,7 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
     }
 
     protected void onItemClick(View v, int p){
-        BookListDetailBean.BooksBean.BookBean book = mBooksList.get(p).getBook();
+        DetailBookBean book = mBooksList.get(p).getBook();
         BookDetailActivity.startActivity(this, book.get_id());
     }
 
@@ -134,23 +136,23 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
 
     private void refreshBook(){
         start = 0;
-        List<BookListDetailBean.BooksBean.BookBean> books = getBookList();
+        List<DetailBookBean> books = getBookList();
         mDetailAdapter.refreshItems(books);
         start = books.size();
     }
 
     private void loadBook(){
-        List<BookListDetailBean.BooksBean.BookBean> books = getBookList();
+        List<DetailBookBean> books = getBookList();
         mDetailAdapter.addItems(books);
         start += books.size();
     }
 
-    private List<BookListDetailBean.BooksBean.BookBean> getBookList(){
+    private List<DetailBookBean> getBookList(){
         int end = start + limit;
         if (end > mBooksList.size()){
             end = mBooksList.size();
         }
-        List<BookListDetailBean.BooksBean.BookBean> books = new ArrayList<>(limit);
+        List<DetailBookBean> books = new ArrayList<>(limit);
         for (int i=start; i < end; ++i){
             books.add(mBooksList.get(i).getBook());
         }
@@ -213,7 +215,7 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
             tvDesc.setText(detailBean.getDesc());
             //头像
             Glide.with(App.Companion.getInstance())
-                    .load(Constant.IMG_BASE_URL+detailBean.getAuthor().getAvatar())
+                    .load(Constant.IMG_BASE_URL +detailBean.getAuthor().getAvatar())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .transform(new CircleTransform(App.Companion.getInstance()))

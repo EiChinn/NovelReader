@@ -32,7 +32,6 @@ public class ReadSettingManager {
 
     private static volatile ReadSettingManager sInstance;
 
-    private SharedPreUtils sharedPreUtils;
 
     public static ReadSettingManager getInstance() {
         if (sInstance == null) {
@@ -46,88 +45,87 @@ public class ReadSettingManager {
     }
 
     private ReadSettingManager() {
-        sharedPreUtils = SharedPreUtils.getInstance();
     }
 
     public void setPageStyle(PageStyle pageStyle) {
-        sharedPreUtils.putInt(SHARED_READ_BG, pageStyle.ordinal());
+        SharedPreUtils.putInt(SHARED_READ_BG, pageStyle.ordinal());
     }
 
     public void setBrightness(int progress) {
-        sharedPreUtils.putInt(SHARED_READ_BRIGHTNESS, progress);
+        SharedPreUtils.putInt(SHARED_READ_BRIGHTNESS, progress);
     }
 
     public void setAutoBrightness(boolean isAuto) {
-        sharedPreUtils.putBoolean(SHARED_READ_IS_BRIGHTNESS_AUTO, isAuto);
+        SharedPreUtils.putBoolean(SHARED_READ_IS_BRIGHTNESS_AUTO, isAuto);
     }
 
     public void setDefaultTextSize(boolean isDefault) {
-        sharedPreUtils.putBoolean(SHARED_READ_IS_TEXT_DEFAULT, isDefault);
+        SharedPreUtils.putBoolean(SHARED_READ_IS_TEXT_DEFAULT, isDefault);
     }
 
     public void setTextSize(int textSize) {
-        sharedPreUtils.putInt(SHARED_READ_TEXT_SIZE, textSize);
+        SharedPreUtils.putInt(SHARED_READ_TEXT_SIZE, textSize);
     }
 
     public void setPageMode(PageMode mode) {
-        sharedPreUtils.putInt(SHARED_READ_PAGE_MODE, mode.ordinal());
+        SharedPreUtils.putInt(SHARED_READ_PAGE_MODE, mode.ordinal());
     }
 
     public void setNightMode(boolean isNight) {
-        sharedPreUtils.putBoolean(SHARED_READ_NIGHT_MODE, isNight);
+        SharedPreUtils.putBoolean(SHARED_READ_NIGHT_MODE, isNight);
     }
 
     public int getBrightness() {
-        return sharedPreUtils.getInt(SHARED_READ_BRIGHTNESS, 40);
+        return SharedPreUtils.getInt(SHARED_READ_BRIGHTNESS, 40);
     }
 
     public boolean isBrightnessAuto() {
-        return sharedPreUtils.getBoolean(SHARED_READ_IS_BRIGHTNESS_AUTO, false);
+        return SharedPreUtils.getBoolean(SHARED_READ_IS_BRIGHTNESS_AUTO, false);
     }
 
     public int getTextSize() {
-        return sharedPreUtils.getInt(SHARED_READ_TEXT_SIZE, ScreenUtils.spToPx(28));
+        return SharedPreUtils.getInt(SHARED_READ_TEXT_SIZE, ScreenUtils.spToPx(28));
     }
 
     public boolean isDefaultTextSize() {
-        return sharedPreUtils.getBoolean(SHARED_READ_IS_TEXT_DEFAULT, false);
+        return SharedPreUtils.getBoolean(SHARED_READ_IS_TEXT_DEFAULT, false);
     }
 
     public PageMode getPageMode() {
-        int mode = sharedPreUtils.getInt(SHARED_READ_PAGE_MODE, PageMode.SIMULATION.ordinal());
+        int mode = SharedPreUtils.getInt(SHARED_READ_PAGE_MODE, PageMode.SIMULATION.ordinal());
         return PageMode.values()[mode];
     }
 
     public PageStyle getPageStyle() {
-        int style = sharedPreUtils.getInt(SHARED_READ_BG, PageStyle.BG_0.ordinal());
+        int style = SharedPreUtils.getInt(SHARED_READ_BG, PageStyle.BG_0.ordinal());
         return PageStyle.values()[style];
     }
 
     public boolean isNightMode() {
-        return sharedPreUtils.getBoolean(SHARED_READ_NIGHT_MODE, false);
+        return SharedPreUtils.getBoolean(SHARED_READ_NIGHT_MODE, false);
     }
 
     public void setVolumeTurnPage(boolean isTurn) {
-        sharedPreUtils.putBoolean(SHARED_READ_VOLUME_TURN_PAGE, isTurn);
+        SharedPreUtils.putBoolean(SHARED_READ_VOLUME_TURN_PAGE, isTurn);
     }
 
     public boolean isVolumeTurnPage() {
-        return sharedPreUtils.getBoolean(SHARED_READ_VOLUME_TURN_PAGE, false);
+        return SharedPreUtils.getBoolean(SHARED_READ_VOLUME_TURN_PAGE, false);
     }
 
     public void setFullScreen(boolean isFullScreen) {
-        sharedPreUtils.putBoolean(SHARED_READ_FULL_SCREEN, isFullScreen);
+        SharedPreUtils.putBoolean(SHARED_READ_FULL_SCREEN, isFullScreen);
     }
 
     public boolean isFullScreen() {
-        return sharedPreUtils.getBoolean(SHARED_READ_FULL_SCREEN, false);
+        return SharedPreUtils.getBoolean(SHARED_READ_FULL_SCREEN, false);
     }
 
     public void setConvertType(int convertType) {
-        sharedPreUtils.putInt(SHARED_READ_CONVERT_TYPE, convertType);
+        SharedPreUtils.putInt(SHARED_READ_CONVERT_TYPE, convertType);
     }
 
     public int getConvertType() {
-        return sharedPreUtils.getInt(SHARED_READ_CONVERT_TYPE, 0);
+        return SharedPreUtils.getInt(SHARED_READ_CONVERT_TYPE, 0);
     }
 }

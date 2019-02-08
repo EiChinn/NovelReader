@@ -76,7 +76,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
                         },
                         (e) -> {
                             //提示没有网络
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                             mView.showErrorTip(e.toString());
                             mView.complete();
                         }
@@ -152,7 +152,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
                         //提示没有网络
                         mView.showErrorTip(e.toString());
                         mView.complete();
-                        LogUtils.e(e);
+                        LogUtils.e(e.toString());
                     }
                 });
     }

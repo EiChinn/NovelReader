@@ -3,11 +3,9 @@ package com.example.newbiechen.ireader.model.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.model.gen.BookChapterBeanDao;
 import com.example.newbiechen.ireader.model.gen.CollBookBeanDao;
 import com.example.newbiechen.ireader.model.gen.DaoSession;
-import com.example.newbiechen.ireader.utils.StringUtils;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -143,7 +141,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getTitle() {
-        return StringUtils.convertCC(title, App.Companion.getInstance());
+        return title;
     }
 
     public void setTitle(String title) {
@@ -151,7 +149,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getAuthor() {
-        return StringUtils.convertCC(author, App.Companion.getInstance());
+        return author;
     }
 
     public void setAuthor(String author) {
@@ -159,7 +157,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getShortIntro() {
-        return StringUtils.convertCC(shortIntro, App.Companion.getInstance());
+        return shortIntro;
     }
 
     public void setShortIntro(String shortIntro) {
@@ -167,7 +165,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getCover() {
-        return StringUtils.convertCC(cover, App.Companion.getInstance());
+        return cover;
     }
 
     public void setCover(String cover) {
@@ -199,7 +197,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getUpdated() {
-        return StringUtils.convertCC(updated, App.Companion.getInstance());
+        return updated;
     }
 
     public void setUpdated(String updated) {
@@ -215,7 +213,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getLastChapter() {
-        return StringUtils.convertCC(lastChapter, App.Companion.getInstance());
+        return lastChapter;
     }
 
     public void setLastChapter(String lastChapter) {
@@ -251,7 +249,7 @@ public class CollBookBean implements Parcelable {
     }
 
     public String getLastRead() {
-        return StringUtils.convertCC(lastRead, App.Companion.getInstance());
+        return lastRead;
     }
 
     public void setLastRead(String lastRead) {

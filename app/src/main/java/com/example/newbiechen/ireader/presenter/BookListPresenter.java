@@ -1,7 +1,6 @@
 package com.example.newbiechen.ireader.presenter;
 
 import com.example.newbiechen.ireader.model.bean.BookListBean;
-import com.example.newbiechen.ireader.model.bean.BookListDetailBean;
 import com.example.newbiechen.ireader.model.flag.BookListType;
 import com.example.newbiechen.ireader.model.remote.RemoteRepository;
 import com.example.newbiechen.ireader.presenter.contract.BookListContract;
@@ -41,7 +40,7 @@ public class BookListPresenter extends RxPresenter<BookListContract.View> implem
                         (e) ->{
                             mView.complete();
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);
@@ -59,7 +58,7 @@ public class BookListPresenter extends RxPresenter<BookListContract.View> implem
                         ,
                         (e) ->{
                             mView.showLoadError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);

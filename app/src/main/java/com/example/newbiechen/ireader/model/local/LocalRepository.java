@@ -1,17 +1,16 @@
 package com.example.newbiechen.ireader.model.local;
 
 import com.example.newbiechen.ireader.model.bean.AuthorBean;
-import com.example.newbiechen.ireader.model.bean.DownloadTaskBean;
-import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage;
-import com.example.newbiechen.ireader.model.bean.ReviewBookBean;
 import com.example.newbiechen.ireader.model.bean.BookCommentBean;
 import com.example.newbiechen.ireader.model.bean.BookHelpfulBean;
 import com.example.newbiechen.ireader.model.bean.BookHelpsBean;
 import com.example.newbiechen.ireader.model.bean.BookReviewBean;
+import com.example.newbiechen.ireader.model.bean.DownloadTaskBean;
+import com.example.newbiechen.ireader.model.bean.ReviewBookBean;
+import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage;
 import com.example.newbiechen.ireader.model.flag.BookSort;
 import com.example.newbiechen.ireader.model.gen.AuthorBeanDao;
-
 import com.example.newbiechen.ireader.model.gen.BookCommentBeanDao;
 import com.example.newbiechen.ireader.model.gen.BookHelpfulBeanDao;
 import com.example.newbiechen.ireader.model.gen.BookHelpsBeanDao;
@@ -135,15 +134,13 @@ public class LocalRepository implements SaveDbHelper,GetDbHelper,DeleteDbHelper{
     @Override
     public void saveBookSortPackage(BookSortPackage bean) {
         String json = new Gson().toJson(bean);
-        SharedPreUtils.getInstance()
-                .putString(Constant.SHARED_SAVE_BOOK_SORT,json);
+        SharedPreUtils.putString(Constant.SHARED_SAVE_BOOK_SORT,json);
     }
 
     @Override
     public void saveBillboardPackage(BillboardPackage bean) {
         String json = new Gson().toJson(bean);
-        SharedPreUtils.getInstance()
-                .putString(Constant.SHARED_SAVE_BILLBOARD,json);
+        SharedPreUtils.putString(Constant.SHARED_SAVE_BILLBOARD,json);
     }
 
     @Override
@@ -224,8 +221,7 @@ public class LocalRepository implements SaveDbHelper,GetDbHelper,DeleteDbHelper{
 
     @Override
     public BookSortPackage getBookSortPackage() {
-        String json = SharedPreUtils.getInstance()
-                .getString(Constant.SHARED_SAVE_BOOK_SORT);
+        String json = SharedPreUtils.getString(Constant.SHARED_SAVE_BOOK_SORT);
         if (json == null){
             return null;
         }
@@ -236,8 +232,7 @@ public class LocalRepository implements SaveDbHelper,GetDbHelper,DeleteDbHelper{
 
     @Override
     public BillboardPackage getBillboardPackage() {
-        String json = SharedPreUtils.getInstance()
-                .getString(Constant.SHARED_SAVE_BILLBOARD);
+        String json = SharedPreUtils.getString(Constant.SHARED_SAVE_BILLBOARD);
         if (json == null){
             return null;
         }
@@ -293,10 +288,10 @@ public class LocalRepository implements SaveDbHelper,GetDbHelper,DeleteDbHelper{
             queryBuilder.orderDesc(property);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
-            LogUtils.e(e);
+            LogUtils.e(e.toString());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            LogUtils.e(e);
+            LogUtils.e(e.toString());
         }
     }
 

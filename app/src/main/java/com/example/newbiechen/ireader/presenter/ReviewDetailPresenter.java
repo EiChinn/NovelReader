@@ -1,7 +1,6 @@
 package com.example.newbiechen.ireader.presenter;
 
 import com.example.newbiechen.ireader.model.bean.CommentBean;
-import com.example.newbiechen.ireader.model.bean.CommentDetailBean;
 import com.example.newbiechen.ireader.model.bean.ReviewDetailBean;
 import com.example.newbiechen.ireader.model.remote.RemoteRepository;
 import com.example.newbiechen.ireader.presenter.contract.ReviewDetailContract;
@@ -45,7 +44,7 @@ public class ReviewDetailPresenter extends RxPresenter<ReviewDetailContract.View
                         },
                         (e) -> {
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(detailDispo);
@@ -63,7 +62,7 @@ public class ReviewDetailPresenter extends RxPresenter<ReviewDetailContract.View
                         },
                         (e) -> {
                             mView.showLoadError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

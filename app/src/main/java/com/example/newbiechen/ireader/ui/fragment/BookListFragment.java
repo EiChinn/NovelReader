@@ -103,7 +103,7 @@ public class BookListFragment extends BaseMVPFragment<BookListContract.Presenter
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         event -> {
-                            mTag = event.bookSubSort;
+                            mTag = event.getBookSubSort();
                             showRefresh();
                         }
                 );

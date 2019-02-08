@@ -52,7 +52,7 @@ public class CommentHolder extends ViewHolderImpl<CommentBean> {
     public void onBind(CommentBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getAuthor().getAvatar())
+                .load(Constant.IMG_BASE_URL +value.getAuthor().getAvatar())
                 .placeholder(R.drawable.ic_loadding)
                 .error(R.drawable.ic_load_error)
                 .transform(new CircleTransform(getContext()))
@@ -73,7 +73,7 @@ public class CommentHolder extends ViewHolderImpl<CommentBean> {
             //时间
             tvTime.setVisibility(View.VISIBLE);
             tvLikeCount.setVisibility(View.GONE);
-            tvTime.setText(StringUtils.dateConvert(value.getCreated(),Constant.FORMAT_BOOK_DATE));
+            tvTime.setText(StringUtils.dateConvert(value.getCreated(), Constant.FORMAT_BOOK_DATE));
         }
         //内容
         tvContent.setText(value.getContent());

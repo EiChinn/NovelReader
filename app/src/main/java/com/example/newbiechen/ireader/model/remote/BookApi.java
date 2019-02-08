@@ -267,8 +267,8 @@ public interface BookApi {
      */
     @GET("/book-list")
     Single<BookListPackage> getBookListPackage(@Query("duration") String duration, @Query("sort") String sort,
-                                             @Query("start") String start, @Query("limit") String limit,
-                                             @Query("tag") String tag, @Query("gender") String gender);
+                                               @Query("start") String start, @Query("limit") String limit,
+                                               @Query("tag") String tag, @Query("gender") String gender);
 
     /**
      * 获取主题书单标签列表

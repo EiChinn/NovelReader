@@ -1,7 +1,5 @@
 package com.example.newbiechen.ireader.presenter;
 
-import static com.example.newbiechen.ireader.utils.LogUtils.*;
-
 import com.example.newbiechen.ireader.model.bean.BookReviewBean;
 import com.example.newbiechen.ireader.model.flag.BookDistillate;
 import com.example.newbiechen.ireader.model.flag.BookSort;
@@ -17,6 +15,8 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.example.newbiechen.ireader.utils.LogUtils.e;
 
 /**
  * Created by newbiechen on 17-4-21.
@@ -49,7 +49,7 @@ public class DiscReviewPresenter extends RxPresenter<DiscReviewContract.View> im
                             isLocalLoad = true;
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                         ,
                         ()-> {
@@ -77,7 +77,7 @@ public class DiscReviewPresenter extends RxPresenter<DiscReviewContract.View> im
                         (e) ->{
                             mView.complete();
                             mView.showErrorTip();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);
@@ -118,7 +118,7 @@ public class DiscReviewPresenter extends RxPresenter<DiscReviewContract.View> im
                         ,
                         (e) -> {
                             mView.showError();
-                            e(e);
+                            e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

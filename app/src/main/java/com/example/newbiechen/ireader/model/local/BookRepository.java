@@ -14,7 +14,6 @@ import com.example.newbiechen.ireader.model.gen.DownloadTaskBeanDao;
 import com.example.newbiechen.ireader.utils.BookManager;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.FileUtils;
-import com.example.newbiechen.ireader.utils.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -145,14 +144,11 @@ public class BookRepository {
     public void saveChapterInfo(String folderName,String fileName,String content){
         File file = BookManager.getBookFile(folderName, fileName);
         //获取流并存储
-        Writer writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(file));
+        try (Writer writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(content);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            IOUtils.close(writer);
         }
     }
 
@@ -203,16 +199,13 @@ public class BookRepository {
     }
 
     //TODO:需要进行获取编码并转换的问题
-    public ChapterInfoBean getChapterInfoBean(String folderName,String fileName){
-        File file = new File(Constant.BOOK_CACHE_PATH + folderName
+    public ChapterInfoBean getChapterInfoBean(String folderName, String fileName){
+        File file = new File(Constant.INSTANCE.getBOOK_CACHE_PATH() + folderName
                 + File.separator + fileName + FileUtils.SUFFIX_NB);
         if (!file.exists()) return null;
-        Reader reader = null;
         String str = null;
         StringBuilder sb = new StringBuilder();
-        try {
-            reader = new FileReader(file);
-            BufferedReader br = new BufferedReader(reader);
+        try(Reader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
             while ((str = br.readLine()) != null){
                 sb.append(str);
             }
@@ -220,13 +213,9 @@ public class BookRepository {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            IOUtils.close(reader);
         }
 
-        ChapterInfoBean bean = new ChapterInfoBean();
-        bean.setTitle(fileName);
-        bean.setBody(sb.toString());
+        ChapterInfoBean bean = new ChapterInfoBean(fileName, sb.toString());
         return bean;
     }
 
@@ -267,7 +256,7 @@ public class BookRepository {
 
     //删除书籍
     public void deleteBookCache(String bookId){
-        FileUtils.deleteFile(Constant.BOOK_CACHE_PATH+bookId);
+        FileUtils.deleteFile(Constant.INSTANCE.getBOOK_CACHE_PATH() +bookId);
     }
 
     public void deleteBookRecord(String id){

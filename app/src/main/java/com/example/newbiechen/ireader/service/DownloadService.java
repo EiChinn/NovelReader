@@ -105,7 +105,7 @@ public class DownloadService extends BaseService {
                             //判断是否该数据存在加载列表中
                             boolean isDelete = true;
                             for (DownloadTaskBean bean : mDownloadTaskQueue){
-                                if (bean.getBookId().equals(event.collBook.get_id())){
+                                if (bean.getBookId().equals(event.getCollBook().get_id())){
                                     isDelete = false;
                                     break;
                                 }
@@ -116,13 +116,13 @@ public class DownloadService extends BaseService {
                                 Iterator<DownloadTaskBean> taskIt = mDownloadTaskList.iterator();
                                 while (taskIt.hasNext()){
                                     DownloadTaskBean task = taskIt.next();
-                                    if (task.getBookId().equals(event.collBook.get_id())) {
+                                    if (task.getBookId().equals(event.getCollBook().get_id())) {
                                         taskIt.remove();
                                     }
                                 }
                             }
                             //返回状态
-                            RxBus.getInstance().post(new DeleteResponseEvent(isDelete,event.collBook));
+                            RxBus.getInstance().post(new DeleteResponseEvent(isDelete,event.getCollBook()));
                         }
                 );
         addDisposable(deleteDisp);
@@ -218,8 +218,7 @@ public class DownloadService extends BaseService {
 
                 BookChapterBean bookChapterBean = bookChapterBeans.get(i);
                 //首先判断该章节是否曾经被加载过 (从文件中判断)
-                if (BookManager
-                        .isChapterCached(taskEvent.getBookId(),bookChapterBean.getTitle())){
+                if (BookManager.isChapterCached(taskEvent.getBookId(),bookChapterBean.getTitle())){
 
                     //设置任务进度
                     taskEvent.setCurrentChapter(i);
@@ -314,7 +313,7 @@ public class DownloadService extends BaseService {
                         },
                         e -> {
                             //当前进度加载错误（这里需要判断是什么问题，根据相应的问题做出相应的回答）
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                             //设置加载结果
                             result[0] = LOAD_ERROR;
                         }

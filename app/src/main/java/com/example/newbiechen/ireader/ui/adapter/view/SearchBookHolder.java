@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.newbiechen.ireader.R;
-import com.example.newbiechen.ireader.model.bean.packages.SearchBookPackage;
+import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean;
 import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
 import com.example.newbiechen.ireader.utils.Constant;
 
@@ -13,7 +13,7 @@ import com.example.newbiechen.ireader.utils.Constant;
  * Created by newbiechen on 17-6-2.
  */
 
-public class SearchBookHolder extends ViewHolderImpl<SearchBookPackage.BooksBean> {
+public class SearchBookHolder extends ViewHolderImpl<SearchBooksBean> {
 
     private ImageView mIvCover;
     private TextView mTvName;
@@ -27,7 +27,7 @@ public class SearchBookHolder extends ViewHolderImpl<SearchBookPackage.BooksBean
     }
 
     @Override
-    public void onBind(SearchBookPackage.BooksBean data, int pos) {
+    public void onBind(SearchBooksBean data, int pos) {
         //显示图片
         Glide.with(getContext())
                 .load(Constant.IMG_BASE_URL + data.getCover())

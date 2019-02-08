@@ -195,7 +195,7 @@ public class CommentDetailFragment extends BaseMVPFragment<CommentDetailContract
             }
             //头像
             Glide.with(getContext())
-                    .load(Constant.IMG_BASE_URL+commentDetailBean.getAuthor().getAvatar())
+                    .load(Constant.IMG_BASE_URL +commentDetailBean.getAuthor().getAvatar())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .transform(new CircleTransform(getContext()))
@@ -203,7 +203,7 @@ public class CommentDetailFragment extends BaseMVPFragment<CommentDetailContract
             //名字
             tvName.setText(commentDetailBean.getAuthor().getNickname());
             //日期
-            tvTime.setText(StringUtils.dateConvert(commentDetailBean.getCreated(),Constant.FORMAT_BOOK_DATE));
+            tvTime.setText(StringUtils.dateConvert(commentDetailBean.getCreated(), Constant.FORMAT_BOOK_DATE));
             //标题
             tvTitle.setText(commentDetailBean.getTitle());
             //内容

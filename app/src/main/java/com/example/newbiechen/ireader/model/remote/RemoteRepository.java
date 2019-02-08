@@ -21,7 +21,7 @@ import com.example.newbiechen.ireader.model.bean.SortBookBean;
 import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage;
 import com.example.newbiechen.ireader.model.bean.packages.BookSubSortPackage;
-import com.example.newbiechen.ireader.model.bean.packages.SearchBookPackage;
+import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +183,7 @@ public class RemoteRepository {
      * @param limit
      * @return
      */
-    public Single<List<SortBookBean>> getSortBooks(String gender,String type,String major,String minor,int start,int limit){
+    public Single<List<SortBookBean>> getSortBooks(String gender, String type, String major, String minor, int start, int limit){
         return mBookApi.getSortBookPackage(gender, type, major, minor, start, limit)
                 .map(bean -> bean.getBooks());
     }
@@ -286,7 +286,7 @@ public class RemoteRepository {
      * @param query:书名|作者名
      * @return
      */
-    public Single<List<SearchBookPackage.BooksBean>> getSearchBooks(String query){
+    public Single<List<SearchBooksBean>> getSearchBooks(String query){
         return mBookApi.getSearchBookPackage(query)
                 .map(bean -> bean.getBooks());
     }

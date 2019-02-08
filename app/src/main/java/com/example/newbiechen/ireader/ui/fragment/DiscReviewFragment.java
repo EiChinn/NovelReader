@@ -105,9 +105,9 @@ public class DiscReviewFragment extends BaseMVPFragment<DiscReviewContract.Prese
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (event) -> {
-                            mBookSort = event.sort;
-                            mBookType = event.type;
-                            mDistillate = event.distillate;
+                            mBookSort = event.getSort();
+                            mBookType = event.getType();
+                            mDistillate = event.getDistillate();
                             refreshData();
                         }
                 ));

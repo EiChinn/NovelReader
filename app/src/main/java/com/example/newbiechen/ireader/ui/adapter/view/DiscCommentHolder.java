@@ -47,7 +47,7 @@ public class DiscCommentHolder extends ViewHolderImpl<BookCommentBean> {
     public void onBind(BookCommentBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getAuthorBean().getAvatar())
+                .load(Constant.IMG_BASE_URL +value.getAuthorBean().getAvatar())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .transform(new CircleTransform(App.Companion.getInstance()))
@@ -84,7 +84,7 @@ public class DiscCommentHolder extends ViewHolderImpl<BookCommentBean> {
         }
         drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
         //time
-        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(),Constant.FORMAT_BOOK_DATE));
+        mTvTime.setText(StringUtils.dateConvert(value.getUpdated(), Constant.FORMAT_BOOK_DATE));
 
         mTvResponseCount.setCompoundDrawables(drawable,null,null,null);
         //response count

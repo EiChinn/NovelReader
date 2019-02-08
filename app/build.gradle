@@ -10,7 +10,7 @@ android {
         release {
             keyAlias 'novel'
             keyPassword '564579234'
-            storeFile file('D:/study/NovelReader.jks')
+            storeFile file('NovelReader.jks')
             storePassword '564579234'
         }
     }

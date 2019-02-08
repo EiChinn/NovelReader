@@ -73,7 +73,7 @@ class MainActivity : BaseTabActivity() {
     }
 
     private fun showSexChooseDialog() {
-        val sex = SharedPreUtils.getInstance().getString(Constant.SHARED_SEX)
+        val sex = SharedPreUtils.getString(Constant.SHARED_SEX)
         if (sex.isNullOrEmpty()) {
             mVp.postDelayed({
                 val dialog = SexChooseDialog(this)

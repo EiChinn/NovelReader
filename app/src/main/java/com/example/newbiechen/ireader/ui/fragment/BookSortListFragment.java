@@ -105,7 +105,7 @@ public class BookSortListFragment extends BaseMVPFragment<BookSortListContract.P
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (event) -> {
-                            mMinor = event.bookSubSort;
+                            mMinor = event.getBookSubSort();
                             mRefreshLayout.showLoading();
                             mStart = 0;
                             mPresenter.refreshSortBook(mGender,mType,mMajor,mMinor,mStart,mLimit);

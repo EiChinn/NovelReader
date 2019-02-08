@@ -1,7 +1,6 @@
 package com.example.newbiechen.ireader.presenter;
 
 import com.example.newbiechen.ireader.model.remote.RemoteRepository;
-import com.example.newbiechen.ireader.presenter.contract.BookListContract;
 import com.example.newbiechen.ireader.presenter.contract.BookListDetailContract;
 import com.example.newbiechen.ireader.ui.base.RxPresenter;
 import com.example.newbiechen.ireader.utils.LogUtils;
@@ -29,7 +28,7 @@ public class BookListDetailPresenter extends RxPresenter<BookListDetailContract.
                         ,
                         (e) ->{
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);

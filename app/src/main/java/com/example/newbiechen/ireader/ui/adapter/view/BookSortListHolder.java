@@ -39,7 +39,7 @@ public class BookSortListHolder extends ViewHolderImpl<SortBookBean> {
     public void onBind(SortBookBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getCover())
+                .load(Constant.IMG_BASE_URL +value.getCover())
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .fitCenter()

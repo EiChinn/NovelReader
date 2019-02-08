@@ -3,8 +3,6 @@ package com.example.newbiechen.ireader;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.StringUtils;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 /**

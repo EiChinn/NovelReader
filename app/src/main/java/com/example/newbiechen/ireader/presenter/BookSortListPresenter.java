@@ -36,7 +36,7 @@ public class BookSortListPresenter extends RxPresenter<BookSortListContract.View
                         (e) ->{
                             mView.complete();
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(refreshDispo);
@@ -55,7 +55,7 @@ public class BookSortListPresenter extends RxPresenter<BookSortListContract.View
                         ,
                         (e) ->{
                             mView.showLoadError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(loadDispo);

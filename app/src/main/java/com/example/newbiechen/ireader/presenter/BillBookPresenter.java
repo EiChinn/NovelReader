@@ -1,7 +1,5 @@
 package com.example.newbiechen.ireader.presenter;
 
-import android.util.Log;
-
 import com.example.newbiechen.ireader.model.remote.RemoteRepository;
 import com.example.newbiechen.ireader.presenter.contract.BillBookContract;
 import com.example.newbiechen.ireader.ui.base.RxPresenter;
@@ -32,7 +30,7 @@ public class BillBookPresenter extends RxPresenter<BillBookContract.View>
                         ,
                         (e) ->{
                             mView.showError();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(remoteDisp);

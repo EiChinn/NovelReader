@@ -57,7 +57,7 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
                         ,
                         e -> {
                             //TODO: Haven't grate conversation method.
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disposable);
@@ -84,7 +84,7 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
                         ,
                         e -> {
                             //TODO: Haven't grate conversation method.
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disposable);
@@ -144,7 +144,7 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
                                 if (bookChapters.get(0).getTitle().equals(title)) {
                                     mView.errorChapter();
                                 }
-                                LogUtils.e(t);
+                                LogUtils.e(t.toString());
                             }
 
                             @Override

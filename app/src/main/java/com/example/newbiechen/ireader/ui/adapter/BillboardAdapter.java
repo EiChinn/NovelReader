@@ -95,7 +95,7 @@ public class BillboardAdapter extends BaseExpandableListAdapter {
 
         if (bean.getCover() != null){
             Glide.with(parent.getContext())
-                    .load(Constant.IMG_BASE_URL+bean.getCover())
+                    .load(Constant.IMG_BASE_URL +bean.getCover())
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .fitCenter()

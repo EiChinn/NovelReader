@@ -16,7 +16,7 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
                         { beans -> mView.showSource(beans) },
                         { e ->
                             //TODO: Haven't grate conversation method.
-                            LogUtils.e(e)
+                            LogUtils.e(e.toString())
                         }
                 )
         addDisposable(disposable)

@@ -9,6 +9,7 @@ import com.example.newbiechen.ireader.presenter.contract.BookDetailContract;
 import com.example.newbiechen.ireader.ui.base.RxPresenter;
 import com.example.newbiechen.ireader.utils.LogUtils;
 import com.example.newbiechen.ireader.utils.MD5Utils;
+import com.example.newbiechen.ireader.utils.ToastUtils;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -62,7 +63,7 @@ public class BookDetailPresenter extends RxPresenter<BookDetailContract.View>
                         ,
                         e -> {
                             mView.errorToBookShelf();
-                            LogUtils.e(e);
+                            LogUtils.e(e.toString());
                         }
                 );
         addDisposable(disposable);
@@ -100,7 +101,8 @@ public class BookDetailPresenter extends RxPresenter<BookDetailContract.View>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (value) -> mView.finishHotComment(value)
+                        value -> mView.finishHotComment(value),
+                        e -> ToastUtils.show(e.toString())
                 );
         addDisposable(disposable);
     }
@@ -112,7 +114,8 @@ public class BookDetailPresenter extends RxPresenter<BookDetailContract.View>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (value) -> mView.finishRecommendBookList(value)
+                        value -> mView.finishRecommendBookList(value),
+                        e -> ToastUtils.show(e.toString())
                 );
         addDisposable(disposable);
     }

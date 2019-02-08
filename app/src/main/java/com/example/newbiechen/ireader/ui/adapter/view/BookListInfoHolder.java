@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.newbiechen.ireader.R;
-import com.example.newbiechen.ireader.model.bean.BookListDetailBean;
+import com.example.newbiechen.ireader.model.bean.DetailBookBean;
 import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl;
 import com.example.newbiechen.ireader.utils.Constant;
 
@@ -13,7 +13,7 @@ import com.example.newbiechen.ireader.utils.Constant;
  * Created by newbiechen on 17-5-2.
  */
 
-public class BookListInfoHolder extends ViewHolderImpl<BookListDetailBean.BooksBean.BookBean> {
+public class BookListInfoHolder extends ViewHolderImpl<DetailBookBean> {
 
     private ImageView mIvPortrait;
     private TextView mTvTitle;
@@ -38,10 +38,10 @@ public class BookListInfoHolder extends ViewHolderImpl<BookListDetailBean.BooksB
     }
 
     @Override
-    public void onBind(BookListDetailBean.BooksBean.BookBean value, int pos) {
+    public void onBind(DetailBookBean value, int pos) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL+value.getCover())
+                .load(Constant.IMG_BASE_URL +value.getCover())
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
                 .fitCenter()
