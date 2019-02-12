@@ -11,6 +11,7 @@ import com.example.newbiechen.ireader.presenter.BookSortListPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BookSortListContract;
 import com.example.newbiechen.ireader.ui.activity.BookDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.BookSortListAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.widget.RefreshLayout;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
@@ -28,7 +29,7 @@ import io.reactivex.disposables.Disposable;
  * Created by newbiechen on 17-5-3.
  */
 
-public class BookSortListFragment extends BaseMVPFragment<BookSortListContract.Presenter>
+public class BookSortListFragment extends BaseMVPFragment<BookSortListContract.View, BookSortListContract.Presenter>
         implements BookSortListContract.View{
     private static final String EXTRA_GENDER = "extra_gender";
     private static final String EXTRA_TYPE = "extra_type";

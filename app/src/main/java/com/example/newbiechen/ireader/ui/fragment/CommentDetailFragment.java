@@ -16,6 +16,7 @@ import com.example.newbiechen.ireader.presenter.CommentDetailPresenter;
 import com.example.newbiechen.ireader.presenter.contract.CommentDetailContract;
 import com.example.newbiechen.ireader.ui.adapter.CommentAdapter;
 import com.example.newbiechen.ireader.ui.adapter.GodCommentAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.StringUtils;
 import com.example.newbiechen.ireader.widget.BookTextView;
@@ -38,8 +39,8 @@ import butterknife.Unbinder;
  * 综合评论区 + 书荒互助区详情
  */
 
-public class CommentDetailFragment extends BaseMVPFragment<CommentDetailContract.Presenter>
-        implements CommentDetailContract.View{
+public class CommentDetailFragment extends BaseMVPFragment<CommentDetailContract.View, CommentDetailContract.Presenter>
+        implements CommentDetailContract.View {
     private static final String TAG = "CommentDetailFragment";
     private static final String EXTRA_DETAIL_ID = "extra_detail_id";
     @BindView(R.id.refresh_layout)

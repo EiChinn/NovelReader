@@ -13,6 +13,7 @@ import com.example.newbiechen.ireader.presenter.DiscCommentPresenter;
 import com.example.newbiechen.ireader.presenter.contract.DiscCommentContract;
 import com.example.newbiechen.ireader.ui.activity.DiscDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.DiscCommentAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
@@ -33,7 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * 2. 初始化视图和逻辑的交互
  */
 
-public class DiscCommentFragment extends BaseMVPFragment<DiscCommentContract.Presenter> implements DiscCommentContract.View {
+public class DiscCommentFragment extends BaseMVPFragment<DiscCommentContract.View, DiscCommentContract.Presenter> implements DiscCommentContract.View {
     private static final String TAG = "DiscCommentFragment";
     private static final String EXTRA_BLOCK = "extra_block";
     private static final String BUNDLE_BLOCK = "bundle_block";

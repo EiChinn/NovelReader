@@ -11,6 +11,7 @@ import com.example.newbiechen.ireader.presenter.BookListPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BookListContract;
 import com.example.newbiechen.ireader.ui.activity.BookListDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.BookListAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.widget.RefreshLayout;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
@@ -29,8 +30,8 @@ import io.reactivex.disposables.Disposable;
  * 书单页面
  */
 
-public class BookListFragment extends BaseMVPFragment<BookListContract.Presenter>
-        implements BookListContract.View{
+public class BookListFragment extends BaseMVPFragment<BookListContract.View, BookListContract.Presenter>
+        implements BookListContract.View {
     private static final String EXTRA_BOOK_LIST_TYPE = "extra_book_list_type";
     private static final String BUNDLE_BOOK_TAG = "bundle_book_tag";
     @BindView(R.id.refresh_layout)

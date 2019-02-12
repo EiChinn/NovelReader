@@ -14,6 +14,7 @@ import com.example.newbiechen.ireader.presenter.DiscReviewPresenter;
 import com.example.newbiechen.ireader.presenter.contract.DiscReviewContract;
 import com.example.newbiechen.ireader.ui.activity.DiscDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.DiscReviewAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
@@ -29,7 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Created by newbiechen on 17-4-21.
  */
 
-public class DiscReviewFragment extends BaseMVPFragment<DiscReviewContract.Presenter> implements DiscReviewContract.View {
+public class DiscReviewFragment extends BaseMVPFragment<DiscReviewContract.View, DiscReviewContract.Presenter> implements DiscReviewContract.View {
     private static final String BUNDLE_BOOK = "bundle_book";
     private static final String BUNDLE_SORT = "bundle_sort";
     private static final String BUNDLE_DISTILLATE = "bundle_distillate";

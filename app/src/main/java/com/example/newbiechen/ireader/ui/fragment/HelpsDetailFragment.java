@@ -16,6 +16,7 @@ import com.example.newbiechen.ireader.presenter.HelpsDetailPresenter;
 import com.example.newbiechen.ireader.presenter.contract.HelpsDetailContract;
 import com.example.newbiechen.ireader.ui.adapter.CommentAdapter;
 import com.example.newbiechen.ireader.ui.adapter.GodCommentAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.StringUtils;
 import com.example.newbiechen.ireader.widget.BookTextView;
@@ -37,7 +38,7 @@ import butterknife.Unbinder;
  * Created by newbiechen on 17-4-30.
  */
 
-public class HelpsDetailFragment extends BaseMVPFragment<HelpsDetailContract.Presenter> implements HelpsDetailContract.View{
+public class HelpsDetailFragment extends BaseMVPFragment<HelpsDetailContract.View, HelpsDetailContract.Presenter> implements HelpsDetailContract.View{
     private static final String TAG = "HelpsDetailFragment";
     private static final String EXTRA_DETAIL_ID = "extra_detail_id";
 

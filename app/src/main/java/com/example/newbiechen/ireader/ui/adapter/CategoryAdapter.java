@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.newbiechen.ireader.ui.adapter.view.CategoryHolder;
+import com.example.newbiechen.ireader.ui.base.EasyAdapter;
 import com.example.newbiechen.ireader.ui.base.adapter.IViewHolder;
 import com.example.newbiechen.ireader.widget.page.TxtChapter;
 

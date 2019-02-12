@@ -21,6 +21,7 @@ import com.example.newbiechen.ireader.presenter.BookShelfPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BookShelfContract;
 import com.example.newbiechen.ireader.ui.activity.ReadActivity;
 import com.example.newbiechen.ireader.ui.adapter.CollBookAdapter;
+import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.RxUtils;
 import com.example.newbiechen.ireader.utils.ToastUtils;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
@@ -40,7 +41,7 @@ import io.reactivex.disposables.Disposable;
  * Created by newbiechen on 17-4-15.
  */
 
-public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Presenter>
+public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.View, BookShelfContract.Presenter>
         implements BookShelfContract.View {
     private static final String TAG = "BookShelfFragment";
     @BindView(R.id.book_shelf_rv_content)
