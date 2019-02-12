@@ -8,7 +8,6 @@ import com.example.newbiechen.ireader.presenter.BillBookPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BillBookContract;
 import com.example.newbiechen.ireader.ui.activity.BookDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.BillBookAdapter;
-import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.widget.RefreshLayout;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
 

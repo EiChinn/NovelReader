@@ -11,7 +11,6 @@ import com.example.newbiechen.ireader.presenter.BookListPresenter;
 import com.example.newbiechen.ireader.presenter.contract.BookListContract;
 import com.example.newbiechen.ireader.ui.activity.BookListDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.BookListAdapter;
-import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.widget.RefreshLayout;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;

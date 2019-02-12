@@ -78,7 +78,6 @@ public class ReadSettingDialog extends Dialog {
     TextView mTvMore;
     /************************************/
     private PageStyleAdapter mPageStyleAdapter;
-    private ReadSettingManager mSettingManager;
     private PageLoader mPageLoader;
     private Activity mActivity;
 
@@ -120,14 +119,13 @@ public class ReadSettingDialog extends Dialog {
     }
 
     private void initData() {
-        mSettingManager = ReadSettingManager.getInstance();
 
-        isBrightnessAuto = mSettingManager.isBrightnessAuto();
-        mBrightness = mSettingManager.getBrightness();
-        mTextSize = mSettingManager.getTextSize();
-        isTextDefault = mSettingManager.isDefaultTextSize();
-        mPageMode = mSettingManager.getPageMode();
-        mPageStyle = mSettingManager.getPageStyle();
+        isBrightnessAuto = ReadSettingManager.isBrightnessAuto();
+        mBrightness = ReadSettingManager.getBrightness();
+        mTextSize = ReadSettingManager.getTextSize();
+        isTextDefault = ReadSettingManager.isDefaultTextSize();
+        mPageMode = ReadSettingManager.getPageMode();
+        mPageStyle = ReadSettingManager.getPageStyle();
     }
 
     private void initWidget() {
@@ -204,7 +202,7 @@ public class ReadSettingDialog extends Dialog {
                     mSbBrightness.setProgress(progress);
                     BrightnessUtils.setBrightness(mActivity, progress);
                     //设置进度
-                    ReadSettingManager.getInstance().setBrightness(progress);
+                    ReadSettingManager.setBrightness(progress);
                 }
         );
 
@@ -228,7 +226,7 @@ public class ReadSettingDialog extends Dialog {
                 //设置当前 Activity 的亮度
                 BrightnessUtils.setBrightness(mActivity, progress);
                 //存储亮度的进度条
-                ReadSettingManager.getInstance().setBrightness(progress);
+                ReadSettingManager.setBrightness(progress);
             }
         });
 
@@ -241,7 +239,7 @@ public class ReadSettingDialog extends Dialog {
                         //获取进度条的亮度
                         BrightnessUtils.setBrightness(mActivity, mSbBrightness.getProgress());
                     }
-                    ReadSettingManager.getInstance().setAutoBrightness(isChecked);
+                    ReadSettingManager.setAutoBrightness(isChecked);
                 }
         );
 

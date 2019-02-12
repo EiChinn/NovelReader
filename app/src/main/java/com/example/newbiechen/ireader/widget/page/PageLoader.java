@@ -85,8 +85,6 @@ public abstract class PageLoader {
     private Paint mBgPaint;
     // 绘制小说内容的画笔
     private TextPaint mTextPaint;
-    // 阅读器的配置选项
-    private ReadSettingManager mSettingManager;
     // 被遮盖的页，或者认为被取消显示的页
     private TxtPage mCancelPage;
     // 存储阅读记录类
@@ -160,16 +158,14 @@ public abstract class PageLoader {
     }
 
     private void initData() {
-        // 获取配置管理器
-        mSettingManager = ReadSettingManager.getInstance();
         // 获取配置参数
-        mPageMode = mSettingManager.getPageMode();
-        mPageStyle = mSettingManager.getPageStyle();
+        mPageMode = ReadSettingManager.getPageMode();
+        mPageStyle = ReadSettingManager.getPageStyle();
         // 初始化参数
         mMarginWidth = ScreenUtils.dpToPx(DEFAULT_MARGIN_WIDTH);
         mMarginHeight = ScreenUtils.dpToPx(DEFAULT_MARGIN_HEIGHT);
         // 配置文字有关的参数
-        setUpTextParams(mSettingManager.getTextSize());
+        setUpTextParams(ReadSettingManager.getTextSize());
     }
 
     /**
@@ -222,7 +218,7 @@ public abstract class PageLoader {
         mBatteryPaint.setDither(true);
 
         // 初始化页面样式
-        setNightMode(mSettingManager.isNightMode());
+        setNightMode(ReadSettingManager.isNightMode());
     }
 
     private void initPageView() {
@@ -374,7 +370,7 @@ public abstract class PageLoader {
         // 设置标题的字体大小
         mTitlePaint.setTextSize(mTitleSize);
         // 存储文字大小
-        mSettingManager.setTextSize(mTextSize);
+        ReadSettingManager.setTextSize(mTextSize);
         // 取消缓存
         mPrePageList = null;
         mNextPageList = null;
@@ -402,7 +398,7 @@ public abstract class PageLoader {
      * @param nightMode
      */
     public void setNightMode(boolean nightMode) {
-        mSettingManager.setNightMode(nightMode);
+        ReadSettingManager.setNightMode(nightMode);
         isNightMode = nightMode;
 
         if (isNightMode) {
@@ -422,7 +418,7 @@ public abstract class PageLoader {
     public void setPageStyle(PageStyle pageStyle) {
         if (pageStyle != PageStyle.NIGHT) {
             mPageStyle = pageStyle;
-            mSettingManager.setPageStyle(pageStyle);
+            ReadSettingManager.setPageStyle(pageStyle);
         }
 
         if (isNightMode && pageStyle != PageStyle.NIGHT) {
@@ -452,7 +448,7 @@ public abstract class PageLoader {
         mPageMode = pageMode;
 
         mPageView.setPageMode(mPageMode);
-        mSettingManager.setPageMode(mPageMode);
+        ReadSettingManager.setPageMode(mPageMode);
 
         // 重新绘制当前页
         mPageView.drawCurPage(false);

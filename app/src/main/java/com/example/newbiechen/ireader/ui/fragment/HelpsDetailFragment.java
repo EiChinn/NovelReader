@@ -16,7 +16,6 @@ import com.example.newbiechen.ireader.presenter.HelpsDetailPresenter;
 import com.example.newbiechen.ireader.presenter.contract.HelpsDetailContract;
 import com.example.newbiechen.ireader.ui.adapter.CommentAdapter;
 import com.example.newbiechen.ireader.ui.adapter.GodCommentAdapter;
-import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.utils.StringUtils;
 import com.example.newbiechen.ireader.widget.BookTextView;

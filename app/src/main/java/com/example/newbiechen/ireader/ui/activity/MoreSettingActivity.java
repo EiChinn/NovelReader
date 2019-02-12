@@ -33,7 +33,6 @@ public class MoreSettingActivity extends BaseActivity{
     RelativeLayout mRlConvertType;
     @BindView(R.id.more_setting_sc_convert_type)
     Spinner mScConvertType;
-    private ReadSettingManager mSettingManager;
     private boolean isVolumeTurnPage;
     private boolean isFullScreen;
     private int convertType;
@@ -45,10 +44,9 @@ public class MoreSettingActivity extends BaseActivity{
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        mSettingManager = ReadSettingManager.getInstance();
-        isVolumeTurnPage = mSettingManager.isVolumeTurnPage();
-        isFullScreen = mSettingManager.isFullScreen();
-        convertType = mSettingManager.getConvertType();
+        isVolumeTurnPage = ReadSettingManager.isVolumeTurnPage();
+        isFullScreen = ReadSettingManager.isFullScreen();
+        convertType = ReadSettingManager.getConvertType();
     }
 
     @Override
@@ -80,7 +78,7 @@ public class MoreSettingActivity extends BaseActivity{
                         isVolumeTurnPage = true;
                     }
                     mScVolume.setChecked(isVolumeTurnPage);
-                    mSettingManager.setVolumeTurnPage(isVolumeTurnPage);
+                    ReadSettingManager.setVolumeTurnPage(isVolumeTurnPage);
                 }
         );
 
@@ -93,7 +91,7 @@ public class MoreSettingActivity extends BaseActivity{
                         isFullScreen = true;
                     }
                     mScFullScreen.setChecked(isFullScreen);
-                    mSettingManager.setFullScreen(isFullScreen);
+                    ReadSettingManager.setFullScreen(isFullScreen);
                 }
         );
     }
@@ -113,7 +111,7 @@ public class MoreSettingActivity extends BaseActivity{
         mScConvertType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSettingManager.setConvertType(position);
+                ReadSettingManager.setConvertType(position);
                 convertType = position;
             }
 

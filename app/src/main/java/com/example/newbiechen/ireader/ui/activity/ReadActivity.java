@@ -226,8 +226,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
         super.initData(savedInstanceState);
         mCollBook = getIntent().getParcelableExtra(EXTRA_COLL_BOOK);
         isCollected = getIntent().getBooleanExtra(EXTRA_IS_COLLECTED, false);
-        isNightMode = ReadSettingManager.getInstance().isNightMode();
-        isFullScreen = ReadSettingManager.getInstance().isFullScreen();
+        isNightMode = ReadSettingManager.isNightMode();
+        isFullScreen = ReadSettingManager.isFullScreen();
 
         mBookSourceId = mCollBook.getCurrentSourceId();
         if (TextUtils.isEmpty(mBookSourceId)) {
@@ -276,10 +276,10 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
         registerReceiver(mReceiver, intentFilter);
 
         //设置当前Activity的Brightness
-        if (ReadSettingManager.getInstance().isBrightnessAuto()) {
+        if (ReadSettingManager.isBrightnessAuto()) {
             BrightnessUtils.setDefaultBrightness(this);
         } else {
-            BrightnessUtils.setBrightness(this, ReadSettingManager.getInstance().getBrightness());
+            BrightnessUtils.setBrightness(this, ReadSettingManager.getBrightness());
         }
 
         //初始化屏幕常亮类
@@ -306,7 +306,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
 
     private void initBottomMenu() {
         //判断是否全屏
-        if (ReadSettingManager.getInstance().isFullScreen()) {
+        if (ReadSettingManager.isFullScreen()) {
             //还需要设置mBottomMenu的底部高度
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mLlBottomMenu.getLayoutParams();
             params.bottomMargin = ScreenUtils.getNavigationBarHeight();
@@ -734,7 +734,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
     public void onBackPressed() {
         if (mAblTopMenu.getVisibility() == View.VISIBLE) {
             // 非全屏下才收缩，全屏下直接退出
-            if (!ReadSettingManager.getInstance().isFullScreen()) {
+            if (!ReadSettingManager.isFullScreen()) {
                 toggleMenu(true);
                 return;
             }
@@ -822,8 +822,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean isVolumeTurnPage = ReadSettingManager
-                .getInstance().isVolumeTurnPage();
+        boolean isVolumeTurnPage = ReadSettingManager.isVolumeTurnPage();
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (isVolumeTurnPage) {
@@ -844,7 +843,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
         super.onActivityResult(requestCode, resultCode, data);
         SystemBarUtils.hideStableStatusBar(this);
         if (requestCode == REQUEST_MORE_SETTING) {
-            boolean fullScreen = ReadSettingManager.getInstance().isFullScreen();
+            boolean fullScreen = ReadSettingManager.isFullScreen();
             if (isFullScreen != fullScreen) {
                 isFullScreen = fullScreen;
                 // 刷新BottomMenu

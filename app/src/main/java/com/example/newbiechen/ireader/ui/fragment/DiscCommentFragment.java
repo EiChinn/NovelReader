@@ -13,7 +13,6 @@ import com.example.newbiechen.ireader.presenter.DiscCommentPresenter;
 import com.example.newbiechen.ireader.presenter.contract.DiscCommentContract;
 import com.example.newbiechen.ireader.ui.activity.DiscDetailActivity;
 import com.example.newbiechen.ireader.ui.adapter.DiscCommentAdapter;
-import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.Constant;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
