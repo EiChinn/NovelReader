@@ -124,6 +124,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.View,
         } else {
             mBookId = getIntent().getStringExtra(EXTRA_BOOK_ID);
         }
+//        mBookId = "5afaa58c75c0345b392dca9a";
     }
 
     @Override

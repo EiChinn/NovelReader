@@ -647,8 +647,10 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
                                 // 如果是网络小说并被标记更新的，则从网络下载目录
                                 if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
                                     loadCategory();
+                                    if (throwable != null) {
+                                        LogUtils.e(throwable.toString());
+                                    }
                                 }
-                                LogUtils.e(throwable.toString());
                             }
                     );
             addDisposable(disposable);

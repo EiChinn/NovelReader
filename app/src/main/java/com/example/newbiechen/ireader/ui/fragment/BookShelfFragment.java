@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.RxBus;
+import com.example.newbiechen.ireader.event.AsyncBookEvent;
 import com.example.newbiechen.ireader.event.DeleteResponseEvent;
 import com.example.newbiechen.ireader.event.DeleteTaskEvent;
 import com.example.newbiechen.ireader.event.DownloadMessage;
@@ -81,6 +82,15 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.View, B
     @Override
     protected void initClick() {
         super.initClick();
+        //同步书籍
+        Disposable AsyncBookDisp = RxBus.getInstance()
+                .toObservable(AsyncBookEvent.class)
+                .subscribe(
+                        event -> mPresenter.refreshCollBooks(),
+                        error -> showErrorTip(error.toString())
+                );
+        addDisposable(AsyncBookDisp);
+
         //推荐书籍
         Disposable recommendDisp = RxBus.getInstance()
                 .toObservable(RecommendBookEvent.class)

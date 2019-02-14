@@ -65,7 +65,7 @@ object StringUtils {
 
     @JvmStatic
     fun getString(@StringRes id: Int, vararg formatArgs: Any): String {
-        return App.getInstance().resources.getString(id, formatArgs)
+        return App.getInstance().resources.getString(id, *formatArgs)
     }
 
     /**

@@ -3,6 +3,7 @@ package com.example.newbiechen.ireader
 import android.app.Application
 import android.content.Intent
 import android.text.TextUtils
+import cn.bmob.v3.Bmob
 import com.example.newbiechen.ireader.service.DownloadService
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
@@ -33,9 +34,10 @@ class App : Application() {
                 //			initLeakCanary();
                 //			initBlockCanary();
             }
+            initLeakCanary()
+            Bmob.initialize(this, "f0c4110327813019d8bf217dd6cc7759")
         }
 
-        initLeakCanary()
 
     }
 

@@ -39,19 +39,21 @@ abstract class EasyAdapter<T> : BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var holder: IViewHolder<T>?
+        val holder: IViewHolder<T>?
+        val result: View
         if (convertView == null) {
             holder = onCreateViewHolder(getItemViewType(position))
-            val convertView = holder!!.createItemView(parent!!)
-            convertView.tag = holder
+            result = holder.createItemView(parent!!)
+            result.tag = holder
             //初始化
             holder.initView()
         } else {
+            result = convertView
             holder = convertView.tag as IViewHolder<T>
         }
         //执行绑定
         holder.onBind(getItem(position), position)
-        return convertView!!
+        return result
     }
 
     protected abstract fun onCreateViewHolder(viewType: Int): IViewHolder<T>

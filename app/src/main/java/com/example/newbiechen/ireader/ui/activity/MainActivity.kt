@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,7 +12,18 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import cn.bmob.v3.BmobBatch
+import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.datatype.BatchResult
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
+import cn.bmob.v3.listener.QueryListListener
 import com.example.newbiechen.ireader.R
+import com.example.newbiechen.ireader.RxBus
+import com.example.newbiechen.ireader.event.AsyncBookEvent
+import com.example.newbiechen.ireader.model.bean.BmobDaoUtils
+import com.example.newbiechen.ireader.model.bean.CollBookBmobBean
+import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity
 import com.example.newbiechen.ireader.ui.dialog.SexChooseDialog
 import com.example.newbiechen.ireader.ui.fragment.BookShelfFragment
@@ -107,6 +119,7 @@ class MainActivity : BaseTabActivity() {
             R.id.action_scan_local_book -> {
                 startActivity<FileSystemActivity>()
             }
+            R.id.action_sync_bookshelf -> syncBookShelf()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -135,6 +148,65 @@ class MainActivity : BaseTabActivity() {
         super.onBackPressed()
     }
 
+    /**
+     *
+     */
+    private fun syncBookShelf() {
+        // fetch book data
+        val query = BmobQuery<CollBookBmobBean>()
+        query.findObjects(object : FindListener<CollBookBmobBean>() {
+            override fun done(result: MutableList<CollBookBmobBean>?, e: BmobException?) {
+                if (e != null) {
+                    toast("${e.errorCode}: ${e.message}")
+                    Log.e("tag", "${e.errorCode}: ${e.message}")
+                }
+                val localBooks = BookRepository.getInstance().collBooks.map { BmobDaoUtils.dao2Bmob(it) }
+                val allBooks = if (result != null) localBooks.union(result) else localBooks
+                Log.i("tag", "service's book size = ${result?.size}")
+                Log.i("tag", "local's book size = ${localBooks.size}")
+                Log.i("tag", "all book size = ${allBooks.size}")
+                if (allBooks.isNotEmpty() && (allBooks.size != localBooks.size || !allBooks.containsAll(localBooks))) {
+                    Log.e("tag", "update local")
+                    val localAllBooks = allBooks.map { BmobDaoUtils.bmob2Dao(it) }
+                    BookRepository.getInstance().saveCollBooks(localAllBooks)
+                    RxBus.getInstance().post(AsyncBookEvent())
+                }
+                if (allBooks.isNotEmpty()) {
+                    val insertBooks = allBooks.subtract(result!!)
+                    allBooks.toMutableList().removeAll(result)
+                    Log.e("tag", "update service: insert ${insertBooks.size} books, update ${allBooks.size} books")
+                    val batch = BmobBatch()
+                    batch.insertBatch(insertBooks.toList())
+                    batch.updateBatch(allBooks.toList())
+                    batch.doBatch(object : QueryListListener<BatchResult>() {
+                        override fun done(result: MutableList<BatchResult>?, e: BmobException?) {
+                            if (e == null) {
+                                result?.forEach {
+                                    it.error?.let {e ->
+                                        toast("${e.errorCode}: ${e.message}")
+                                        Log.e("tag", "${e.errorCode}: ${e.message}")
+                                    }
+                                }
+                            } else {
+                                toast("${e.errorCode}: ${e.message}")
+                                Log.e("tag", "${e.errorCode}: ${e.message}")
+                            }
+
+                        }
+                    })
+                }
+
+            }
+        })
+    }
 
 
+
+}
+
+fun main() {
+    val list1 = listOf("one", "two")
+    val list2 = listOf("three", "one")
+    val result = list1.union(list2)
+    print(result)
 }
