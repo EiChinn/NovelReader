@@ -46,7 +46,7 @@ abstract class BaseListAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder
 
     override fun getItemCount() = mList.size
 
-    open protected fun onItemClick(v: View, pos: Int) { }
+    protected open fun onItemClick(v: View, pos: Int) { }
     protected fun onItemLongClick(v: View, pos: Int) { }
 
     /******************************public area***********************************/

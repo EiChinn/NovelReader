@@ -11,7 +11,7 @@ import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
  * Created by newbiechen on 17-5-3.
  */
 
-public class BookSortListAdapter extends WholeAdapter<SortBookBean>{
+public class BookSortListAdapter extends WholeAdapter<SortBookBean> {
     public BookSortListAdapter(Context context, Options options) {
         super(context, options);
     }

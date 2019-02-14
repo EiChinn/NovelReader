@@ -11,7 +11,7 @@ import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
  * Created by newbiechen on 17-4-21.
  */
 
-public class DiscHelpsAdapter extends WholeAdapter<BookHelpsBean>{
+public class DiscHelpsAdapter extends WholeAdapter<BookHelpsBean> {
 
     public DiscHelpsAdapter(Context context, Options options) {
         super(context, options);

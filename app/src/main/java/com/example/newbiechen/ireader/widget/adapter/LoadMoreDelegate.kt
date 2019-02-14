@@ -11,11 +11,11 @@ class LoadMoreDelegate(context: Context, options: WholeAdapter.Options) : WholeA
     init {
         mLoadMoreView.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-    override fun onCreateView(parent: ViewGroup?): View {
+    override fun onCreateView(parent: ViewGroup): View {
         return mLoadMoreView
     }
 
-    override fun onBindView(view: View?) {
+    override fun onBindView(view: View) {
         (view as LoadMoreView).refreshView()
     }
 
