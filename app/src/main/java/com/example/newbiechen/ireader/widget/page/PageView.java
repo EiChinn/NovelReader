@@ -162,7 +162,7 @@ public class PageView extends View {
             //设置方向
             Boolean hasNext = hasNextPage();
 
-            mPageAnim.setDirection(direction);
+            mPageAnim.mDirection = direction;
             if (!hasNext) {
                 return;
             }
@@ -173,7 +173,7 @@ public class PageView extends View {
             mPageAnim.setStartPoint(x, y);
             //设置点击点
             mPageAnim.setTouchPoint(x, y);
-            mPageAnim.setDirection(direction);
+            mPageAnim.mDirection = direction;
             //设置方向方向
             Boolean hashPrev = hasPrevPage();
             if (!hashPrev) {
@@ -289,7 +289,7 @@ public class PageView extends View {
         if (mPageAnim == null) {
             return false;
         }
-        return mPageAnim.isRunning();
+        return mPageAnim.isRunning;
     }
 
     public boolean isPrepare() {
