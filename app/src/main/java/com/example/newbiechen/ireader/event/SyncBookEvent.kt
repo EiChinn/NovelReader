@@ -1,3 +1,3 @@
 package com.example.newbiechen.ireader.event
 
-class AsyncBookEvent
+class SyncBookEvent

@@ -20,7 +20,7 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListListener
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
-import com.example.newbiechen.ireader.event.AsyncBookEvent
+import com.example.newbiechen.ireader.event.SyncBookEvent
 import com.example.newbiechen.ireader.model.bean.BmobDaoUtils
 import com.example.newbiechen.ireader.model.bean.CollBookBmobBean
 import com.example.newbiechen.ireader.model.local.BookRepository
@@ -169,15 +169,23 @@ class MainActivity : BaseTabActivity() {
                     Log.e("tag", "update local")
                     val localAllBooks = allBooks.map { BmobDaoUtils.bmob2Dao(it) }
                     BookRepository.getInstance().saveCollBooks(localAllBooks)
-                    RxBus.getInstance().post(AsyncBookEvent())
+                    RxBus.getInstance().post(SyncBookEvent())
                 }
                 if (allBooks.isNotEmpty()) {
                     val insertBooks = allBooks.subtract(result!!)
-                    allBooks.toMutableList().removeAll(result)
-                    Log.e("tag", "update service: insert ${insertBooks.size} books, update ${allBooks.size} books")
+                    val updateBooks = allBooks.filter {
+                        val relateBook = result.firstOrNull { book -> it.id == book.id }
+                        if (relateBook != null) {
+                            it.objectId = relateBook.objectId
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    Log.e("tag", "update service: insert ${insertBooks.size} books, update ${updateBooks.size} books")
                     val batch = BmobBatch()
                     batch.insertBatch(insertBooks.toList())
-                    batch.updateBatch(allBooks.toList())
+                    batch.updateBatch(updateBooks)
                     batch.doBatch(object : QueryListListener<BatchResult>() {
                         override fun done(result: MutableList<BatchResult>?, e: BmobException?) {
                             if (e == null) {
