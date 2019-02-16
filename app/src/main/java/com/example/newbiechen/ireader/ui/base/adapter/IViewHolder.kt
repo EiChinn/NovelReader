@@ -8,7 +8,7 @@ interface IViewHolder<T> {
 
     fun initView()
 
-    fun onBind(data: T, pos: Int)
+    fun onBind(value: T, pos: Int)
 
     fun onClick()
 }
