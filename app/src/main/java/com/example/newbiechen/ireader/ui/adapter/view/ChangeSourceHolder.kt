@@ -10,7 +10,7 @@ import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl
 
 import java.text.SimpleDateFormat
 
-class ChangeSourceHolder(private val currentSource: String) : ViewHolderImpl<BookSourcesBean>() {
+class ChangeSourceHolder(private val currentSource: String?) : ViewHolderImpl<BookSourcesBean>() {
 
     private var mIvPortrait: ImageView? = null
     private var mTvSource: TextView? = null

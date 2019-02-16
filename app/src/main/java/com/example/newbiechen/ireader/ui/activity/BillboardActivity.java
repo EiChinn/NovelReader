@@ -50,8 +50,8 @@ public class BillboardActivity extends BaseMVPActivity<BillboardContract.View, B
     }
 
     private void setUpAdapter(){
-        mBoyAdapter = new BillboardAdapter(this);
-        mGirlAdapter = new BillboardAdapter(this);
+        mBoyAdapter = new BillboardAdapter();
+        mGirlAdapter = new BillboardAdapter();
         mElvBoy.setAdapter(mBoyAdapter);
         mElvGirl.setAdapter(mGirlAdapter);
     }
