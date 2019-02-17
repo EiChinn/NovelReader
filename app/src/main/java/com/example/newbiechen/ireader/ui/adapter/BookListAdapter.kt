@@ -13,7 +13,7 @@ import com.example.newbiechen.ireader.widget.adapter.WholeAdapter
 
 class BookListAdapter : WholeAdapter<BookListBean> {
 
-    constructor(context: Context, options: WholeAdapter.Options) : super(context, options)
+    constructor(context: Context, options: WholeAdapter.Options?) : super(context, options)
 
     override fun createViewHolder(viewType: Int): IViewHolder<BookListBean> {
         return BookListHolder()

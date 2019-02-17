@@ -276,7 +276,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.View,
             return;
         }
         //推荐书单列表
-        mBookListAdapter = new BookListAdapter(null, null);
+        mBookListAdapter = new BookListAdapter(this, null);
         mRvRecommendBookList.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
