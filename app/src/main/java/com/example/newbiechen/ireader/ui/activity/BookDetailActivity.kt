@@ -129,8 +129,8 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
             //点击存储
             if (isCollected) {
                 //放弃点击
-                BookRepository.getInstance()
-                        .deleteCollBookInRx(mCollBookBean)
+                BookRepository.instance
+                        .deleteCollBookInRx(mCollBookBean!!)
 
                 mTvChase!!.text = resources.getString(R.string.nb_book_detail_chase_update)
 
@@ -201,7 +201,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
         mTvCommunity!!.text = resources.getString(R.string.nb_book_detail_community, bean.title)
         //帖子数
         mTvPostsCount!!.text = resources.getString(R.string.nb_book_detail_posts_count, bean.postCount)
-        mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
+        mCollBookBean = BookRepository.instance.getCollBook(bean._id)
 
         //判断是否收藏
         if (mCollBookBean != null) {

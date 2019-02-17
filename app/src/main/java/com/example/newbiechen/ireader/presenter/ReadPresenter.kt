@@ -106,7 +106,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
 
                             override fun onNext(chapterInfoBean: ChapterInfoBean) {
                                 //存储数据
-                                BookRepository.getInstance().saveChapterInfo(
+                                BookRepository.instance.saveChapterInfo(
                                         bookId, title, chapterInfoBean.body
                                 )
                                 mView.finishChapter()

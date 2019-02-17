@@ -102,7 +102,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                         val progressDialog = ProgressDialog(context)
                         progressDialog.setMessage("正在删除中")
                         progressDialog.show()
-                        BookRepository.getInstance().deleteCollBookInRx(collBook)
+                        BookRepository.instance.deleteCollBookInRx(collBook)
                                 .compose<com.example.newbiechen.ireader.model.local.Void>(SingleTransformer<com.example.newbiechen.ireader.model.local.Void, Void> { RxUtils.toSimpleSingle(it) })
                                 .subscribe { Void ->
                                     mCollBookAdapter!!.removeItem(collBook)
@@ -234,15 +234,15 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                             //删除
                             val file = File(collBook.cover)
                             if (file.exists()) file.delete()
-                            BookRepository.getInstance().deleteCollBook(collBook)
-                            BookRepository.getInstance().deleteBookRecord(collBook._id)
+                            BookRepository.instance.deleteCollBook(collBook)
+                            BookRepository.instance.deleteBookRecord(collBook._id)
 
                             //从Adapter中删除
                             mCollBookAdapter!!.removeItem(collBook)
                             progressDialog.dismiss()
                         } else {
-                            BookRepository.getInstance().deleteCollBook(collBook)
-                            BookRepository.getInstance().deleteBookRecord(collBook._id)
+                            BookRepository.instance.deleteCollBook(collBook)
+                            BookRepository.instance.deleteBookRecord(collBook._id)
                             //从Adapter中删除
                             mCollBookAdapter!!.removeItem(collBook)
                         }
@@ -291,7 +291,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     override fun finishUpdate() {
         //重新从数据库中获取数据
         mCollBookAdapter!!.refreshItems(BookRepository
-                .getInstance().collBooks)
+                .instance.collBooks)
     }
 
     override fun showErrorTip(error: String) {

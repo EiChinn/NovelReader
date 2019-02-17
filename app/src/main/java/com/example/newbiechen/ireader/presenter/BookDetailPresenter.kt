@@ -47,7 +47,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                             //设置目录
                             collBookBean.bookChapters = beans
                             //存储收藏
-                            BookRepository.getInstance()
+                            BookRepository.instance
                                     .saveCollBookWithAsync(collBookBean)
 
                             mView.succeedToBookShelf()

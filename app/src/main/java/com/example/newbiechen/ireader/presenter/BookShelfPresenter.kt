@@ -25,7 +25,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
 
     override fun refreshCollBooks() {
         val collBooks = BookRepository
-                .getInstance().collBooks
+                .instance.collBooks
         mView.finishRefresh(collBooks)
     }
 
@@ -47,7 +47,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
                     //更新目录
                     updateCategory(collBooks)
                     //异步存储到数据库中
-                    BookRepository.getInstance()
+                    BookRepository.instance
                             .saveCollBooksWithAsync(collBooks)
                 }
                 .compose<List<CollBookBean>>(SingleTransformer<List<CollBookBean>, List<CollBookBean>> { RxUtils.toSimpleSingle(it) })
@@ -104,7 +104,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
                 newCollBook.currentSourceName = oldCollBook.currentSourceName
                 newCollBooks.add(newCollBook)
                 //存储到数据库中
-                BookRepository.getInstance()
+                BookRepository.instance
                         .saveCollBooks(newCollBooks)
             }
             newCollBooks

@@ -108,7 +108,7 @@ class FileSystemActivity : BaseTabActivity() {
             val files = mCurFragment!!.checkedFiles
             //转换成CollBook,并存储
             val collBooks = convertCollBook(files!!)
-            BookRepository.getInstance()
+            BookRepository.instance
                     .saveCollBooks(collBooks)
             //设置HashMap为false
             mCurFragment!!.setCheckedAll(false)

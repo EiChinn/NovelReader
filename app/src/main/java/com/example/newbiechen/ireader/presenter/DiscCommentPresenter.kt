@@ -23,7 +23,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
 
     override fun firstLoading(block: CommunityType, sort: BookSort, start: Int, limited: Int, distillate: BookDistillate) {
         //获取数据库中的数据
-        val localObserver = LocalRepository.getInstance()
+        val localObserver = LocalRepository.instance
                 .getBookComments(block.netName, sort.dbName,
                         start, limited, distillate.dbName)
         val remoteObserver = RemoteRepository.instance
@@ -75,7 +75,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
 
     override fun loadingComment(block: CommunityType, sort: BookSort, start: Int, limited: Int, distillate: BookDistillate) {
         if (isLocalLoad) {
-            val single = LocalRepository.getInstance()
+            val single = LocalRepository.instance
                     .getBookComments(block.netName, sort.dbName,
                             start, limited, distillate.dbName)
             loadComment(single)
@@ -103,7 +103,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
     }
 
     override fun saveComment(beans: List<BookCommentBean>) {
-        LocalRepository.getInstance()
+        LocalRepository.instance
                 .saveBookComments(beans)
     }
 }

@@ -48,8 +48,8 @@ class DownloadService : BaseService() {
         mHandler = Handler(mainLooper)
         //从数据库中获取所有的任务
         mDownloadTaskList = LocalRepository
-                .getInstance()
-                .downloadTaskList
+                .instance
+                .getDownloadTaskList()
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -242,7 +242,7 @@ class DownloadService : BaseService() {
             }
 
             //存储状态
-            LocalRepository.getInstance().saveDownloadTask(taskEvent)
+            LocalRepository.instance.saveDownloadTask(taskEvent)
 
             //轮询下一个事件，用RxBus用来保证事件是在主线程
 
@@ -269,7 +269,7 @@ class DownloadService : BaseService() {
                             //TODO:这里文件的名字用的是BookChapter的title,而不是chapter的title。
                             //原因是Chapter的title可能重复，但是BookChapter的title不会重复
                             //BookChapter的title = 卷名 + 章节名 chapter 的 title 就是章节名。。
-                            BookRepository.getInstance()
+                            BookRepository.instance
                                     .saveChapterInfo(folderName, bean.title, body)
                         },
                         { e ->

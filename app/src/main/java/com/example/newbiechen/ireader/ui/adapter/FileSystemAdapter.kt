@@ -119,7 +119,7 @@ class FileSystemAdapter : BaseListAdapter<File>() {
 
     private fun isFileLoaded(id: String): Boolean {
         //如果是已加载的文件，则点击事件无效。
-        return BookRepository.getInstance().getCollBook(id) != null
+        return BookRepository.instance.getCollBook(id) != null
     }
 
     fun getItemIsChecked(pos: Int): Boolean {

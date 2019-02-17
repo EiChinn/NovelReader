@@ -290,7 +290,7 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
             collBook.lastChapter = mChapterList!![chapterPos].title
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.getInstance()
+            BookRepository.instance
                     .saveCollBook(collBook)
         }
     }
@@ -365,8 +365,8 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
                         collBook.bookChapters = bookChapterBeanList
                         collBook.updated = lastModified
 
-                        BookRepository.getInstance().saveBookChaptersWithAsync(bookChapterBeanList)
-                        BookRepository.getInstance().saveCollBook(collBook)
+                        BookRepository.instance.saveBookChaptersWithAsync(bookChapterBeanList)
+                        BookRepository.instance.saveCollBook(collBook)
 
                         // 加载并显示当前章节
                         openChapter()

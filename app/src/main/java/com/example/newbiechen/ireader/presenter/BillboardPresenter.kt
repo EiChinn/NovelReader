@@ -19,8 +19,7 @@ class BillboardPresenter : RxPresenter<BillboardContract.View>(), BillboardContr
 
     override fun loadBillboardList() {
         //这个最好是设定一个默认时间采用Remote加载，如果Remote加载失败则采用数据中的数据。我这里先写死吧
-        val bean = LocalRepository.getInstance()
-                .billboardPackage
+        val bean = LocalRepository.instance!!.getBillboardPackage()
         if (bean == null) {
             RemoteRepository.instance
                     .billboardPackage
@@ -29,8 +28,7 @@ class BillboardPresenter : RxPresenter<BillboardContract.View>(), BillboardContr
                     .doOnSuccess { value ->
                         Schedulers.io().createWorker()
                                 .schedule {
-                                    LocalRepository.getInstance()
-                                            .saveBillboardPackage(value)
+                                    LocalRepository.instance!!.saveBillboardPackage(value)
                                 }
                     }
                     .subscribe(object : SingleObserver<BillboardPackage> {

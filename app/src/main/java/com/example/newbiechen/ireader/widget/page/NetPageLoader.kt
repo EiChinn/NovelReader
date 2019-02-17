@@ -203,7 +203,7 @@ class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pag
             collBook.setIsUpdate(false)
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.getInstance()
+            BookRepository.instance
                     .saveCollBook(collBook)
         }
     }

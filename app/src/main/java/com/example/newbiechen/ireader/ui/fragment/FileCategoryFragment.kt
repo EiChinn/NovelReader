@@ -71,7 +71,7 @@ class FileCategoryFragment : BaseFileFragment() {
 
                     //如果是已加载的文件，则点击事件无效。
                     val id = mAdapter!!.getItem(pos).absolutePath
-                    if (BookRepository.getInstance().getCollBook(id) == null) {
+                    if (BookRepository.instance.getCollBook(id) == null) {
                         //点击选中
                         mAdapter!!.setCheckedItem(pos)
                         //反馈

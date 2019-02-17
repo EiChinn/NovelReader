@@ -53,7 +53,7 @@ class FileHolder(private val mSelectedMap: HashMap<File, Boolean>) : ViewHolderI
         //选择
         val id = MD5Utils.strToMd5By16(file.absolutePath)
 
-        if (BookRepository.getInstance().getCollBook(id) != null) {
+        if (BookRepository.instance.getCollBook(id) != null) {
             mIvIcon!!.setImageResource(R.drawable.ic_file_loaded)
             mIvIcon!!.visibility = View.VISIBLE
             mCbSelect!!.visibility = View.GONE

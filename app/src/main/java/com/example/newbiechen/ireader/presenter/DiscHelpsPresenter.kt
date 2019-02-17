@@ -21,7 +21,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
 
     override fun firstLoading(sort: BookSort, start: Int, limited: Int, distillate: BookDistillate) {
         //获取数据库中的数据
-        val localObserver = LocalRepository.getInstance()
+        val localObserver = LocalRepository.instance
                 .getBookHelps(sort.dbName, start, limited, distillate.dbName)
         val remoteObserver = RemoteRepository.instance
                 .getBookHelps(sort.getNetName(), start, limited, distillate.getNetName())
@@ -66,7 +66,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
 
     override fun loadingBookHelps(sort: BookSort, start: Int, limited: Int, distillate: BookDistillate) {
         if (isLocalLoad) {
-            val single = LocalRepository.getInstance()
+            val single = LocalRepository.instance
                     .getBookHelps(sort.dbName, start, limited, distillate.dbName)
             loadBookHelps(single)
         } else {
@@ -77,7 +77,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
     }
 
     override fun saveBookHelps(beans: List<BookHelpsBean>) {
-        LocalRepository.getInstance()
+        LocalRepository.instance
                 .saveBookHelps(beans)
     }
 

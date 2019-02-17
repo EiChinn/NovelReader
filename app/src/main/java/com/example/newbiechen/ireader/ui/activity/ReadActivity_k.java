@@ -635,7 +635,7 @@ public class ReadActivity_k extends BaseMVPActivity<ReadContract.View, ReadContr
         super.processLogic();
         // 如果是已经收藏的，那么就从数据库中获取目录
         if (isCollected) {
-            Disposable disposable = BookRepository.getInstance()
+            Disposable disposable = BookRepository.Companion.getInstance()
                     .getBookChaptersInRx(mBookId)
                     .compose(RxUtils::toSimpleSingle)
                     .subscribe(
@@ -696,10 +696,10 @@ public class ReadActivity_k extends BaseMVPActivity<ReadContract.View, ReadContr
         // 如果是目录更新的情况，那么就需要存储更新数据
         if (isChangeSource) {
             isChangeSource = false;
-            BookRepository.getInstance()
+            BookRepository.Companion.getInstance()
                     .resetBookChaptersWithAsync(mBookId, bookChapters);
         } else if(isCollected) {
-            BookRepository.getInstance()
+            BookRepository.Companion.getInstance()
                     .resetBookChaptersWithAsync(mBookId, bookChapters);
         }
     }
@@ -759,7 +759,7 @@ public class ReadActivity_k extends BaseMVPActivity<ReadContract.View, ReadContr
                         mCollBook.setLastRead(StringUtils.
                                 dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
 
-                        BookRepository.getInstance()
+                        BookRepository.Companion.getInstance()
                                 .saveCollBookWithAsync(mCollBook);
 
                         exit();
@@ -867,7 +867,7 @@ public class ReadActivity_k extends BaseMVPActivity<ReadContract.View, ReadContr
                 isChangeSource = true;
                 mCollBook.setCurrentSourceId(currentSourceBookId);
                 mCollBook.setCurrentSourceName(currentSourceName);
-                BookRepository.getInstance().changeBookSource(mCollBook);
+                BookRepository.Companion.getInstance().changeBookSource(mCollBook);
                 // 换源之后要清除BookRecord表，以防有换源之后的总章节数小于当前阅读章节数导致IndexOutOfBoundsException
 //                BookRepository.getInstance().deleteBookRecord(mBookId); // 退出阅读时也会更新BookRecord表
             }

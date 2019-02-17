@@ -160,7 +160,7 @@ class MainActivity : BaseTabActivity() {
                     toast("${e.errorCode}: ${e.message}")
                     Log.e("tag", "${e.errorCode}: ${e.message}")
                 }
-                val localBooks = BookRepository.getInstance().collBooks.map { BmobDaoUtils.dao2Bmob(it) }
+                val localBooks = BookRepository.instance.collBooks.map { BmobDaoUtils.dao2Bmob(it) }
                 val allBooks = if (result != null) localBooks.union(result) else localBooks
                 Log.i("tag", "service's book size = ${result?.size}")
                 Log.i("tag", "local's book size = ${localBooks.size}")
@@ -168,7 +168,7 @@ class MainActivity : BaseTabActivity() {
                 if (allBooks.isNotEmpty() && (allBooks.size != localBooks.size || !allBooks.containsAll(localBooks))) {
                     Log.e("tag", "update local")
                     val localAllBooks = allBooks.map { BmobDaoUtils.bmob2Dao(it) }
-                    BookRepository.getInstance().saveCollBooks(localAllBooks)
+                    BookRepository.instance.saveCollBooks(localAllBooks)
                     RxBus.getInstance().post(SyncBookEvent())
                 }
                 if (allBooks.isNotEmpty()) {

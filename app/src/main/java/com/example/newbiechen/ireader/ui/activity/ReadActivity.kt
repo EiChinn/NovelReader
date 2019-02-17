@@ -540,8 +540,8 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         super.processLogic()
         // 如果是已经收藏的，那么就从数据库中获取目录
         if (isCollected) {
-            val disposable = BookRepository.getInstance()
-                    .getBookChaptersInRx(mBookId)
+            val disposable = BookRepository.instance
+                    .getBookChaptersInRx(mBookId!!)
                     .compose<List<BookChapterBean>>(SingleTransformer<List<BookChapterBean>, List<BookChapterBean>> { RxUtils.toSimpleSingle(it) })
                     .subscribe { bookChapterBeen, throwable ->
                         // 设置 CollBook
@@ -594,11 +594,11 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         // 如果是目录更新的情况，那么就需要存储更新数据
         if (isChangeSource) {
             isChangeSource = false
-            BookRepository.getInstance()
-                    .resetBookChaptersWithAsync(mBookId, bookChapters)
+            BookRepository.instance
+                    .resetBookChaptersWithAsync(mBookId!!, bookChapters)
         } else if (isCollected) {
-            BookRepository.getInstance()
-                    .resetBookChaptersWithAsync(mBookId, bookChapters)
+            BookRepository.instance
+                    .resetBookChaptersWithAsync(mBookId!!, bookChapters)
         }
     }
 
@@ -653,8 +653,8 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                         //设置阅读时间
                         mCollBook!!.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
 
-                        BookRepository.getInstance()
-                                .saveCollBookWithAsync(mCollBook)
+                        BookRepository.instance
+                                .saveCollBookWithAsync(mCollBook!!)
 
                         exit()
                     }
@@ -748,7 +748,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                 isChangeSource = true
                 mCollBook!!.currentSourceId = currentSourceBookId
                 mCollBook!!.currentSourceName = currentSourceName
-                BookRepository.getInstance().changeBookSource(mCollBook)
+                BookRepository.instance.changeBookSource(mCollBook!!)
                 // 换源之后要清除BookRecord表，以防有换源之后的总章节数小于当前阅读章节数导致IndexOutOfBoundsException
                 //                BookRepository.getInstance().deleteBookRecord(mBookId); // 退出阅读时也会更新BookRecord表
             }

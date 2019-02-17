@@ -23,7 +23,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
     override fun firstLoading(sort: BookSort, bookType: BookType,
                               start: Int, limited: Int, distillate: BookDistillate) {
         //获取数据库中的数据
-        val localObserver = LocalRepository.getInstance()
+        val localObserver = LocalRepository.instance
                 .getBookReviews(sort.dbName, bookType.getNetName(),
                         start, limited, distillate.dbName)
         val remoteObserver = RemoteRepository.instance
@@ -73,7 +73,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
     override fun loadingBookReview(sort: BookSort, bookType: BookType,
                                    start: Int, limited: Int, distillate: BookDistillate) {
         if (isLocalLoad) {
-            val single = LocalRepository.getInstance()
+            val single = LocalRepository.instance
                     .getBookReviews(sort.dbName, bookType.getNetName(),
                             start, limited, distillate.dbName)
             loadBookReview(single)
@@ -87,7 +87,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
     }
 
     override fun saveBookReview(beans: List<BookReviewBean>) {
-        LocalRepository.getInstance()
+        LocalRepository.instance
                 .saveBookReviews(beans)
     }
 

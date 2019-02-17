@@ -559,15 +559,15 @@ abstract class PageLoader
         }
 
         //存储到数据库
-        BookRepository.getInstance()
-                .saveBookRecord(mBookRecord)
+        BookRepository.instance
+                .saveBookRecord(mBookRecord!!)
     }
 
     /**
      * 初始化书籍
      */
     private fun prepareBook() {
-        mBookRecord = BookRepository.getInstance()
+        mBookRecord = BookRepository.instance
                 .getBookRecord(collBook._id)
 
         if (mBookRecord == null) {
@@ -1337,7 +1337,7 @@ abstract class PageLoader
             mBookRecord = BookRecordBean()
             chapterPos = 0
             mLastChapterPos = chapterPos
-            BookRepository.getInstance().deleteBookRecord(collBook._id)
+            BookRepository.instance.deleteBookRecord(collBook._id)
             ToastUtils.show("上次阅读章节大于小说总章节，检查是否换源的时候出了问题")
         }
     }
