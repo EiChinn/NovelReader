@@ -26,7 +26,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
         val localObserver = LocalRepository.getInstance()
                 .getBookReviews(sort.dbName, bookType.getNetName(),
                         start, limited, distillate.dbName)
-        val remoteObserver = RemoteRepository.getInstance()
+        val remoteObserver = RemoteRepository.instance
                 .getBookReviews(sort.getNetName(), bookType.getNetName(),
                         start, limited, distillate.getNetName())
 
@@ -50,7 +50,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
 
     override fun refreshBookReview(sort: BookSort, bookType: BookType,
                                    start: Int, limited: Int, distillate: BookDistillate) {
-        val refreshDispo = RemoteRepository.getInstance()
+        val refreshDispo = RemoteRepository.instance
                 .getBookReviews(sort.getNetName(), bookType.getNetName(),
                         start, limited, distillate.getNetName())
                 .subscribeOn(Schedulers.io())
@@ -79,7 +79,7 @@ class DiscReviewPresenter : RxPresenter<DiscReviewContract.View>(), DiscReviewCo
             loadBookReview(single)
         } else {
             //单纯的加载数据
-            val single = RemoteRepository.getInstance()
+            val single = RemoteRepository.instance
                     .getBookReviews(sort.getNetName(), bookType.getNetName(),
                             start, limited, distillate.getNetName())
             loadBookReview(single)

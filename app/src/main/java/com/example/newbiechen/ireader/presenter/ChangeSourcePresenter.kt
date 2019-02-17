@@ -9,7 +9,7 @@ import com.example.newbiechen.ireader.utils.RxUtils
 
 class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSourceContract.Presenter {
     override fun loadSources(bookId: String) {
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getBookSources(bookId)
                 .compose<List<BookSourcesBean>> { RxUtils.toSimpleSingle(it) }
                 .subscribe(

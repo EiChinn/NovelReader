@@ -15,7 +15,7 @@ import io.reactivex.SingleTransformer
 class SearchPresenter : RxPresenter<SearchContract.View>(), SearchContract.Presenter {
 
     override fun searchHotWord() {
-        val disp = RemoteRepository.getInstance()
+        val disp = RemoteRepository.instance
                 .hotWords
                 .compose<List<String>>(SingleTransformer<List<String>, List<String>> { RxUtils.toSimpleSingle(it) })
                 .subscribe(
@@ -26,7 +26,7 @@ class SearchPresenter : RxPresenter<SearchContract.View>(), SearchContract.Prese
     }
 
     override fun searchKeyWord(query: String) {
-        val disp = RemoteRepository.getInstance()
+        val disp = RemoteRepository.instance
                 .getKeyWords(query)
                 .compose<List<String>>(SingleTransformer<List<String>, List<String>> { RxUtils.toSimpleSingle(it) })
                 .subscribe(
@@ -37,7 +37,7 @@ class SearchPresenter : RxPresenter<SearchContract.View>(), SearchContract.Prese
     }
 
     override fun searchBook(query: String) {
-        val disp = RemoteRepository.getInstance()
+        val disp = RemoteRepository.instance
                 .getSearchBooks(query)
                 .compose<List<SearchBooksBean>>(SingleTransformer<List<SearchBooksBean>, List<SearchBooksBean>> { RxUtils.toSimpleSingle(it) })
                 .subscribe(

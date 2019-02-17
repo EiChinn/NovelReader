@@ -22,7 +22,7 @@ class BillboardPresenter : RxPresenter<BillboardContract.View>(), BillboardContr
         val bean = LocalRepository.getInstance()
                 .billboardPackage
         if (bean == null) {
-            RemoteRepository.getInstance()
+            RemoteRepository.instance
                     .billboardPackage
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

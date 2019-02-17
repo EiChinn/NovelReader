@@ -72,7 +72,7 @@ class DiscHelpsFragment : BaseMVPFragment<DiscHelpsContract.View, DiscHelpsContr
         mDiscHelpsAdapter!!.setOnItemClickListener(object : BaseListAdapter.OnItemClickListener {
             override fun onItemClick(view: View, pos: Int) {
                 val bean = mDiscHelpsAdapter!!.getItem(pos)
-                DiscDetailActivity.startActivity(context, CommunityType.HELP, bean._id)
+                DiscDetailActivity.startActivity(context!!, CommunityType.HELP, bean._id)
             }
 
         })

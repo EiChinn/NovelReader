@@ -30,7 +30,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
     }
 
     override fun addToBookShelf(collBookBean: CollBookBean) {
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getBookMixChapters(collBookBean._id)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe { d -> mView.waitToBookShelf() }
@@ -62,8 +62,8 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     private fun refreshBook() {
         RemoteRepository
-                .getInstance()
-                .getBookDetail(bookId)
+                .instance
+                .getBookDetail(bookId!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<BookDetailBean> {
@@ -84,8 +84,8 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     private fun refreshComment() {
         val disposable = RemoteRepository
-                .getInstance()
-                .getHotComments(bookId)
+                .instance
+                .getHotComments(bookId!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -97,8 +97,8 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     private fun refreshRecommend() {
         val disposable = RemoteRepository
-                .getInstance()
-                .getRecommendBookList(bookId, 3)
+                .instance
+                .getRecommendBookList(bookId!!, 3)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

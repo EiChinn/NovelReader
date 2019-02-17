@@ -69,11 +69,11 @@ class BookListPresenter : RxPresenter<BookListContract.View>(), BookListContract
         }
 
         bookListSingle = when (type) {
-            BookListType.HOT -> RemoteRepository.getInstance()
+            BookListType.HOT -> RemoteRepository.instance
                     .getBookLists(type.netName, "collectorCount", start, limited, tag, gender)
-            BookListType.NEWEST -> RemoteRepository.getInstance()
+            BookListType.NEWEST -> RemoteRepository.instance
                     .getBookLists("all", type.netName, start, limited, tag, gender)
-            BookListType.COLLECT -> RemoteRepository.getInstance()
+            BookListType.COLLECT -> RemoteRepository.instance
                     .getBookLists("all", type.netName, start, limited, tag, gender)
         }
         return bookListSingle

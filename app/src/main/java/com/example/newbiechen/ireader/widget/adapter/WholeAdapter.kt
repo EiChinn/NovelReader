@@ -93,6 +93,10 @@ abstract class  WholeAdapter<T>() : BaseListAdapter<T>() {
         checkLoadMoreExist()
         mLoadDelegate?.setOnLoadMoreListener(listener)
     }
+    fun setOnLoadMoreListener(listener: () -> Unit) {
+        checkLoadMoreExist()
+        mLoadDelegate?.setOnLoadMoreListener(listener)
+    }
 
     private fun checkLoadMoreExist() {
         if (mLoadDelegate == null)

@@ -58,7 +58,7 @@ class CommunityFragment : BaseFragment(), BaseListAdapter.OnItemClickListener {
     override fun onItemClick(view: View, pos: Int) {
         //根据类型，启动相应的Discussion区
         val type = CommunityType.values()[pos]
-        BookDiscussionActivity.startActivity(context, type)
+        BookDiscussionActivity.startActivity(context!!, type)
     }
 
     override fun onDestroy() {

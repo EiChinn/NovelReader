@@ -20,7 +20,7 @@ class BookSortListPresenter : RxPresenter<BookSortListContract.View>(), BookSort
             minor = ""
         }
 
-        val refreshDispo = RemoteRepository.getInstance()
+        val refreshDispo = RemoteRepository.instance
                 .getSortBooks(gender, type.netName, major, minor, start, limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,7 +39,7 @@ class BookSortListPresenter : RxPresenter<BookSortListContract.View>(), BookSort
     }
 
     override fun loadSortBook(gender: String, type: BookSortListType, major: String, minor: String, start: Int, limit: Int) {
-        val loadDispo = RemoteRepository.getInstance()
+        val loadDispo = RemoteRepository.instance
                 .getSortBooks(gender, type.netName, major, minor, start, limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

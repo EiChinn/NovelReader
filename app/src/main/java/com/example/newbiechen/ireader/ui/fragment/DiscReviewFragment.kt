@@ -84,7 +84,7 @@ class DiscReviewFragment : BaseMVPFragment<DiscReviewContract.View, DiscReviewCo
             override fun onItemClick(view: View, pos: Int) {
                 val bean = mDiscReviewAdapter!!.getItem(pos)
                 val detailId = bean._id
-                DiscDetailActivity.startActivity(context, CommunityType.REVIEW, detailId)
+                DiscDetailActivity.startActivity(context!!, CommunityType.REVIEW, detailId)
             }
 
         })

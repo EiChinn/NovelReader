@@ -86,7 +86,7 @@ class DiscCommentFragment : BaseMVPFragment<DiscCommentContract.View, DiscCommen
             override fun onItemClick(view: View, pos: Int) {
                 val bean = mDiscCommentAdapter!!.getItem(pos)
                 val detailId = bean._id
-                DiscDetailActivity.startActivity(context, mBlock, detailId)
+                DiscDetailActivity.startActivity(context!!, mBlock, detailId)
             }
         })
         //选择刷新

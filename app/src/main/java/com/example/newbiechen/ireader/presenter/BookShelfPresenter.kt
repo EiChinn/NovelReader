@@ -41,7 +41,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
 
 
     override fun loadRecommendBooks(gender: String) {
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getRecommendBooks(gender)
                 .doOnSuccess { collBooks ->
                     //更新目录
@@ -82,7 +82,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
             if (collBook.isLocal()) {
                 it.remove()
             } else {
-                observables.add(RemoteRepository.getInstance()
+                observables.add(RemoteRepository.instance
                         .getBookDetail(collBook._id))
             }
         }
@@ -138,11 +138,11 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
             val bookMixId = bean._id
             if (TextUtils.isEmpty(bookSourceId)) {
                 observables.add(
-                        RemoteRepository.getInstance().getBookSourceChapters(bookSourceId)
+                        RemoteRepository.instance.getBookSourceChapters(bookSourceId)
                 )
             } else {
                 observables.add(
-                        RemoteRepository.getInstance().getBookMixChapters(bookMixId)
+                        RemoteRepository.instance.getBookMixChapters(bookMixId)
                 )
             }
         }

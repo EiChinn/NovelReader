@@ -261,7 +261,7 @@ class DownloadService : BaseService() {
         val result = intArrayOf(LOAD_NORMAL)
 
         //问题:(这里有个问题，就是body其实比较大，如何获取数据流而不是对象，)是不是直接使用OkHttpClient交互会更好一点
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getChapterInfo(bean.link)
                 //表示在当前环境下执行
                 .subscribe(

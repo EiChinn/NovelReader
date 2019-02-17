@@ -8,6 +8,7 @@ import java.util.*
 abstract class BaseListAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mList = mutableListOf<T>()
     private var mClickListener: OnItemClickListener? = null
+    private lateinit var onItemClicked: (view: View, pos: Int) -> Unit
     private var mLongClickListener: OnItemLongClickListener? = null
 
     /************************abstract area************************/
@@ -28,6 +29,10 @@ abstract class BaseListAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder
         //设置点击事件
         holder.itemView.setOnClickListener {
             mClickListener?.onItemClick(it, position)
+
+            if (this::onItemClicked.isInitialized) {
+                onItemClicked(it, position)
+            }
 
             //adapter监听点击事件
             iHolder.onClick()
@@ -52,6 +57,9 @@ abstract class BaseListAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder
     /******************************public area***********************************/
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         mClickListener = listener
+    }
+    fun setOnItemClickListener(listener: (view: View, pos: Int)-> Unit) {
+        onItemClicked = listener
     }
 
     fun setOnItemLongClickListener(listener: OnItemLongClickListener?) {

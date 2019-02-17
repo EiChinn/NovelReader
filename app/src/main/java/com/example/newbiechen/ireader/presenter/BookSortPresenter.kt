@@ -18,9 +18,9 @@ import io.reactivex.schedulers.Schedulers
 class BookSortPresenter : RxPresenter<BookSortContract.View>(), BookSortContract.Presenter {
     override fun refreshSortBean() {
         //这个最好是设定一个默认时间采用Remote加载，如果Remote加载失败则采用数据中的数据。我这里先写死吧
-        val sortSingle = RemoteRepository.getInstance()
+        val sortSingle = RemoteRepository.instance
                 .bookSortPackage
-        val subSortSingle = RemoteRepository.getInstance()
+        val subSortSingle = RemoteRepository.instance
                 .bookSubSortPackage
 
         val zipSingle = Single.zip(sortSingle, subSortSingle,

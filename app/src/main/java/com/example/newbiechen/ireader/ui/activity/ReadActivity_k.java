@@ -68,7 +68,7 @@ import static androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE;
  * Created by newbiechen on 17-5-16.
  */
 
-public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContract.Presenter>
+public class ReadActivity_k extends BaseMVPActivity<ReadContract.View, ReadContract.Presenter>
         implements ReadContract.View {
     private static final String TAG = "ReadActivity";
     public static final int REQUEST_MORE_SETTING = 1;
@@ -183,12 +183,12 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
             // 如果系统亮度改变，则修改当前 Activity 亮度
             if (BRIGHTNESS_MODE_URI.equals(uri)) {
                 Log.d(TAG, "亮度模式改变");
-            } else if (BRIGHTNESS_URI.equals(uri) && !BrightnessUtils.isAutoBrightness(ReadActivity.this)) {
+            } else if (BRIGHTNESS_URI.equals(uri) && !BrightnessUtils.isAutoBrightness(ReadActivity_k.this)) {
                 Log.d(TAG, "亮度模式为手动模式 值改变");
-                BrightnessUtils.setBrightness(ReadActivity.this, BrightnessUtils.getScreenBrightness(ReadActivity.this));
-            } else if (BRIGHTNESS_ADJ_URI.equals(uri) && BrightnessUtils.isAutoBrightness(ReadActivity.this)) {
+                BrightnessUtils.setBrightness(ReadActivity_k.this, BrightnessUtils.getScreenBrightness(ReadActivity_k.this));
+            } else if (BRIGHTNESS_ADJ_URI.equals(uri) && BrightnessUtils.isAutoBrightness(ReadActivity_k.this)) {
                 Log.d(TAG, "亮度模式为自动模式 值改变");
-                BrightnessUtils.setDefaultBrightness(ReadActivity.this);
+                BrightnessUtils.setDefaultBrightness(ReadActivity_k.this);
             } else {
                 Log.d(TAG, "亮度调整 其他");
             }
@@ -206,7 +206,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
     private boolean isSourceId = true;
 
     public static void startActivity(Context context, CollBookBean collBook, boolean isCollected) {
-        context.startActivity(new Intent(context, ReadActivity.class)
+        context.startActivity(new Intent(context, ReadActivity_k.class)
                 .putExtra(EXTRA_IS_COLLECTED, isCollected)
                 .putExtra(EXTRA_COLL_BOOK, collBook));
     }
@@ -532,7 +532,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.View, ReadContrac
         );
 
         mTvBrief.setOnClickListener(
-                (v) -> BookDetailActivity.startActivity(this, mBookId)
+                (v) -> BookDetailActivity.Companion.startActivity(this, mBookId)
         );
 
         mTvCommunity.setOnClickListener(

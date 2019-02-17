@@ -20,6 +20,7 @@ class LoadMoreView(context: Context, @LayoutRes loadMoreId: Int, @LayoutRes erro
     private lateinit var mErrorView: View
     private lateinit var mNoMoreView: View
     private lateinit var mListener: OnLoadMoreListener
+    private lateinit var onLoadMored: () -> Unit
     private var mStatus = TYPE_HIDE
 
     init {
@@ -65,6 +66,9 @@ class LoadMoreView(context: Context, @LayoutRes loadMoreId: Int, @LayoutRes erro
         mErrorView.visibility = View.GONE
         mNoMoreView.visibility = View.GONE
         mListener?.onLoadMore()
+        if (this::onLoadMored.isInitialized) {
+            onLoadMored()
+        }
     }
     private fun setLoadError(){
         mLoadMoreView.visibility = View.GONE
@@ -78,6 +82,9 @@ class LoadMoreView(context: Context, @LayoutRes loadMoreId: Int, @LayoutRes erro
     }
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         mListener = listener
+    }
+    fun setOnLoadMoreListener(listener: () -> Unit) {
+        onLoadMored = listener
     }
     interface OnLoadMoreListener {
         fun onLoadMore()

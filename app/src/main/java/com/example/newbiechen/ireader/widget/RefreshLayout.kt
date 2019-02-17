@@ -28,6 +28,7 @@ class RefreshLayout @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mContentView: View? = null
 
     private var mListener: OnReloadingListener? = null
+    private lateinit var onReloading: () -> Unit
     private var mStatus = 0
 
     init {
@@ -56,10 +57,15 @@ class RefreshLayout @JvmOverloads constructor(context: Context, attrs: Attribute
         addView(mLoadingView!!)
 
         //设置监听器
-        mErrorView?.setOnClickListener { view ->
+        mErrorView?.setOnClickListener {
             mListener?.let {
                 toggleStatus(STATUS_LOADING)
                 it.onReload()
+            }
+
+            if (this::onReloading.isInitialized) {
+                toggleStatus(STATUS_LOADING)
+                onReloading()
             }
         }
     }
@@ -170,6 +176,9 @@ class RefreshLayout @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun setOnReloadingListener(listener: OnReloadingListener) {
         mListener = listener
+    }
+    fun setOnReloadingListener(listener: () -> Unit) {
+        onReloading = listener
     }
 
     //数据存储

@@ -23,7 +23,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
         //获取数据库中的数据
         val localObserver = LocalRepository.getInstance()
                 .getBookHelps(sort.dbName, start, limited, distillate.dbName)
-        val remoteObserver = RemoteRepository.getInstance()
+        val remoteObserver = RemoteRepository.instance
                 .getBookHelps(sort.getNetName(), start, limited, distillate.getNetName())
 
         Single.concat(localObserver, remoteObserver)
@@ -45,7 +45,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
     }
 
     override fun refreshBookHelps(sort: BookSort, start: Int, limited: Int, distillate: BookDistillate) {
-        val refreshDispo = RemoteRepository.getInstance()
+        val refreshDispo = RemoteRepository.instance
                 .getBookHelps(sort.getNetName(), start, limited, distillate.getNetName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,7 +70,7 @@ class DiscHelpsPresenter : RxPresenter<DiscHelpsContract.View>(), DiscHelpsContr
                     .getBookHelps(sort.dbName, start, limited, distillate.dbName)
             loadBookHelps(single)
         } else {
-            val single = RemoteRepository.getInstance()
+            val single = RemoteRepository.instance
                     .getBookHelps(sort.getNetName(), start, limited, distillate.getNetName())
             loadBookHelps(single)
         }

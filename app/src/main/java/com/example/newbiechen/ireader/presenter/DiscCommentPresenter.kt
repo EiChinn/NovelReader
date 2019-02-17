@@ -26,7 +26,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
         val localObserver = LocalRepository.getInstance()
                 .getBookComments(block.netName, sort.dbName,
                         start, limited, distillate.dbName)
-        val remoteObserver = RemoteRepository.getInstance()
+        val remoteObserver = RemoteRepository.instance
                 .getBookComment(block.netName, sort.getNetName(),
                         start, limited, distillate.getNetName())
 
@@ -53,7 +53,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
 
     override fun refreshComment(block: CommunityType, sort: BookSort,
                                 start: Int, limited: Int, distillate: BookDistillate) {
-        val refreshDispo = RemoteRepository.getInstance()
+        val refreshDispo = RemoteRepository.instance
                 .getBookComment(block.netName, sort.getNetName(),
                         start, limited, distillate.getNetName())
                 .subscribeOn(Schedulers.io())
@@ -81,7 +81,7 @@ class DiscCommentPresenter : RxPresenter<DiscCommentContract.View>(), DiscCommen
             loadComment(single)
         } else {
             //单纯的加载数据
-            val single = RemoteRepository.getInstance()
+            val single = RemoteRepository.instance
                     .getBookComment(block.netName, sort.getNetName(),
                             start, limited, distillate.getNetName())
             loadComment(single)

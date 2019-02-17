@@ -21,9 +21,13 @@ abstract class GroupAdapter<T, R>(recyclerView: RecyclerView, spanSize: Int) : R
     fun setOnChildItemListener(listener: OnChildClickListener) {
         mChildClickListener = listener
     }
+    fun setOnChildItemListener(listener: (view: View, groupPos: Int, childPos: Int) -> Unit) {
+        onChildClicked = listener
+    }
 
     private var mGroupListener: OnGroupClickListener? = null
     private var mChildClickListener: OnChildClickListener? = null
+    private lateinit var onChildClicked: (view: View, groupPos: Int, childPos: Int) -> Unit
 
     abstract fun getGroupCount(): Int
     abstract fun getChildCount(groupPos: Int): Int
@@ -70,6 +74,9 @@ abstract class GroupAdapter<T, R>(recyclerView: RecyclerView, spanSize: Int) : R
             holder.itemView.setOnClickListener {
                 iHolder.onClick()
                 mChildClickListener?.onChildClick(it, groupPos, childPos)
+                if (this::onChildClicked.isInitialized) {
+                    onChildClicked(it, groupPos, childPos)
+                }
             }
             iHolder.onBind(getChildItem(groupPos, childPos), childPos)
 

@@ -26,5 +26,8 @@ class LoadMoreDelegate(context: Context, options: WholeAdapter.Options) : WholeA
     fun setOnLoadMoreListener(listener: LoadMoreView.OnLoadMoreListener) {
         mLoadMoreView.setOnLoadMoreListener(listener)
     }
+    fun setOnLoadMoreListener(listener: () -> Unit) {
+        mLoadMoreView.setOnLoadMoreListener(listener)
+    }
 
 }

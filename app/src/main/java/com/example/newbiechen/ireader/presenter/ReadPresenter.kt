@@ -28,7 +28,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
     private var mChapterSub: Subscription? = null
 
     override fun loadMixCategory(bookMixId: String) {
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getBookMixChapters(bookMixId)
                 .doOnSuccess { bookChapterBeen ->
                     //进行设定BookChapter所属的书的id。
@@ -49,7 +49,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
     }
 
     override fun loadSourceCategory(bookSourceId: String, bookMixId: String) {
-        val disposable = RemoteRepository.getInstance()
+        val disposable = RemoteRepository.instance
                 .getBookSourceChapters(bookSourceId)
                 .doOnSuccess { bookChapterBeen ->
                     //进行设定BookChapter所属的书的id。
@@ -84,7 +84,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
         for (i in 0 until size) {
             val bookChapter = bookChapters[i]
             // 网络中获取数据
-            val chapterInfoSingle = RemoteRepository.getInstance()
+            val chapterInfoSingle = RemoteRepository.instance
                     .getChapterInfo(bookChapter.link)
 
             chapterInfos.add(chapterInfoSingle)

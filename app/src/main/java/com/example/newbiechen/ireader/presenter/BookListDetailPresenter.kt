@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 
 class BookListDetailPresenter : RxPresenter<BookListDetailContract.View>(), BookListDetailContract.Presenter {
     override fun refreshBookListDetail(detailId: String) {
-        val refreshDispo = RemoteRepository.getInstance()
+        val refreshDispo = RemoteRepository.instance
                 .getBookListDetail(detailId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -43,7 +43,7 @@ class BillBookFragment : BaseMVPFragment<BillBookContract.View, BillBookContract
         mBillBookAdapter!!.setOnItemClickListener(object : BaseListAdapter.OnItemClickListener{
             override fun onItemClick(view: View, pos: Int) {
                 val bookId = mBillBookAdapter!!.getItem(pos)._id
-                BookDetailActivity.startActivity(context, bookId)
+                BookDetailActivity.startActivity(context!!, bookId)
             }
         })
     }

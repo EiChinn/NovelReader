@@ -16,13 +16,13 @@ class ReviewDetailPresenter : RxPresenter<ReviewDetailContract.View>(), ReviewDe
 
     override fun refreshReviewDetail(detailId: String, start: Int, limit: Int) {
         val detailSingle = RemoteRepository
-                .getInstance().getReviewDetail(detailId)
+                .instance.getReviewDetail(detailId)
 
         val bestCommentsSingle = RemoteRepository
-                .getInstance().getBestComments(detailId)
+                .instance.getBestComments(detailId)
 
         val commentsSingle = RemoteRepository
-                .getInstance().getDetailBookComments(detailId, start, limit)
+                .instance.getDetailBookComments(detailId, start, limit)
 
         val detailDispo = RxUtils.toCommentDetail(detailSingle, bestCommentsSingle, commentsSingle)
                 .subscribeOn(Schedulers.io())
@@ -42,7 +42,7 @@ class ReviewDetailPresenter : RxPresenter<ReviewDetailContract.View>(), ReviewDe
     }
 
     override fun loadComment(detailId: String, start: Int, limit: Int) {
-        val loadDispo = RemoteRepository.getInstance()
+        val loadDispo = RemoteRepository.instance
                 .getDetailBookComments(detailId, start, limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
