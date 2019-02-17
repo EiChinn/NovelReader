@@ -59,7 +59,7 @@ public class BookListActivity extends BaseTabActivity {
     protected List<Fragment> createTabFragments() {
         List<Fragment> fragments = new ArrayList<>(BookListType.values().length);
         for (BookListType type : BookListType.values()){
-            fragments.add(BookListFragment.newInstance(type));
+            fragments.add(BookListFragment.Companion.newInstance(type));
         }
         return fragments;
     }

@@ -75,7 +75,7 @@ public class BookSortListActivity extends BaseTabActivity {
     protected List<Fragment> createTabFragments() {
         List<Fragment> fragments = new ArrayList<>();
         for (BookSortListType type : BookSortListType.values()){
-            fragments.add(BookSortListFragment.newInstance(mGender,mSubSortBean.getMajor(),type));
+            fragments.add(BookSortListFragment.Companion.newInstance(mGender,mSubSortBean.getMajor(),type));
         }
         return fragments;
     }

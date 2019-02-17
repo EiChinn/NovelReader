@@ -61,14 +61,14 @@ public class DiscDetailActivity extends BaseActivity {
         Fragment fragment = null;
         switch (mCommentType){
             case REVIEW:
-                fragment = ReviewDetailFragment.newInstance(mDetailId);
+                fragment = ReviewDetailFragment.Companion.newInstance(mDetailId);
                 break;
             case HELP:
                 //因为HELP中的布局内容完全一致，所以就直接用了。
-                fragment = HelpsDetailFragment.newInstance(mDetailId);
+                fragment = HelpsDetailFragment.Companion.newInstance(mDetailId);
                 break;
             default:
-                fragment = CommentDetailFragment.newInstance(mDetailId);
+                fragment = CommentDetailFragment.Companion.newInstance(mDetailId);
                 break;
         }
         getSupportFragmentManager().beginTransaction()

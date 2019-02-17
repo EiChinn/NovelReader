@@ -126,7 +126,7 @@ public class BookDiscussionActivity extends BaseActivity implements SelectorView
                 break;
             default:
                 setUpSelectorView(TYPE_FIRST);
-                fragment = DiscCommentFragment.newInstance(mType);
+                fragment = DiscCommentFragment.Companion.newInstance(mType);
                 break;
         }
 

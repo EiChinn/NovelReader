@@ -61,9 +61,9 @@ public class BillBookActivity extends BaseTabActivity {
     @Override
     protected List<Fragment> createTabFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(BillBookFragment.newInstance(mWeekId));
-        fragments.add(BillBookFragment.newInstance(mMonthId));
-        fragments.add(BillBookFragment.newInstance(mTotalId));
+        fragments.add(BillBookFragment.Companion.newInstance(mWeekId));
+        fragments.add(BillBookFragment.Companion.newInstance(mMonthId));
+        fragments.add(BillBookFragment.Companion.newInstance(mTotalId));
         return fragments;
     }
 
