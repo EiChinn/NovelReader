@@ -1,10 +1,10 @@
-package com.example.newbiechen.ireader.widget.page;
+package com.example.newbiechen.ireader.widget.page
 
 /**
  * Created by newbiechen on 2018/2/5.
  * 作用：翻页动画的模式
  */
 
-public enum PageMode {
+enum class PageMode {
     SIMULATION, COVER, SLIDE, NONE, SCROLL
 }
