@@ -99,8 +99,8 @@ class MainActivity : BaseTabActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPreparePanel(featureId: Int, view: View?, menu: Menu?): Boolean {
-        if (menu != null && menu is MenuBuilder) {
+    override fun onPreparePanel(featureId: Int, view: View?, menu: Menu): Boolean {
+        if (menu is MenuBuilder) {
             try {
                 val method = menu::class.java.getDeclaredMethod("setOptionalIconsVisible", Boolean::class.java)
                 method.isAccessible = true
