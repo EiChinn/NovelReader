@@ -41,15 +41,15 @@ class DiscReviewHolder : ViewHolderImpl<BookReviewBean>() {
     override fun onBind(value: BookReviewBean, pos: Int) {
         //头像
         Glide.with(App.getInstance())
-                .load(Constant.IMG_BASE_URL + value.bookBean.cover)
+                .load(Constant.IMG_BASE_URL + value.book.cover)
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .fitCenter()
                 .into(mIvPortrait)
         //名字
-        mTvBookName.text = value.bookBean.title
+        mTvBookName.text = value.book.title
         //类型
-        val bookType = Constant.bookType[value.bookBean.type]
+        val bookType = Constant.bookType[value.book.type]
         mTvBookType.text = StringUtils.getString(R.string.nb_book_type, bookType!!)
         //简介
         mTvBrief.text = value.title
@@ -62,7 +62,7 @@ class DiscReviewHolder : ViewHolderImpl<BookReviewBean>() {
             mTvLabelDistillate.visibility = View.GONE
         }
         //response count
-        mTvRecommendCount.text = StringUtils.getString(R.string.nb_book_recommend, value.helpfulBean!!.yes)
+        mTvRecommendCount.text = StringUtils.getString(R.string.nb_book_recommend, value.helpful!!.yes)
     }
 
     override fun getItemLayoutId(): Int {

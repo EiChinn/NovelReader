@@ -11,7 +11,6 @@ import java.util.*
 
 object Constant {
     /*SharedPreference*/
-    const val SHARED_SEX = "sex"
     const val SHARED_SAVE_BOOK_SORT = "book_sort"
     const val SHARED_SAVE_BILLBOARD = "billboard"
     const val SHARED_CONVERT_TYPE = "convert_type"

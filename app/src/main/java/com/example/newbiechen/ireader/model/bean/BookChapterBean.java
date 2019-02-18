@@ -1,10 +1,5 @@
 package com.example.newbiechen.ireader.model.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Generated;
-
 import java.io.Serializable;
 
 /**
@@ -12,7 +7,6 @@ import java.io.Serializable;
  * 书的章节链接(作为下载的进度数据)
  * 同时作为网络章节和本地章节 (没有找到更好分离两者的办法)
  */
-@Entity
 public class BookChapterBean implements Serializable{
     private static final long serialVersionUID = 56423411313L;
     /**
@@ -20,7 +14,6 @@ public class BookChapterBean implements Serializable{
      * link : http://read.qidian.com/chapter/rJgN8tJ_cVdRGoWu-UQg7Q2/6jr-buLIUJSaGfXRMrUjdw2
      * unreadble : false
      */
-    @Id
     private String id;
 
     private String link;
@@ -33,7 +26,6 @@ public class BookChapterBean implements Serializable{
     private boolean unreadble;
 
     //所属的书籍
-    @Index
     private String bookId;
 
     //本地书籍参数
@@ -44,23 +36,6 @@ public class BookChapterBean implements Serializable{
 
     //在书籍文件中的终止位置
     private long end;
-
-    @Generated(hash = 1508543635)
-    public BookChapterBean(String id, String link, String title, String taskName,
-            boolean unreadble, String bookId, long start, long end) {
-        this.id = id;
-        this.link = link;
-        this.title = title;
-        this.taskName = taskName;
-        this.unreadble = unreadble;
-        this.bookId = bookId;
-        this.start = start;
-        this.end = end;
-    }
-
-    @Generated(hash = 853839616)
-    public BookChapterBean() {
-    }
 
     public String getTitle() {
         return title;

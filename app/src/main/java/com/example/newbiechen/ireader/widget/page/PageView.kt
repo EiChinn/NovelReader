@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.widget.animation.*
 
 /**
@@ -293,13 +293,13 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
      * @param collBook
      * @return
      */
-    fun getPageLoader(collBook: CollBookBean): PageLoader {
+    fun getPageLoader(collBook: CollBook): PageLoader {
         // 判是否已经存在
         if (mPageLoader != null) {
             return mPageLoader!!
         }
         // 根据书籍类型，获取具体的加载器
-        if (collBook.isLocal()) {
+        if (collBook.isLocal) {
             mPageLoader = LocalPageLoader(this, collBook)
         } else {
             mPageLoader = NetPageLoader(this, collBook)

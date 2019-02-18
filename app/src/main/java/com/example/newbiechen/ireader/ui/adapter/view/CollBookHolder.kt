@@ -4,10 +4,9 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.bumptech.glide.Glide
 import com.example.newbiechen.ireader.R
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.ui.base.adapter.ViewHolderImpl
 import com.example.newbiechen.ireader.utils.Constant
 import com.example.newbiechen.ireader.utils.StringUtils
@@ -17,7 +16,7 @@ import com.example.newbiechen.ireader.utils.StringUtils
  * CollectionBookView
  */
 
-class CollBookHolder : ViewHolderImpl<CollBookBean>() {
+class CollBookHolder : ViewHolderImpl<CollBook>() {
     private var mIvCover: ImageView? = null
     private var mTvName: TextView? = null
     private var mTvChapter: TextView? = null
@@ -37,8 +36,8 @@ class CollBookHolder : ViewHolderImpl<CollBookBean>() {
         mIvTop = findById(R.id.coll_book_iv_top)
     }
 
-    override fun onBind(value: CollBookBean, pos: Int) {
-        if (value.isLocal()) {
+    override fun onBind(value: CollBook, pos: Int) {
+        if (value.isLocal) {
             //本地文件的图片
             Glide.with(getContext())
                     .load(R.drawable.ic_local_file)
@@ -55,7 +54,7 @@ class CollBookHolder : ViewHolderImpl<CollBookBean>() {
         }
         //书名
         mTvName!!.text = value.title
-        if (!value.isLocal()) {
+        if (!value.isLocal) {
             //时间
             mTvTime!!.text = StringUtils.dateConvert(value.updated, Constant.FORMAT_BOOK_DATE) + ":"
             mTvTime!!.visibility = View.VISIBLE
@@ -66,7 +65,7 @@ class CollBookHolder : ViewHolderImpl<CollBookBean>() {
         mTvChapter!!.text = value.lastChapter
         //我的想法是，在Collection中加一个字段，当追更的时候设置为true。当点击的时候设置为false。
         //当更新的时候，最新数据跟旧数据进行比较，如果更新的话，设置为true。
-        if (value.isUpdate()) {
+        if (value.isUpdate) {
             mIvRedDot!!.visibility = View.VISIBLE
         } else {
             mIvRedDot!!.visibility = View.GONE

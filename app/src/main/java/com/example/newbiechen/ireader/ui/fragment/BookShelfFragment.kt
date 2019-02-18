@@ -11,8 +11,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
-import com.example.newbiechen.ireader.event.*
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.CollBook
+import com.example.newbiechen.ireader.event.DeleteResponseEvent
+import com.example.newbiechen.ireader.event.DeleteTaskEvent
+import com.example.newbiechen.ireader.event.DownloadMessage
+import com.example.newbiechen.ireader.event.SyncBookEvent
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.local.Void
 import com.example.newbiechen.ireader.presenter.BookShelfPresenter
@@ -75,15 +78,6 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                 )
         addDisposable(AsyncBookDisp)
 
-        //推荐书籍
-        val recommendDisp = RxBus.getInstance()
-                .toObservable(RecommendBookEvent::class.java)
-                .subscribe { (sex) ->
-                    book_shelf_rv_content.startRefresh()
-                    mPresenter.loadRecommendBooks(sex)
-                }
-        addDisposable(recommendDisp)
-
         val donwloadDisp = RxBus.getInstance()
                 .toObservable(DownloadMessage::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,7 +119,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
             override fun onItemClick(view: View, pos: Int) {
                 //如果是本地文件，首先判断这个文件是否存在
                 val collBook = mCollBookAdapter!!.getItem(pos)
-                if (collBook.isLocal()) {
+                if (collBook.isLocal) {
                     //id表示本地文件的路径
                     val path = collBook.cover
                     val file = File(path)
@@ -162,18 +156,8 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
         })
     }
 
-    override fun processLogic() {
-        super.processLogic()
-
-    }
-
-    private fun openItemDialog(collBook: CollBookBean) {
-        val menus: Array<String>
-        if (collBook.isLocal()) {
-            menus = resources.getStringArray(R.array.nb_menu_local_book)
-        } else {
-            menus = resources.getStringArray(R.array.nb_menu_net_book)
-        }
+    private fun openItemDialog(collBook: CollBook) {
+        val menus: Array<String> = resources.getStringArray(R.array.nb_menu_net_book)
         val collBookDialog = AlertDialog.Builder(context!!)
                 .setTitle(collBook.title)
                 .setAdapter(ArrayAdapter(context!!,
@@ -186,7 +170,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
         collBookDialog.show()
     }
 
-    private fun onItemMenuClick(which: String, collBook: CollBookBean) {
+    private fun onItemMenuClick(which: String, collBook: CollBook) {
         when (which) {
             //置顶
             "置顶" -> {
@@ -207,7 +191,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
         }
     }
 
-    private fun downloadBook(collBook: CollBookBean) {
+    private fun downloadBook(collBook: CollBook) {
         //创建任务
         mPresenter.createDownloadTask(collBook)
     }
@@ -217,8 +201,8 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
      *
      * @param collBook
      */
-    private fun deleteBook(collBook: CollBookBean) {
-        if (collBook.isLocal()) {
+    private fun deleteBook(collBook: CollBook) {
+        if (collBook.isLocal) {
             val view = LayoutInflater.from(context)
                     .inflate(R.layout.dialog_delete, null)
             val cb = view.findViewById<View>(R.id.delete_cb_select) as CheckBox
@@ -235,14 +219,12 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                             val file = File(collBook.cover)
                             if (file.exists()) file.delete()
                             BookRepository.instance.deleteCollBook(collBook)
-                            BookRepository.instance.deleteBookRecord(collBook._id)
 
                             //从Adapter中删除
                             mCollBookAdapter!!.removeItem(collBook)
                             progressDialog.dismiss()
                         } else {
                             BookRepository.instance.deleteCollBook(collBook)
-                            BookRepository.instance.deleteBookRecord(collBook._id)
                             //从Adapter中删除
                             mCollBookAdapter!!.removeItem(collBook)
                         }
@@ -275,9 +257,9 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
         }
     }
 
-    override fun finishRefresh(collBookBeans: List<CollBookBean>) {
-        if (!collBookBeans.isEmpty()) {
-            mCollBookAdapter!!.refreshItems(collBookBeans)
+    override fun finishRefresh(collBooks: List<CollBook>) {
+        if (!collBooks.isEmpty()) {
+            mCollBookAdapter!!.refreshItems(collBooks)
             //如果是初次进入，则更新书籍信息
             if (isInit) {
                 isInit = false
@@ -291,7 +273,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     override fun finishUpdate() {
         //重新从数据库中获取数据
         mCollBookAdapter!!.refreshItems(BookRepository
-                .instance.collBooks)
+                .instance.getAllCollBooks())
     }
 
     override fun showErrorTip(error: String) {

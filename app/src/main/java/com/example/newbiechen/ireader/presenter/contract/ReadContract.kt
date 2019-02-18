@@ -1,12 +1,12 @@
 package com.example.newbiechen.ireader.presenter.contract
 
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
 import com.example.newbiechen.ireader.ui.base.BaseContract
 import com.example.newbiechen.ireader.widget.page.TxtChapter
 
 interface ReadContract{
     interface View : BaseContract.BaseView {
-        fun showCategory(bookChapterList: List<@JvmSuppressWildcards BookChapterBean>)
+        fun showCategory(bookChapters: List<BookChapter>)
         fun finishChapter()
         fun errorChapter()
     }

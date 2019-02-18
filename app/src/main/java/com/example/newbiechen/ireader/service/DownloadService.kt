@@ -7,10 +7,10 @@ import android.os.IBinder
 import android.text.TextUtils
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
+import com.example.newbiechen.ireader.db.entity.BookChapter
 import com.example.newbiechen.ireader.event.DeleteResponseEvent
 import com.example.newbiechen.ireader.event.DeleteTaskEvent
 import com.example.newbiechen.ireader.event.DownloadMessage
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
 import com.example.newbiechen.ireader.model.bean.DownloadTaskBean
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.local.LocalRepository
@@ -79,7 +79,7 @@ class DownloadService : BaseService() {
                     //判断是否该数据存在加载列表中
                     var isDelete = true
                     for (bean in mDownloadTaskQueue) {
-                        if (bean.bookId == collBook._id) {
+                        if (bean.bookId == collBook.bookId) {
                             isDelete = false
                             break
                         }
@@ -90,7 +90,7 @@ class DownloadService : BaseService() {
                         val taskIt = mDownloadTaskList!!.iterator()
                         while (taskIt.hasNext()) {
                             val task = taskIt.next()
-                            if (task.bookId == collBook._id) {
+                            if (task.bookId == collBook.bookId) {
                                 taskIt.remove()
                             }
                         }
@@ -121,9 +121,9 @@ class DownloadService : BaseService() {
 
                     //发送回去已缓存
                     postMessage("当前书籍已缓存")
-                } else if (downloadTask.lastChapter > newTask.lastChapter - newTask.bookChapterList.size) {
+                } else if (downloadTask.lastChapter > newTask.lastChapter - newTask.bookChapters.size) {
                     //删除掉已经完成的章节
-                    val remainChapterBeans = newTask.bookChapterList
+                    val remainChapterBeans = newTask.bookChapters
                             .subList(downloadTask.lastChapter,
                                     newTask.lastChapter)
                     val taskName = newTask.taskName + getString(R.string.nb_download_chapter_scope,
@@ -177,14 +177,14 @@ class DownloadService : BaseService() {
             taskEvent.status = DownloadTaskBean.STATUS_LOADING
 
             var result = LOAD_NORMAL
-            val bookChapterBeans = taskEvent.bookChapters
+            val bookChapters = taskEvent.bookChapters
 
             //调用for循环，下载数据
-            for (i in taskEvent.currentChapter until bookChapterBeans.size) {
+            for (i in taskEvent.currentChapter until bookChapters.size) {
 
-                val bookChapterBean = bookChapterBeans[i]
+                val bookChapter = bookChapters[i]
                 //首先判断该章节是否曾经被加载过 (从文件中判断)
-                if (BookManager.isChapterCached(taskEvent.bookId, bookChapterBean.title)) {
+                if (BookManager.isChapterCached(taskEvent.bookId, bookChapter.title)) {
 
                     //设置任务进度
                     taskEvent.currentChapter = i
@@ -210,7 +210,7 @@ class DownloadService : BaseService() {
                 }
 
                 //加载数据
-                result = loadChapter(taskEvent.bookId, bookChapterBean)
+                result = loadChapter(taskEvent.bookId, bookChapter)
                 //章节加载完成
                 if (result == LOAD_NORMAL) {
                     taskEvent.currentChapter = i
@@ -256,7 +256,7 @@ class DownloadService : BaseService() {
         mSingleExecutor.execute(runnable)
     }
 
-    private fun loadChapter(folderName: String, bean: BookChapterBean): Int {
+    private fun loadChapter(folderName: String, bean: BookChapter): Int {
         //加载的结果参数
         val result = intArrayOf(LOAD_NORMAL)
 

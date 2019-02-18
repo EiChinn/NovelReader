@@ -1,5 +1,7 @@
 package com.example.newbiechen.ireader.model.remote
 
+import com.example.newbiechen.ireader.db.entity.BookChapter
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.bean.*
 import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage
@@ -64,12 +66,12 @@ class RemoteRepository private constructor() {
         mBookApi = mRetrofit.create(BookApi::class.java)
     }
 
-    fun getRecommendBooks(gender: String): Single<List<CollBookBean>> {
+    fun getRecommendBooks(gender: String): Single<List<CollBook>> {
         return mBookApi.getRecommendBookPackage(gender)
                 .map { (_, books) -> books }
     }
 
-    fun getBookMixChapters(bookMixId: String): Single<List<BookChapterBean>> {
+    fun getBookMixChapters(bookMixId: String): Single<List<BookChapter>> {
         return mBookApi.getBookMixChapterPackage(bookMixId, "chapters")
                 .map { bean ->
                     if (bean.mixToc == null) {
@@ -80,7 +82,7 @@ class RemoteRepository private constructor() {
                 }
     }
 
-    fun getBookSourceChapters(bookSourceId: String): Single<List<BookChapterBean>> {
+    fun getBookSourceChapters(bookSourceId: String): Single<List<BookChapter>> {
         return mBookApi.getBookSourceChapterPackage(bookSourceId, "chapters")
                 .map { (_, _, _, _, _, chapters) -> chapters }
     }

@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.bumptech.glide.Glide
 import com.example.newbiechen.ireader.R
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.bean.BookDetailBean
 import com.example.newbiechen.ireader.model.bean.BookListBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
 import com.example.newbiechen.ireader.model.bean.HotCommentBean
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.presenter.BookDetailPresenter
@@ -81,7 +81,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
     /** */
     private var mHotCommentAdapter: HotCommentAdapter? = null
     private var mBookListAdapter: BookListAdapter? = null
-    private var mCollBookBean: CollBookBean? = null
+    private var mCollBook: CollBook? = null
     private var mProgressDialog: ProgressDialog? = null
     /** */
     private var mBookId: String? = null
@@ -130,7 +130,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
             if (isCollected) {
                 //放弃点击
                 BookRepository.instance
-                        .deleteCollBookInRx(mCollBookBean!!)
+                        .deleteCollBookInRx(mCollBook!!)
 
                 mTvChase!!.text = resources.getString(R.string.nb_book_detail_chase_update)
 
@@ -142,7 +142,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
 
                 isCollected = false
             } else {
-                mPresenter.addToBookShelf(mCollBookBean!!)
+                mPresenter.addToBookShelf(mCollBook!!)
                 mTvChase!!.text = resources.getString(R.string.nb_book_detail_give_up)
 
                 //修改背景
@@ -158,7 +158,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
         mTvRead!!.setOnClickListener {
             startActivityForResult(Intent(this, ReadActivity::class.java)
                     .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
-                    .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean), REQUEST_READ)
+                    .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBook), REQUEST_READ)
         }
 
 
@@ -201,10 +201,10 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
         mTvCommunity!!.text = resources.getString(R.string.nb_book_detail_community, bean.title)
         //帖子数
         mTvPostsCount!!.text = resources.getString(R.string.nb_book_detail_posts_count, bean.postCount)
-        mCollBookBean = BookRepository.instance.getCollBook(bean._id)
+        mCollBook = BookRepository.instance.getCollBook(bean._id)
 
         //判断是否收藏
-        if (mCollBookBean != null) {
+        if (mCollBook != null) {
             isCollected = true
 
             mTvChase!!.text = resources.getString(R.string.nb_book_detail_give_up)
@@ -215,7 +215,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
             mTvChase!!.setCompoundDrawables(ContextCompat.getDrawable(this, R.drawable.ic_book_list_delete), null, null, null)
             mTvRead!!.text = "继续阅读"
         } else {
-            mCollBookBean = bean.collBookBean
+            mCollBook = bean.collBook
         }
     }
 

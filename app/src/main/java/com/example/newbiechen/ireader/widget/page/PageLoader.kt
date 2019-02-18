@@ -6,8 +6,8 @@ import android.text.TextPaint
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.newbiechen.ireader.App
-import com.example.newbiechen.ireader.model.bean.BookRecordBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.local.ReadSettingManager
 import com.example.newbiechen.ireader.utils.*
@@ -25,10 +25,7 @@ import java.util.*
  * Created by newbiechen on 17-7-1.
  */
 
-abstract class PageLoader
-/*****************************init params */
-(// 页面显示类
-        private var mPageView: PageView?, collBook: CollBookBean) {
+abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) {
 
     // 当前章节列表
     protected var mChapterList: MutableList<TxtChapter>? = null
@@ -38,8 +35,8 @@ abstract class PageLoader
      *
      * @return
      */
-    var collBook: CollBookBean
-        protected set
+    var collBook: CollBook
+    var bookChapters: List<BookChapter> = emptyList()
     // 监听器
     protected var mPageChangeListener: OnPageChangeListener? = null
 
@@ -65,9 +62,6 @@ abstract class PageLoader
     private var mTextPaint: TextPaint? = null
     // 被遮盖的页，或者认为被取消显示的页
     private var mCancelPage: TxtPage? = null
-    // 存储阅读记录类
-    private var mBookRecord: BookRecordBean? = null
-
     private var mPreLoadDisp: Disposable? = null
 
     /*****************params */
@@ -549,32 +543,24 @@ abstract class PageLoader
             return
         }
 
-        mBookRecord!!.bookId = collBook._id
-        mBookRecord!!.chapter = chapterPos
+        collBook.chapter = chapterPos
 
         if (mCurPage != null) {
-            mBookRecord!!.pagePos = mCurPage!!.position
+            collBook.pagePos = mCurPage!!.position
         } else {
-            mBookRecord!!.pagePos = 0
+            collBook.pagePos = 0
         }
 
         //存储到数据库
         BookRepository.instance
-                .saveBookRecord(mBookRecord!!)
+                .insertOrUpdateCollBook(collBook)
     }
 
     /**
      * 初始化书籍
      */
     private fun prepareBook() {
-        mBookRecord = BookRepository.instance
-                .getBookRecord(collBook._id)
-
-        if (mBookRecord == null) {
-            mBookRecord = BookRecordBean()
-        }
-
-        chapterPos = mBookRecord!!.chapter
+        chapterPos = collBook.chapter
         mLastChapterPos = chapterPos
     }
 
@@ -605,7 +591,7 @@ abstract class PageLoader
         if (parseCurChapter()) {
             // 如果章节从未打开
             if (!isChapterOpen) {
-                var position = mBookRecord!!.pagePos
+                var position = collBook.pagePos
 
                 // 防止记录页的页号，大于当前最大页号
                 if (position >= mCurPageList!!.size) {
@@ -1333,11 +1319,12 @@ abstract class PageLoader
      * //如果上次退出时阅读的章节mCurChapterPos大于小说章节（可能是换源的时候出了点问题），清空BookRecord
      */
     protected fun checkRecordValid() {
-        if (chapterPos >= collBook.bookChapters.size || chapterPos < 0) {
-            mBookRecord = BookRecordBean()
+        if (chapterPos >= collBook.chaptersCount || chapterPos < 0) {
             chapterPos = 0
             mLastChapterPos = chapterPos
-            BookRepository.instance.deleteBookRecord(collBook._id)
+            collBook.chapter = 0
+            collBook.pagePos = 0
+            BookRepository.instance.insertOrUpdateCollBook(collBook)
             ToastUtils.show("上次阅读章节大于小说总章节，检查是否换源的时候出了问题")
         }
     }

@@ -1,6 +1,6 @@
 package com.example.newbiechen.ireader.model.bean;
 
-import com.example.newbiechen.ireader.model.bean.BaseBean;
+import com.example.newbiechen.ireader.db.entity.CollBook;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class BookDetailBean{
     private List<String> tags;
 
 
-    private CollBookBean collBookBean;
+    private CollBook collBook;
 
     public String get_id() {
         return _id;
@@ -306,16 +306,16 @@ public class BookDetailBean{
         this.tags = tags;
     }
 
-    public CollBookBean getCollBookBean(){
-        if (collBookBean == null){
-            collBookBean = createCollBookBean();
+    public CollBook getCollBook(){
+        if (collBook == null){
+            collBook = createCollBookBean();
         }
-        return collBookBean;
+        return collBook;
     }
 
-    public CollBookBean createCollBookBean(){
-        CollBookBean bean = new CollBookBean();
-        bean.set_id(get_id());
+    public CollBook createCollBookBean(){
+        CollBook bean = new CollBook();
+        bean.setBookId(get_id());
         bean.setTitle(getTitle());
         bean.setAuthor(getAuthor());
         bean.setShortIntro(getLongIntro());

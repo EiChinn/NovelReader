@@ -1,6 +1,7 @@
 package com.example.newbiechen.ireader.model.bean
 
 import cn.bmob.v3.BmobObject
+import com.example.newbiechen.ireader.db.entity.CollBook
 
 class CollBookBmobBean : BmobObject() {
     var id: String = "" // 本地书籍中，path 的 md5 值作为本地书籍的 id
@@ -46,9 +47,9 @@ class CollBookBmobBean : BmobObject() {
 }
 
 object BmobDaoUtils {
-    fun bmob2Dao(sourceObj: CollBookBmobBean): CollBookBean {
-        val result = CollBookBean()
-        result._id = sourceObj.id
+    fun bmob2Dao(sourceObj: CollBookBmobBean): CollBook {
+        val result = CollBook()
+        result.bookId = sourceObj.id
         result.title = sourceObj.title
         result.author = sourceObj.author
         result.shortIntro = sourceObj.shortIntro
@@ -60,15 +61,15 @@ object BmobDaoUtils {
         result.lastRead = sourceObj.lastRead
         result.chaptersCount = sourceObj.chaptersCount
         result.lastChapter = sourceObj.lastChapter
-        result.setIsUpdate(sourceObj.isUpdate)
-        result.setIsLocal(sourceObj.isLocal)
+        result.isUpdate = sourceObj.isUpdate
+        result.isLocal = sourceObj.isLocal
         result.currentSourceId = sourceObj.currentSourceId
         result.currentSourceName = sourceObj.currentSourceName
         return result
     }
-    fun dao2Bmob(sourceObj: CollBookBean): CollBookBmobBean {
+    fun dao2Bmob(sourceObj: CollBook): CollBookBmobBean {
         val result = CollBookBmobBean()
-        result.id = sourceObj._id
+        result.id = sourceObj.bookId
         result.title = sourceObj.title
         result.author = sourceObj.author
         result.shortIntro = sourceObj.shortIntro
@@ -80,8 +81,8 @@ object BmobDaoUtils {
         result.lastRead = sourceObj.lastRead ?: ""
         result.chaptersCount = sourceObj.chaptersCount
         result.lastChapter = sourceObj.lastChapter
-        result.isUpdate = sourceObj.getIsUpdate()
-        result.isLocal = sourceObj.getIsLocal()
+        result.isUpdate = sourceObj.isUpdate
+        result.isLocal = sourceObj.isLocal
         result.currentSourceId = sourceObj.currentSourceId ?: ""
         result.currentSourceName = sourceObj.currentSourceName ?: ""
         return result

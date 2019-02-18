@@ -31,8 +31,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import butterknife.BindView
 import com.example.newbiechen.ireader.BOOK_ID
 import com.example.newbiechen.ireader.R
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.local.ReadSettingManager
 import com.example.newbiechen.ireader.presenter.ReadPresenter
@@ -45,7 +45,6 @@ import com.example.newbiechen.ireader.widget.page.PageLoader
 import com.example.newbiechen.ireader.widget.page.PageView
 import com.example.newbiechen.ireader.widget.page.TxtChapter
 import com.google.android.material.appbar.AppBarLayout
-import io.reactivex.SingleTransformer
 
 /**
  * Created by newbiechen on 17-5-16.
@@ -104,7 +103,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     private var mBottomInAnim: Animation? = null
     private var mBottomOutAnim: Animation? = null
     private var mCategoryAdapter: CategoryAdapter? = null
-    private var mCollBook: CollBookBean? = null
+    private var mCollBook: CollBook? = null
     //控制屏幕常亮
     private var mWakeLock: PowerManager.WakeLock? = null
     private val mHandler = object : Handler() {
@@ -180,7 +179,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        mCollBook = intent.getParcelableExtra(EXTRA_COLL_BOOK)
+        mCollBook = intent.getSerializableExtra(EXTRA_COLL_BOOK) as CollBook?
         isCollected = intent.getBooleanExtra(EXTRA_IS_COLLECTED, false)
         isNightMode = ReadSettingManager.isNightMode()
         isFullScreen = ReadSettingManager.isFullScreen()
@@ -188,9 +187,9 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         mBookSourceId = mCollBook!!.currentSourceId
         if (TextUtils.isEmpty(mBookSourceId)) {
             isSourceId = false
-            mBookSourceId = mCollBook!!._id
+            mBookSourceId = mCollBook!!.bookId
         }
-        mBookId = mCollBook!!._id
+        mBookId = mCollBook!!.bookId
     }
 
     override fun setUpToolbar(toolbar: Toolbar) {
@@ -414,7 +413,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         }
 
         mTvCategory!!.setOnClickListener { v ->
-            if (mCollBook!!.isLocal()) {
+            if (mCollBook!!.isLocal) {
                 openChapterDrawer()
             } else {
 
@@ -542,14 +541,14 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         if (isCollected) {
             val disposable = BookRepository.instance
                     .getBookChaptersInRx(mBookId!!)
-                    .compose<List<BookChapterBean>>(SingleTransformer<List<BookChapterBean>, List<BookChapterBean>> { RxUtils.toSimpleSingle(it) })
-                    .subscribe { bookChapterBeen, throwable ->
+                    .compose<List<BookChapter>> { RxUtils.toSimpleSingle(it) }
+                    .subscribe { bookChapter, throwable ->
                         // 设置 CollBook
-                        mPageLoader!!.collBook.bookChapters = bookChapterBeen
+                        mPageLoader!!.bookChapters = bookChapter
                         // 刷新章节列表
                         mPageLoader!!.refreshChapterList()
                         // 如果是网络小说并被标记更新的，则从网络下载目录
-                        if (mCollBook!!.isUpdate() && !mCollBook!!.isLocal()) {
+                        if (mCollBook!!.isUpdate && !mCollBook!!.isLocal) {
                             loadCategory()
                             if (throwable != null) {
                                 LogUtils.e(throwable.toString())
@@ -580,8 +579,8 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
     }
 
-    override fun showCategory(bookChapters: List<BookChapterBean>) {
-        mPageLoader!!.collBook.bookChapters = bookChapters
+    override fun showCategory(bookChapters: List<BookChapter>) {
+        mPageLoader!!.bookChapters = bookChapters
         mPageLoader!!.refreshChapterList()
 
 
@@ -643,7 +642,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
             return
         }
 
-        if (!mCollBook!!.isLocal() && !isCollected) {
+        if (!mCollBook!!.isLocal && !isCollected) {
             val alertDialog = AlertDialog.Builder(this)
                     .setTitle("加入书架")
                     .setMessage("喜欢本书就加入书架吧")
@@ -654,7 +653,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                         mCollBook!!.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
 
                         BookRepository.instance
-                                .saveCollBookWithAsync(mCollBook!!)
+                                .insertOrUpdateCollBook(mCollBook!!)
 
                         exit()
                     }
@@ -764,7 +763,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         private const val WHAT_CATEGORY = 1
         private const val WHAT_CHAPTER = 2
 
-        fun startActivity(context: Context, collBook: CollBookBean, isCollected: Boolean) {
+        fun startActivity(context: Context, collBook: CollBook, isCollected: Boolean) {
             context.startActivity(Intent(context, ReadActivity::class.java)
                     .putExtra(EXTRA_IS_COLLECTED, isCollected)
                     .putExtra(EXTRA_COLL_BOOK, collBook))

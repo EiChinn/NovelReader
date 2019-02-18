@@ -1,7 +1,7 @@
 package com.example.newbiechen.ireader.presenter
 
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.bean.BookDetailBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.remote.RemoteRepository
 import com.example.newbiechen.ireader.presenter.contract.BookDetailContract
@@ -29,9 +29,9 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     }
 
-    override fun addToBookShelf(collBookBean: CollBookBean) {
+    override fun addToBookShelf(collBook: CollBook) {
         val disposable = RemoteRepository.instance
-                .getBookMixChapters(collBookBean._id)
+                .getBookMixChapters(collBook.bookId)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe { d -> mView.waitToBookShelf() }
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -41,14 +41,14 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
                             //设置 id
                             for (bean in beans) {
+                                bean.bookId = collBook.bookId
                                 bean.id = MD5Utils.strToMd5By16(bean.link)
                             }
 
-                            //设置目录
-                            collBookBean.bookChapters = beans
                             //存储收藏
-                            BookRepository.instance
-                                    .saveCollBookWithAsync(collBookBean)
+                            BookRepository.instance.insertOrUpdateCollBook(collBook)
+                            //存储目录
+                            BookRepository.instance.saveBookChaptersWithAsync(beans)
 
                             mView.succeedToBookShelf()
                         },

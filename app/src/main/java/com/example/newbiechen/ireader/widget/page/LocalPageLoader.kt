@@ -1,7 +1,7 @@
 package com.example.newbiechen.ireader.widget.page
 
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.local.Void
 import com.example.newbiechen.ireader.utils.*
@@ -20,7 +20,7 @@ import java.util.regex.Pattern
  * 1. 异常处理没有做好
  */
 
-class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pageView, collBook) {
+class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageView, collBook) {
 
     //章节解析模式
     private var mChapterPattern: Pattern? = null
@@ -35,7 +35,7 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
         pageStatus = PageLoader.STATUS_PARING
     }
 
-    private fun convertTxtChapter(bookChapters: List<BookChapterBean>): MutableList<TxtChapter> {
+    private fun convertTxtChapter(bookChapters: List<BookChapter>): MutableList<TxtChapter> {
         val txtChapters = ArrayList<TxtChapter>(bookChapters.size)
         for (bean in bookChapters) {
             val chapter = TxtChapter()
@@ -286,12 +286,11 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
         //修改当前COllBook记录
         if (collBook != null && isChapterListPrepare) {
             //表示当前CollBook已经阅读
-            collBook.setIsUpdate(false)
+            collBook.isUpdate = false
             collBook.lastChapter = mChapterList!![chapterPos].title
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.instance
-                    .saveCollBook(collBook)
+            BookRepository.instance.insertOrUpdateCollBook(collBook)
         }
     }
 
@@ -312,11 +311,11 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
         val lastModified = StringUtils.dateConvert(mBookFile!!.lastModified(), Constant.FORMAT_BOOK_DATE)
 
         // 判断文件是否已经加载过，并具有缓存
-        if (!collBook.isUpdate() && collBook.updated != null
+        if (!collBook.isUpdate && collBook.updated != null
                 && collBook.updated == lastModified
-                && collBook.bookChapters != null) {
+                && bookChapters != null) {
 
-            mChapterList = convertTxtChapter(collBook.bookChapters)
+            mChapterList = convertTxtChapter(bookChapters)
             isChapterListPrepare = true
 
             //提示目录加载完成
@@ -350,23 +349,23 @@ class LocalPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(p
                         }
 
                         // 存储章节到数据库
-                        val bookChapterBeanList = ArrayList<BookChapterBean>()
+                        val bookChapterList = ArrayList<BookChapter>()
                         for (i in 0 until mChapterList!!.size) {
                             val chapter = mChapterList!![i]
-                            val bean = BookChapterBean()
+                            val bean = BookChapter()
                             bean.id = MD5Utils.strToMd5By16(mBookFile!!.absolutePath
                                     + File.separator + chapter.title) // 将路径+i 作为唯一值
                             bean.title = chapter.title
                             bean.start = chapter.start
-                            bean.isUnreadble = false
+                            bean.unreadable = false
                             bean.end = chapter.end
-                            bookChapterBeanList.add(bean)
+                            bookChapterList.add(bean)
                         }
-                        collBook.bookChapters = bookChapterBeanList
+                        bookChapters = bookChapterList
                         collBook.updated = lastModified
 
-                        BookRepository.instance.saveBookChaptersWithAsync(bookChapterBeanList)
-                        BookRepository.instance.saveCollBook(collBook)
+                        BookRepository.instance.saveBookChaptersWithAsync(bookChapterList)
+                        BookRepository.instance.insertOrUpdateCollBook(collBook)
 
                         // 加载并显示当前章节
                         openChapter()

@@ -1,8 +1,8 @@
 package com.example.newbiechen.ireader.presenter.contract
 
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.bean.BookDetailBean
 import com.example.newbiechen.ireader.model.bean.BookListBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
 import com.example.newbiechen.ireader.model.bean.HotCommentBean
 import com.example.newbiechen.ireader.ui.base.BaseContract
 
@@ -18,6 +18,6 @@ interface BookDetailContract {
 
     interface Presenter : BaseContract.BasePresenter<View> {
         fun refreshBookDetail(bookId: String)
-        fun addToBookShelf(collBook: CollBookBean)
+        fun addToBookShelf(collBook: CollBook)
     }
 }

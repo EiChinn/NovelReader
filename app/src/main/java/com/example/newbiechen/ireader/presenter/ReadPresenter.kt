@@ -1,7 +1,7 @@
 package com.example.newbiechen.ireader.presenter
 
 
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
 import com.example.newbiechen.ireader.model.bean.ChapterInfoBean
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.model.remote.RemoteRepository
@@ -12,7 +12,6 @@ import com.example.newbiechen.ireader.utils.MD5Utils
 import com.example.newbiechen.ireader.utils.RxUtils
 import com.example.newbiechen.ireader.widget.page.TxtChapter
 import io.reactivex.Single
-import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Subscriber
@@ -37,7 +36,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
                         bookChapter.bookId = bookMixId
                     }
                 }
-                .compose<List<BookChapterBean>>(SingleTransformer<List<BookChapterBean>, List<BookChapterBean>> { RxUtils.toSimpleSingle(it) })
+                .compose<List<BookChapter>> { RxUtils.toSimpleSingle(it) }
                 .subscribe(
                         { beans -> mView.showCategory(beans) },
                         { e ->
@@ -51,14 +50,14 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
     override fun loadSourceCategory(bookSourceId: String, bookMixId: String) {
         val disposable = RemoteRepository.instance
                 .getBookSourceChapters(bookSourceId)
-                .doOnSuccess { bookChapterBeen ->
+                .doOnSuccess { bookChapter ->
                     //进行设定BookChapter所属的书的id。
-                    for (bookChapter in bookChapterBeen) {
+                    for (bookChapter in bookChapter) {
                         bookChapter.id = MD5Utils.strToMd5By16(bookChapter.link)
                         bookChapter.bookId = bookMixId
                     }
                 }
-                .compose<List<BookChapterBean>>(SingleTransformer<List<BookChapterBean>, List<BookChapterBean>> { RxUtils.toSimpleSingle(it) })
+                .compose<List<BookChapter>> { RxUtils.toSimpleSingle(it) }
                 .subscribe(
                         { beans -> mView.showCategory(beans) },
                         { e ->

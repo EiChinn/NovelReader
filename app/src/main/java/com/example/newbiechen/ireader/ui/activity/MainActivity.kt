@@ -25,13 +25,10 @@ import com.example.newbiechen.ireader.model.bean.BmobDaoUtils
 import com.example.newbiechen.ireader.model.bean.CollBookBmobBean
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity
-import com.example.newbiechen.ireader.ui.dialog.SexChooseDialog
 import com.example.newbiechen.ireader.ui.fragment.BookShelfFragment
 import com.example.newbiechen.ireader.ui.fragment.CommunityFragment
 import com.example.newbiechen.ireader.ui.fragment.FindFragment
-import com.example.newbiechen.ireader.utils.Constant
 import com.example.newbiechen.ireader.utils.PermissionsChecker
-import com.example.newbiechen.ireader.utils.SharedPreUtils
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -77,21 +74,6 @@ class MainActivity : BaseTabActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.title = ""
 
-    }
-
-    override fun initWidget() {
-        super.initWidget()
-        showSexChooseDialog()
-    }
-
-    private fun showSexChooseDialog() {
-        val sex = SharedPreUtils.getString(Constant.SHARED_SEX)
-        if (sex.isNullOrEmpty()) {
-            mVp.postDelayed({
-                val dialog = SexChooseDialog(this)
-                dialog.show()
-            }, 500)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -160,7 +142,7 @@ class MainActivity : BaseTabActivity() {
                     toast("${e.errorCode}: ${e.message}")
                     Log.e("tag", "${e.errorCode}: ${e.message}")
                 }
-                val localBooks = BookRepository.instance.collBooks.map { BmobDaoUtils.dao2Bmob(it) }
+                val localBooks = BookRepository.instance.getAllCollBooks().map { BmobDaoUtils.dao2Bmob(it) }
                 val allBooks = if (result != null) localBooks.union(result) else localBooks
                 Log.i("tag", "service's book size = ${result?.size}")
                 Log.i("tag", "local's book size = ${localBooks.size}")
@@ -168,7 +150,7 @@ class MainActivity : BaseTabActivity() {
                 if (allBooks.isNotEmpty() && (allBooks.size != localBooks.size || !allBooks.containsAll(localBooks))) {
                     Log.e("tag", "update local")
                     val localAllBooks = allBooks.map { BmobDaoUtils.bmob2Dao(it) }
-                    BookRepository.instance.saveCollBooks(localAllBooks)
+                    BookRepository.instance.insertOrUpdateCollBooks(localAllBooks)
                     RxBus.getInstance().post(SyncBookEvent())
                 }
                 if (allBooks.isNotEmpty()) {

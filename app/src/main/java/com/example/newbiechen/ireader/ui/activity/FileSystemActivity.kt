@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import com.example.newbiechen.ireader.R
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity
 import com.example.newbiechen.ireader.ui.fragment.BaseFileFragment
@@ -108,8 +108,7 @@ class FileSystemActivity : BaseTabActivity() {
             val files = mCurFragment!!.checkedFiles
             //转换成CollBook,并存储
             val collBooks = convertCollBook(files!!)
-            BookRepository.instance
-                    .saveCollBooks(collBooks)
+            BookRepository.instance.insertOrUpdateCollBooks(collBooks)
             //设置HashMap为false
             mCurFragment!!.setCheckedAll(false)
             //改变菜单状态
@@ -150,19 +149,19 @@ class FileSystemActivity : BaseTabActivity() {
      * @param files:需要加载的文件列表
      * @return
      */
-    private fun convertCollBook(files: List<File>): List<CollBookBean> {
-        val collBooks = ArrayList<CollBookBean>(files.size)
+    private fun convertCollBook(files: List<File>): List<CollBook> {
+        val collBooks = ArrayList<CollBook>(files.size)
         for (file in files) {
             //判断文件是否存在
             if (!file.exists()) continue
 
-            val collBook = CollBookBean()
-            collBook._id = MD5Utils.strToMd5By16(file.absolutePath)
+            val collBook = CollBook()
+            collBook.bookId = MD5Utils.strToMd5By16(file.absolutePath)
             collBook.title = file.name.replace(".txt", "")
             collBook.author = ""
             collBook.shortIntro = "无"
             collBook.cover = file.absolutePath
-            collBook.setLocal(true)
+            collBook.isLocal = true
             collBook.lastChapter = "开始阅读"
             collBook.updated = StringUtils.dateConvert(file.lastModified(), Constant.FORMAT_BOOK_DATE)
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)

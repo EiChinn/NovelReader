@@ -43,16 +43,16 @@ class DiscCommentHolder : ViewHolderImpl<BookCommentBean>() {
     override fun onBind(value: BookCommentBean, pos: Int) {
         //头像
         Glide.with(getContext())
-                .load(Constant.IMG_BASE_URL + value.authorBean.avatar)
+                .load(Constant.IMG_BASE_URL + value.author.avatar)
                 .placeholder(R.drawable.ic_default_portrait)
                 .error(R.drawable.ic_load_error)
                 .transform(CircleTransform(App.getInstance()))
                 .into(mIvPortrait!!)
         //名字
-        mTvName!!.text = value.authorBean.nickname
+        mTvName!!.text = value.author.nickname
         //等级
         mTvLv!!.text = StringUtils.getString(R.string.nb_user_lv,
-                value.authorBean.lv)
+                value.author.lv)
         //简介
         mTvBrief!!.text = value.title
         //label

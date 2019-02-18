@@ -1,8 +1,8 @@
 package com.example.newbiechen.ireader.widget.page
 
 
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.BookChapter
+import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
 import com.example.newbiechen.ireader.utils.BookManager
 import com.example.newbiechen.ireader.utils.Constant
@@ -18,9 +18,9 @@ import java.util.*
  * 网络页面加载器
  */
 
-class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pageView, collBook) {
+class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageView, collBook) {
 
-    private fun convertTxtChapter(bookChapters: List<BookChapterBean>): MutableList<TxtChapter> {
+    private fun convertTxtChapter(bookChapters: List<BookChapter>): MutableList<TxtChapter> {
         val txtChapters = ArrayList<TxtChapter>(bookChapters.size)
         for (bean in bookChapters) {
             val chapter = TxtChapter()
@@ -33,11 +33,11 @@ class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pag
     }
 
     override fun refreshChapterList() {
-        if (collBook.bookChapters == null) return
+        if (bookChapters.isEmpty()) return
         checkRecordValid()
 
         // 将 BookChapter 转换成当前可用的 Chapter
-        mChapterList = convertTxtChapter(collBook.bookChapters)
+        mChapterList = convertTxtChapter(bookChapters)
         isChapterListPrepare = true
 
         // 目录加载完成，执行回调操作。
@@ -54,7 +54,7 @@ class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pag
 
     @Throws(Exception::class)
     override fun getChapterReader(chapter: TxtChapter): BufferedReader? {
-        val file = File(Constant.BOOK_CACHE_PATH + collBook._id
+        val file = File(Constant.BOOK_CACHE_PATH + collBook.bookId
                 + File.separator + chapter.title + FileUtils.SUFFIX_NB)
         if (!file.exists()) return null
 
@@ -63,7 +63,7 @@ class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pag
     }
 
     override fun hasChapterData(chapter: TxtChapter): Boolean {
-        return BookManager.isChapterCached(collBook._id, chapter.title)
+        return BookManager.isChapterCached(collBook.bookId, chapter.title)
     }
 
     // 装载上一章节的内容
@@ -200,11 +200,10 @@ class NetPageLoader(pageView: PageView, collBook: CollBookBean) : PageLoader(pag
         super.saveRecord()
         if (collBook != null && isChapterListPrepare) {
             //表示当前CollBook已经阅读
-            collBook.setIsUpdate(false)
+            collBook.isUpdate = false
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.instance
-                    .saveCollBook(collBook)
+            BookRepository.instance.insertOrUpdateCollBook(collBook)
         }
     }
 }

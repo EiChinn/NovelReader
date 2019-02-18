@@ -3,24 +3,20 @@ package com.example.newbiechen.ireader.model.local
 import com.example.newbiechen.ireader.model.bean.*
 import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage
-import com.example.newbiechen.ireader.model.flag.BookSort
-import com.example.newbiechen.ireader.model.gen.*
 import com.example.newbiechen.ireader.utils.Constant
-import com.example.newbiechen.ireader.utils.LogUtils
 import com.example.newbiechen.ireader.utils.SharedPreUtils
 import com.google.gson.Gson
 import io.reactivex.Single
-import org.greenrobot.greendao.Property
-import org.greenrobot.greendao.query.Join
-import org.greenrobot.greendao.query.QueryBuilder
-import java.util.*
 
 /**
  * Created by newbiechen on 17-4-26.
  */
 
 class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteDbHelper {
-    private val mSession: DaoSession = DaoDbHelper.instance!!.session
+    override fun deleteAll() {
+
+    }
+//    private val mSession: DaoSession = DaoDbHelper.instance!!.session
 
     /*************************************数据存储 */
     /**
@@ -28,7 +24,7 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
      * @param beans
      */
     override fun saveBookComments(beans: List<BookCommentBean>) {
-        //存储Author,为了保证高效性，所以首先转换成List进行统一存储。
+        /*//存储Author,为了保证高效性，所以首先转换成List进行统一存储。
         val authorBeans = ArrayList<AuthorBean>(beans.size)
         for (i in beans.indices) {
             val commentBean = beans[i]
@@ -37,11 +33,11 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
         saveAuthors(authorBeans)
         //
         mSession.bookCommentBeanDao
-                .insertOrReplaceInTx(beans)
+                .insertOrReplaceInTx(beans)*/
     }
 
     override fun saveBookHelps(beans: List<BookHelpsBean>) {
-        mSession.startAsyncSession()
+        /*mSession.startAsyncSession()
                 .runInTx {
                     //存储Author,为了保证高效性，所以首先转换成List进行统一存储。
                     val authorBeans = ArrayList<AuthorBean>(beans.size)
@@ -52,12 +48,12 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
 
                     mSession.bookHelpsBeanDao
                             .insertOrReplaceInTx(beans)
-                }
+                }*/
 
     }
 
     override fun saveBookReviews(beans: List<BookReviewBean>) {
-        mSession.startAsyncSession()
+        /*mSession.startAsyncSession()
                 .runInTx {
                     //数据转换
                     val bookBeans = ArrayList<ReviewBookBean>(beans.size)
@@ -71,22 +67,22 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
                     //存储BookReview
                     mSession.bookReviewBeanDao
                             .insertOrReplaceInTx(beans)
-                }
+                }*/
     }
 
     override fun saveBooks(beans: List<ReviewBookBean>) {
-        mSession.reviewBookBeanDao
-                .insertOrReplaceInTx(beans)
+       /* mSession.reviewBookBeanDao
+                .insertOrReplaceInTx(beans)*/
     }
 
     override fun saveAuthors(beans: List<AuthorBean>) {
-        mSession.authorBeanDao
-                .insertOrReplaceInTx(beans)
+        /*mSession.authorBeanDao
+                .insertOrReplaceInTx(beans)*/
     }
 
     override fun saveBookHelpfuls(beans: List<BookHelpfulBean>) {
-        mSession.bookHelpfulBeanDao
-                .insertOrReplaceInTx(beans)
+        /*mSession.bookHelpfulBeanDao
+                .insertOrReplaceInTx(beans)*/
     }
 
     override fun saveBookSortPackage(bean: BookSortPackage) {
@@ -100,9 +96,9 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
     }
 
     override fun saveDownloadTask(bean: DownloadTaskBean) {
-        BookRepository.instance!!.saveBookChaptersWithAsync(bean.bookChapters)
+        /*BookRepository.instance!!.saveBookChaptersWithAsync(bean.bookChapters)
         mSession.downloadTaskBeanDao
-                .insertOrReplace(bean)
+                .insertOrReplace(bean)*/
     }
 
     /***************************************read data */
@@ -118,7 +114,7 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
      */
     override fun getBookComments(block: String, sort: String, start: Int, limited: Int, distillate: String): Single<List<BookCommentBean>> {
 
-        val queryBuilder = mSession.bookCommentBeanDao
+        /*val queryBuilder = mSession.bookCommentBeanDao
                 .queryBuilder()
                 .where(BookCommentBeanDao.Properties.Block.eq(block),
                         BookCommentBeanDao.Properties.State.eq(distillate))
@@ -126,7 +122,12 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
                 .limit(limited)
 
         queryOrderBy(queryBuilder, BookCommentBeanDao::class.java, sort)
-        return queryToRx(queryBuilder)
+        return queryToRx(queryBuilder)*/
+
+        return Single.create { e ->
+            var data  = ArrayList<BookCommentBean>(1)
+            e.onSuccess(data)
+        }
     }
 
     /**
@@ -138,7 +139,7 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
      * @return
      */
     override fun getBookHelps(sort: String, start: Int, limited: Int, distillate: String): Single<List<BookHelpsBean>> {
-        val queryBuilder = mSession.bookHelpsBeanDao
+        /*val queryBuilder = mSession.bookHelpsBeanDao
                 .queryBuilder()
                 .where(BookHelpsBeanDao.Properties.State.eq(distillate))
                 .offset(start)
@@ -146,11 +147,15 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
 
 
         queryOrderBy(queryBuilder, BookHelpsBean::class.java, sort)
-        return queryToRx(queryBuilder)
+        return queryToRx(queryBuilder)*/
+        return Single.create { e ->
+            var data  = ArrayList<BookHelpsBean>(1)
+            e.onSuccess(data)
+        }
     }
 
     override fun getBookReviews(sort: String, bookType: String, start: Int, limited: Int, distillate: String): Single<List<BookReviewBean>> {
-        val queryBuilder = mSession.bookReviewBeanDao
+        /*val queryBuilder = mSession.bookReviewBeanDao
                 .queryBuilder()
                 .where(BookReviewBeanDao.Properties.State.eq(distillate))
                 .limit(limited)
@@ -169,7 +174,11 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
             queryOrderBy(queryBuilder, BookReviewBeanDao::class.java, sort)
         }
 
-        return queryToRx(queryBuilder)
+        return queryToRx(queryBuilder)*/
+        return Single.create { e ->
+            var data  = ArrayList<BookReviewBean>(1)
+            e.onSuccess(data)
+        }
     }
 
     override fun getBookSortPackage(): BookSortPackage? {
@@ -191,32 +200,36 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
     }
 
     override fun getAuthor(id: String): AuthorBean {
-        return mSession.authorBeanDao
+        /*return mSession.authorBeanDao
                 .queryBuilder()
                 .where(AuthorBeanDao.Properties._id.eq(id))
-                .unique()
+                .unique()*/
+        return AuthorBean()
     }
 
     override fun getReviewBook(id: String): ReviewBookBean {
-        return mSession.reviewBookBeanDao
+        /*return mSession.reviewBookBeanDao
                 .queryBuilder()
                 .where(ReviewBookBeanDao.Properties._id.eq(id))
-                .unique()
+                .unique()*/
+        return ReviewBookBean()
     }
 
     override fun getBookHelpful(id: String): BookHelpfulBean {
-        return mSession.bookHelpfulBeanDao
+        /*return mSession.bookHelpfulBeanDao
                 .queryBuilder()
                 .where(BookHelpfulBeanDao.Properties._id.eq(id))
-                .unique()
+                .unique()*/
+        return BookHelpfulBean()
     }
 
     override fun getDownloadTaskList(): MutableList<DownloadTaskBean> {
-        return mSession.downloadTaskBeanDao
-                .loadAll()
+        /*return mSession.downloadTaskBeanDao
+                .loadAll()*/
+        return ArrayList<DownloadTaskBean>()
     }
 
-    private fun <T> queryOrderBy(queryBuilder: QueryBuilder<*>, daoCls: Class<T>, orderBy: String) {
+    /*private fun <T> queryOrderBy(queryBuilder: QueryBuilder<*>, daoCls: Class<T>, orderBy: String) {
         //获取Dao中的Properties
         val innerCls = daoCls.classes
         var propertiesCls: Class<*>? = null
@@ -252,26 +265,12 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
             }
             e.onSuccess(data)
         }
-    }
-
-    /** */
-    /**
-     * 处理多出来的数据,一般在退出程序的时候进行
-     */
-    fun disposeOverflowData() {
-        //固定存储100条数据，剩下的数据都删除
-        mSession.startAsyncSession()
-                .runInTx {
-                    disposeBookComment()
-                    disposeBookHelps()
-                    disposeBookReviews()
-                }
-    }
+    }*/
 
     private fun disposeBookComment() {
         //第一种方法:使用get获取对象之后再依次删除。
         //第二种方法:直接调用Sqlite语句进行删除
-        val commentBeanDao = mSession.bookCommentBeanDao
+        /*val commentBeanDao = mSession.bookCommentBeanDao
         val count = commentBeanDao.count().toInt()
         val bookCommentBeans = commentBeanDao
                 .queryBuilder()
@@ -285,11 +284,11 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
             authorBeans.add(commentBean.authorBean)
         }
         deleteAuthors(authorBeans)
-        deleteBookComments(bookCommentBeans)
+        deleteBookComments(bookCommentBeans)*/
     }
 
     private fun disposeBookHelps() {
-        val helpfulDao = mSession.bookHelpsBeanDao
+        /*val helpfulDao = mSession.bookHelpsBeanDao
         val count = helpfulDao.count().toInt()
         val helpsBeans = helpfulDao
                 .queryBuilder()
@@ -302,11 +301,11 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
             authorBeans.add(commentBean.authorBean)
         }
         deleteAuthors(authorBeans)
-        deleteBookHelps(helpsBeans)
+        deleteBookHelps(helpsBeans)*/
     }
 
     private fun disposeBookReviews() {
-        val reviewDao = mSession.bookReviewBeanDao
+        /*val reviewDao = mSession.bookReviewBeanDao
         val count = reviewDao.count().toInt()
         val reviewBeans = reviewDao
                 .queryBuilder()
@@ -322,49 +321,41 @@ class LocalRepository private constructor() : SaveDbHelper, GetDbHelper, DeleteD
         }
         deleteBooks(bookBeans)
         deleteBookHelpful(helpfulBeans)
-        deleteBookReviews(reviewBeans)
+        deleteBookReviews(reviewBeans)*/
     }
 
     /************************************delete */
     override fun deleteBookComments(beans: List<BookCommentBean>) {
-        mSession.bookCommentBeanDao
-                .deleteInTx(beans)
+        /*mSession.bookCommentBeanDao
+                .deleteInTx(beans)*/
     }
 
     override fun deleteBookReviews(beans: List<BookReviewBean>) {
-        mSession.bookReviewBeanDao
-                .deleteInTx(beans)
+        /*mSession.bookReviewBeanDao
+                .deleteInTx(beans)*/
     }
 
     override fun deleteBookHelps(beans: List<BookHelpsBean>) {
-        mSession.bookHelpsBeanDao
-                .deleteInTx(beans)
+        /*mSession.bookHelpsBeanDao
+                .deleteInTx(beans)*/
     }
 
     override fun deleteAuthors(beans: List<AuthorBean>) {
-        mSession.authorBeanDao
-                .deleteInTx(beans)
+        /*mSession.authorBeanDao
+                .deleteInTx(beans)*/
     }
 
     override fun deleteBooks(beans: List<ReviewBookBean>) {
-        mSession.reviewBookBeanDao
-                .deleteInTx(beans)
+        /*mSession.reviewBookBeanDao
+                .deleteInTx(beans)*/
     }
 
     override fun deleteBookHelpful(beans: List<BookHelpfulBean>) {
-        mSession.bookHelpfulBeanDao
-                .deleteInTx(beans)
-    }
-
-    override fun deleteAll() {
-        //清空全部数据。
+        /*mSession.bookHelpfulBeanDao
+                .deleteInTx(beans)*/
     }
 
     companion object {
-        private val TAG = "LocalRepository"
-        private val DISTILLATE_ALL = "normal"
-        private val DISTILLATE_BOUTIQUES = "distillate"
-
         @Volatile
         private var sInstance: LocalRepository? = null
 

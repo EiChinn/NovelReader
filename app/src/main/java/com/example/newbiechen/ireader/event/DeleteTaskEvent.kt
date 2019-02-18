@@ -1,5 +1,5 @@
 package com.example.newbiechen.ireader.event
 
-import com.example.newbiechen.ireader.model.bean.CollBookBean
+import com.example.newbiechen.ireader.db.entity.CollBook
 
-data class DeleteTaskEvent(val collBook: CollBookBean)
+data class DeleteTaskEvent(val collBook: CollBook)

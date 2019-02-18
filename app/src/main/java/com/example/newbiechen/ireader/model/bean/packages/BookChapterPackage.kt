@@ -1,7 +1,7 @@
 package com.example.newbiechen.ireader.model.bean.packages
 
+import com.example.newbiechen.ireader.db.entity.BookChapter
 import com.example.newbiechen.ireader.model.bean.BaseBean
-import com.example.newbiechen.ireader.model.bean.BookChapterBean
 
 class BookChapterPackage(ok: Boolean) : BaseBean(ok) {
 
@@ -19,6 +19,6 @@ class BookChapterPackage(ok: Boolean) : BaseBean(ok) {
             val chaptersCount1: Int,
             val chaptersUpdated: String,
             val updated: String,
-            val chapters: List<BookChapterBean>
+            val chapters: List<BookChapter>
             )
 }
