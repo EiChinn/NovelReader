@@ -1200,7 +1200,6 @@ abstract class PageLoader
         var showTitle = true // 是否展示标题
         var paragraph: String? = chapter.title//默认展示标题
         try {
-            paragraph = br.readLine()
             while (showTitle || paragraph != null) {
                 // 重置段落
                 if (!showTitle) {
@@ -1277,6 +1276,7 @@ abstract class PageLoader
                     rHeight = rHeight - mTitlePara + mTitleInterval
                     showTitle = false
                 }
+                paragraph = br.readLine()
             }
 
             if (lines.size != 0) {

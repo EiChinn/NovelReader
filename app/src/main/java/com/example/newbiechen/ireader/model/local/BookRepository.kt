@@ -133,7 +133,7 @@ class BookRepository private constructor() {
     }
 
     /*****************************get */
-    fun getCollBook(bookId: String): CollBookBean {
+    fun getCollBook(bookId: String): CollBookBean? {
         return mCollBookDao.queryBuilder()
                 .where(CollBookBeanDao.Properties._id.eq(bookId))
                 .unique()
@@ -153,7 +153,7 @@ class BookRepository private constructor() {
     }
 
     //获取阅读记录
-    fun getBookRecord(bookId: String): BookRecordBean {
+    fun getBookRecord(bookId: String): BookRecordBean? {
         return session.bookRecordBeanDao
                 .queryBuilder()
                 .where(BookRecordBeanDao.Properties.BookId.eq(bookId))
