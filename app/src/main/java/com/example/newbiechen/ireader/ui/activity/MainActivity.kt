@@ -189,14 +189,4 @@ class MainActivity : BaseTabActivity() {
             }
         })
     }
-
-
-
-}
-
-fun main() {
-    val list1 = listOf("one", "two")
-    val list2 = listOf("three", "one")
-    val result = list1.union(list2)
-    print(result)
 }

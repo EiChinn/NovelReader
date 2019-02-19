@@ -69,6 +69,8 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
                 // 保留当前书籍源
                 newCollBook.currentSourceId = oldCollBook.currentSourceId
                 newCollBook.currentSourceName = oldCollBook.currentSourceName
+                newCollBook.chapter = oldCollBook.chapter
+                newCollBook.pagePos = oldCollBook.pagePos
                 newCollBooks.add(newCollBook)
                 //存储到数据库中
                 BookRepository.instance.insertOrUpdateCollBooks(newCollBooks)
