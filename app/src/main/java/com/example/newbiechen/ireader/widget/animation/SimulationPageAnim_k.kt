@@ -1,59 +1,49 @@
 package com.example.newbiechen.ireader.widget.animation
 
-import android.graphics.*
-import android.graphics.drawable.GradientDrawable
 import android.view.View
 
-/**
- * Created by newbiechen on 17-7-24.
- */
-
-class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnPageChangeListener) : HorizonPageAnim(w, h, view, listener) {
-
+class SimulationPageAnim_k(w: Int, h: Int, view: View, listener: PageAnimation.OnPageChangeListener)/* : HorizonPageAnim(w, h, view, listener) {
     private var mCornerX = 1 // 拖拽点对应的页脚
     private var mCornerY = 1
-    private val mPath0: Path
-    private val mPath1: Path
+    private var mPath0 = Path()
+    private var mPath1 = Path()
 
-    internal var mBezierStart1 = PointF() // 贝塞尔曲线起始点
-    internal var mBezierControl1 = PointF() // 贝塞尔曲线控制点
-    internal var mBeziervertex1 = PointF() // 贝塞尔曲线顶点
-    internal var mBezierEnd1 = PointF() // 贝塞尔曲线结束点
+    private val mBezierStart1 = PointF() // 贝塞尔曲线起始点
+    private val mBezierControl1 = PointF() // 贝塞尔曲线控制点
+    private val mBeziervertex1 = PointF() // // 贝塞尔曲线顶点
+    private var mBezierEnd1 = PointF() // 贝塞尔曲线结束点
 
-    internal var mBezierStart2 = PointF() // 另一条贝塞尔曲线
-    internal var mBezierControl2 = PointF()
-    internal var mBeziervertex2 = PointF()
-    internal var mBezierEnd2 = PointF()
+    private val mBezierStart2 = PointF() // 另一条贝塞尔曲线
+    private val mBezierControl2 = PointF()
+    private val mBeziervertex2 = PointF()
+    private var mBezierEnd2 = PointF()
 
-    internal var mMiddleX: Float = 0.toFloat()
-    internal var mMiddleY: Float = 0.toFloat()
-    internal var mDegrees: Float = 0.toFloat()
-    internal var mTouchToCornerDis: Float = 0.toFloat()
-    internal var mColorMatrixFilter: ColorMatrixColorFilter
-    internal var mMatrix: Matrix
-    internal var mMatrixArray = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.0f)
+    private var mMiddleX = 0.0f
+    private var mMiddleY = 0.0f
+    private var mDegrees = 0.0f
+    private var mTouchToCornerDis = 0.0f
+    private val mColorMatrixFilter: ColorMatrixColorFilter
+    private val mMatrix: Matrix
+    private val mMatrixArray = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.0f)
 
-    internal var mIsRTandLB: Boolean = false // 是否属于右上左下
-    private val mMaxLength: Float
-    internal lateinit var mBackShadowColors: IntArray// 背面颜色组
-    internal lateinit var mFrontShadowColors: IntArray// 前面颜色组
-    internal lateinit var mBackShadowDrawableLR: GradientDrawable // 有阴影的GradientDrawable
-    internal lateinit var mBackShadowDrawableRL: GradientDrawable
-    internal lateinit var mFolderShadowDrawableLR: GradientDrawable
-    internal lateinit var mFolderShadowDrawableRL: GradientDrawable
+    private var mIsRTandLB = false // 是否属于右上左下
+    private var mMaxLength = 0.0f
+    private var mBackShadowColors = intArrayOf(0xff111111.toInt(), 0x111111) // 背面颜色组
+    private var mFrontShadowColors = intArrayOf(0x80111111.toInt(), 0x111111) // 前面颜色组
 
-    internal lateinit var mFrontShadowDrawableHBT: GradientDrawable
-    internal lateinit var mFrontShadowDrawableHTB: GradientDrawable
-    internal lateinit var mFrontShadowDrawableVLR: GradientDrawable
-    internal lateinit var mFrontShadowDrawableVRL: GradientDrawable
+    private lateinit var mBackShadowDrawableLR: GradientDrawable
+    private lateinit var mBackShadowDrawableRL: GradientDrawable
+    private lateinit var mFolderShadowDrawableLR: GradientDrawable
+    private lateinit var mFolderShadowDrawableRL: GradientDrawable
+    private lateinit var mFrontShadowDrawableHBT: GradientDrawable
+    private lateinit var mFrontShadowDrawableHTB: GradientDrawable
+    private lateinit var mFrontShadowDrawableVLR: GradientDrawable
+    private lateinit var mFrontShadowDrawableVRL: GradientDrawable
 
-    internal var mPaint: Paint
+    private val mPaint = Paint()
 
     init {
-        mPath0 = Path()
-        mPath1 = Path()
         mMaxLength = Math.hypot(mScreenWidth.toDouble(), mScreenHeight.toDouble()).toFloat()
-        mPaint = Paint()
 
         mPaint.style = Paint.Style.FILL
 
@@ -67,6 +57,55 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
 
         mTouchX = 0.01f // 不让x,y为0,否则在点计算时会有问题
         mTouchY = 0.01f
+    }
+
+    *//**
+     * 创建阴影的GradientDrawable
+     *//*
+    private fun createDrawable() {
+        val color = intArrayOf(0x333333, 0xb0333333.toInt())
+        mFolderShadowDrawableRL = GradientDrawable(
+                GradientDrawable.Orientation.RIGHT_LEFT, color)
+        mFolderShadowDrawableRL.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mFolderShadowDrawableLR = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, color)
+        mFolderShadowDrawableLR.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mBackShadowColors = intArrayOf(0xff111111.toInt(), 0x111111)
+        mBackShadowDrawableRL = GradientDrawable(
+                GradientDrawable.Orientation.RIGHT_LEFT, mBackShadowColors)
+        mBackShadowDrawableRL.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mBackShadowDrawableLR = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, mBackShadowColors)
+        mBackShadowDrawableLR.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mFrontShadowColors = intArrayOf(-0x7feeeeef, 0x111111)
+        mFrontShadowDrawableVLR = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, mFrontShadowColors)
+        mFrontShadowDrawableVLR.gradientType = GradientDrawable.LINEAR_GRADIENT
+        mFrontShadowDrawableVRL = GradientDrawable(
+                GradientDrawable.Orientation.RIGHT_LEFT, mFrontShadowColors)
+        mFrontShadowDrawableVRL.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mFrontShadowDrawableHTB = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM, mFrontShadowColors)
+        mFrontShadowDrawableHTB.gradientType = GradientDrawable.LINEAR_GRADIENT
+
+        mFrontShadowDrawableHBT = GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP, mFrontShadowColors)
+        mFrontShadowDrawableHBT.gradientType = GradientDrawable.LINEAR_GRADIENT
+    }
+
+
+    override fun drawStatic(canvas: Canvas) {
+        if (isCancel) {
+            mNextBitmap = mCurBitmap.copy(Bitmap.Config.RGB_565, true)
+            canvas.drawBitmap(mCurBitmap, 0f, 0f, null)
+        } else {
+            canvas.drawBitmap(mNextBitmap, 0f, 0f, null)
+        }
     }
 
     override fun drawMove(canvas: Canvas) {
@@ -88,15 +127,6 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         }
     }
 
-    override fun drawStatic(canvas: Canvas) {
-        if (isCancel) {
-            mNextBitmap = mCurBitmap.copy(Bitmap.Config.RGB_565, true)
-            canvas.drawBitmap(mCurBitmap, 0f, 0f, null)
-        } else {
-            canvas.drawBitmap(mNextBitmap, 0f, 0f, null)
-        }
-    }
-
     override fun startAnim() {
         super.startAnim()
         var dx: Int
@@ -105,37 +135,37 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         // dy 垂直方向滑动的距离，负值会使滚动向上滚动
         if (isCancel) {
 
-            if (mCornerX > 0 && mDirection == PageAnimation.Direction.NEXT) {
-                dx = (mScreenWidth - mTouchX).toInt()
+            dx = if (mCornerX > 0 && mDirection == PageAnimation.Direction.NEXT) {
+                (mScreenWidth - mTouchX).toInt()
             } else {
-                dx = -mTouchX.toInt()
+                -mTouchX.toInt()
             }
 
             if (mDirection != PageAnimation.Direction.NEXT) {
                 dx = (-(mScreenWidth + mTouchX)).toInt()
             }
 
-            if (mCornerY > 0) {
-                dy = (mScreenHeight - mTouchY).toInt()
+            dy = if (mCornerY > 0) {
+                (mScreenHeight - mTouchY).toInt()
             } else {
-                dy = -mTouchY.toInt() // 防止mTouchY最终变为0
+                -mTouchY.toInt() // 防止mTouchY最终变为0
             }
         } else {
-            if (mCornerX > 0 && mDirection == PageAnimation.Direction.NEXT) {
-                dx = -(mScreenWidth + mTouchX).toInt()
+            dx = if (mCornerX > 0 && mDirection == PageAnimation.Direction.NEXT) {
+                -(mScreenWidth + mTouchX).toInt()
             } else {
-                dx = (mScreenWidth - mTouchX + mScreenWidth).toInt()
+                (mScreenWidth - mTouchX + mScreenWidth).toInt()
             }
-            if (mCornerY > 0) {
-                dy = (mScreenHeight - mTouchY).toInt()
+            dy = if (mCornerY > 0) {
+                (mScreenHeight - mTouchY).toInt()
             } else {
-                dy = (1 - mTouchY).toInt() // 防止mTouchY最终变为0
+                (1 - mTouchY).toInt() // 防止mTouchY最终变为0
             }
         }
         mScroller.startScroll(mTouchX.toInt(), mTouchY.toInt(), dx, dy, 400)
     }
 
-    override fun setDirection(direction: PageAnimation.Direction) {
+    override fun setDirection(direction: Direction) {
         super.setDirection(direction)
 
         when (direction) {
@@ -169,64 +199,33 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         }
     }
 
-    /**
-     * 创建阴影的GradientDrawable
-     */
-    private fun createDrawable() {
-        val color = intArrayOf(0x333333, -0x4fcccccd)
-        mFolderShadowDrawableRL = GradientDrawable(
-                GradientDrawable.Orientation.RIGHT_LEFT, color)
-        mFolderShadowDrawableRL.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mFolderShadowDrawableLR = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, color)
-        mFolderShadowDrawableLR.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mBackShadowColors = intArrayOf(-0xeeeeef, 0x111111)
-        mBackShadowDrawableRL = GradientDrawable(
-                GradientDrawable.Orientation.RIGHT_LEFT, mBackShadowColors)
-        mBackShadowDrawableRL.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mBackShadowDrawableLR = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, mBackShadowColors)
-        mBackShadowDrawableLR.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mFrontShadowColors = intArrayOf(-0x7feeeeef, 0x111111)
-        mFrontShadowDrawableVLR = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, mFrontShadowColors)
-        mFrontShadowDrawableVLR.gradientType = GradientDrawable.LINEAR_GRADIENT
-        mFrontShadowDrawableVRL = GradientDrawable(
-                GradientDrawable.Orientation.RIGHT_LEFT, mFrontShadowColors)
-        mFrontShadowDrawableVRL.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mFrontShadowDrawableHTB = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM, mFrontShadowColors)
-        mFrontShadowDrawableHTB.gradientType = GradientDrawable.LINEAR_GRADIENT
-
-        mFrontShadowDrawableHBT = GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP, mFrontShadowColors)
-        mFrontShadowDrawableHBT.gradientType = GradientDrawable.LINEAR_GRADIENT
-    }
-
-    /**
-     * 是否能够拖动过去
+    *//**
+     * 计算拖拽点对应的拖拽脚
      *
-     * @return
-     */
-    fun canDragOver(): Boolean {
-        return if (mTouchToCornerDis > mScreenWidth / 10) true else false
+     * @param x
+     * @param y
+     *//*
+    private fun calcCornerXY(x: Float, y: Float) {
+        mCornerX = if (x <= mScreenWidth / 2) {
+            0
+        } else {
+            mScreenWidth
+        }
+        mCornerY = if (y <= mScreenHeight / 2) {
+            0
+        } else {
+            mScreenHeight
+        }
+
+        mIsRTandLB = mCornerX == 0 && mCornerY == mScreenHeight || mCornerX == mScreenWidth && mCornerY == 0
     }
 
-    fun right(): Boolean {
-        return if (mCornerX > -4) false else true
-    }
-
-    /**
+    *//**
      * 绘制翻起页背面
      *
      * @param canvas
      * @param bitmap
-     */
+     *//*
     private fun drawCurrentBackArea(canvas: Canvas, bitmap: Bitmap) {
         val i = (mBezierStart1.x + mBezierControl1.x).toInt() / 2
         val f1 = Math.abs(i - mBezierControl1.x)
@@ -258,6 +257,7 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
             canvas.clipPath(mPath1, Region.Op.INTERSECT)
         } catch (e: Exception) {
         }
+
 
         mPaint.colorFilter = mColorMatrixFilter
         //对Bitmap进行取色
@@ -295,12 +295,12 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         canvas.restore()
     }
 
-    /**
+    *//**
      * 绘制翻起页的阴影
      *
      * @param canvas
-     */
-    fun drawCurrentPageShadow(canvas: Canvas) {
+     *//*
+    private fun drawCurrentPageShadow(canvas: Canvas) {
         val degree: Double
         if (mIsRTandLB) {
             degree = Math.PI / 4 - Math.atan2((mBezierControl1.y - mTouchY).toDouble(), (mTouchX - mBezierControl1.x).toDouble())
@@ -323,7 +323,7 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         mPath1.lineTo(mBezierControl1.x, mBezierControl1.y)
         mPath1.lineTo(mBezierStart1.x, mBezierStart1.y)
         mPath1.close()
-        var rotateDegrees: Float
+        var rotateDegrees: Float = Math.toDegrees(Math.atan2((mTouchX - mBezierControl1.x).toDouble(), (mBezierControl1.y - mTouchY).toDouble())).toFloat()
         canvas.save()
         try {
             canvas.clipPath(mPath0, Region.Op.XOR)
@@ -331,6 +331,7 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         } catch (e: Exception) {
             // TODO: handle exception
         }
+
 
         var leftx: Int
         var rightx: Int
@@ -345,7 +346,6 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
             mCurrentPageShadow = mFrontShadowDrawableVRL
         }
 
-        rotateDegrees = Math.toDegrees(Math.atan2((mTouchX - mBezierControl1.x).toDouble(), (mBezierControl1.y - mTouchY).toDouble())).toFloat()
         canvas.rotate(rotateDegrees, mBezierControl1.x, mBezierControl1.y)
         mCurrentPageShadow.setBounds(leftx,
                 (mBezierControl1.y - mMaxLength).toInt(), rightx,
@@ -365,6 +365,7 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
             canvas.clipPath(mPath1, Region.Op.INTERSECT)
         } catch (e: Exception) {
         }
+
 
         if (mIsRTandLB) {
             leftx = mBezierControl2.y.toInt()
@@ -428,6 +429,7 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         }
 
 
+
         canvas.drawBitmap(bitmap, 0f, 0f, null)
         canvas.rotate(mDegrees, mBezierStart1.x, mBezierStart1.y)
         mBackShadowDrawable.setBounds(leftx, mBezierStart1.y.toInt(), rightx,
@@ -455,32 +457,6 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
             canvas.restore()
         } catch (e: Exception) {
 
-        }
-
-    }
-
-    /**
-     * 计算拖拽点对应的拖拽脚
-     *
-     * @param x
-     * @param y
-     */
-    fun calcCornerXY(x: Float, y: Float) {
-        if (x <= mScreenWidth / 2) {
-            mCornerX = 0
-        } else {
-            mCornerX = mScreenWidth
-        }
-        if (y <= mScreenHeight / 2) {
-            mCornerY = 0
-        } else {
-            mCornerY = mScreenHeight
-        }
-
-        if (mCornerX == 0 && mCornerY == mScreenHeight || mCornerX == mScreenWidth && mCornerY == 0) {
-            mIsRTandLB = true
-        } else {
-            mIsRTandLB = false
         }
 
     }
@@ -551,29 +527,26 @@ class SimulationPageAnim(w: Int, h: Int, view: View, listener: PageAnimation.OnP
         mBeziervertex2.y = (2 * mBezierControl2.y + mBezierStart2.y + mBezierEnd2.y) / 4
     }
 
-    /**
+    *//**
      * 求解直线P1P2和直线P3P4的交点坐标
      *
-     * @param P1
-     * @param P2
-     * @param P3
-     * @param P4
+     * @param p1
+     * @param p2
+     * @param p3
+     * @param p4
      * @return
-     */
-    fun getCross(P1: PointF, P2: PointF, P3: PointF, P4: PointF): PointF {
-        val CrossP = PointF()
+     *//*
+    private fun getCross(p1: PointF, p2: PointF, p3: PointF, p4: PointF): PointF {
+        val crossP = PointF()
         // 二元函数通式： y=ax+b
-        val a1 = (P2.y - P1.y) / (P2.x - P1.x)
-        val b1 = (P1.x * P2.y - P2.x * P1.y) / (P1.x - P2.x)
+        val a1 = (p2.y - p1.y) / (p2.x - p1.x)
+        val b1 = (p1.x * p2.y - p2.x * p1.y) / (p1.x - p2.x)
 
-        val a2 = (P4.y - P3.y) / (P4.x - P3.x)
-        val b2 = (P3.x * P4.y - P4.x * P3.y) / (P3.x - P4.x)
-        CrossP.x = (b2 - b1) / (a1 - a2)
-        CrossP.y = a1 * CrossP.x + b1
-        return CrossP
+        val a2 = (p4.y - p3.y) / (p4.x - p3.x)
+        val b2 = (p3.x * p4.y - p4.x * p3.y) / (p3.x - p4.x)
+        crossP.x = (b2 - b1) / (a1 - a2)
+        crossP.y = a1 * crossP.x + b1
+        return crossP
     }
 
-    companion object {
-        private val TAG = "SimulationPageAnim"
-    }
-}
+}*/

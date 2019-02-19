@@ -10,27 +10,24 @@ import android.view.ViewConfiguration
  * Created by newbiechen on 17-7-24.
  * 横向动画的模板
  */
-
-abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: Int,
-                               view: View, listener: PageAnimation.OnPageChangeListener) : PageAnimation(w, h, marginWidth, marginHeight, view, listener) {
-
-    protected var mCurBitmap: Bitmap
-    protected var mNextBitmap: Bitmap
+abstract class HorizonPageAnim_k(w: Int, h: Int, marginWidth: Int, marginHeight: Int, view: View,
+                               listener: OnPageChangeListener) : PageAnimation(w, h, marginWidth,
+        marginHeight, view, listener) {
+    @JvmField internal var mCurBitmap: Bitmap
+    @JvmField internal var mNextBitmap: Bitmap
     //是否取消翻页
-    protected var isCancel = false
+    @JvmField internal var isCancel = false
 
-    //可以使用 mLast代替
     private var mMoveX = 0
     private var mMoveY = 0
     //是否移动了
     private var isMove = false
     //是否翻阅下一页。true表示翻到下一页，false表示上一页。
     private var isNext = false
-
     //是否没下一页或者上一页
     private var noNext = false
 
-    constructor(w: Int, h: Int, view: View, listener: PageAnimation.OnPageChangeListener) : this(w, h, 0, 0, view, listener) {}
+    constructor(w: Int, h: Int, view: View, listener: OnPageChangeListener) : this(w, h, 0, 0, view, listener)
 
     init {
         //创建图片
@@ -48,15 +45,15 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
     }
 
     abstract fun drawStatic(canvas: Canvas)
-
     abstract fun drawMove(canvas: Canvas)
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         //获取点击位置
-        val x = event.x.toInt()
-        val y = event.y.toInt()
+        val x = event.x
+        val y = event.y
+
         //设置触摸点
-        setTouchPoint(x.toFloat(), y.toFloat())
+        setTouchPoint(x, y)
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -74,7 +71,7 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
                 //取消
                 isCancel = false
                 //设置起始位置的触摸点
-                setStartPoint(x.toFloat(), y.toFloat())
+                setStartPoint(x, y)
                 //如果存在动画则取消动画
                 abortAnim()
             }
@@ -93,7 +90,7 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
                             //上一页的参数配置
                             isNext = false
                             val hasPrev = mListener.hasPrev()
-                            setDirection(PageAnimation.Direction.PRE)
+                            mDirection = PageAnimation.Direction.PRE
                             //如果上一页不存在
                             if (!hasPrev) {
                                 noNext = true
@@ -105,7 +102,7 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
                             //判断是否下一页存在
                             val hasNext = mListener.hasNext()
                             //如果存在设置动画方向
-                            setDirection(PageAnimation.Direction.NEXT)
+                            mDirection = PageAnimation.Direction.NEXT
 
                             //如果不存在表示没有下一页了
                             if (!hasNext) {
@@ -115,46 +112,34 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
                         }
                     } else {
                         //判断是否取消翻页
-                        if (isNext) {
-                            if (x - mMoveX > 0) {
-                                isCancel = true
-                            } else {
-                                isCancel = false
-                            }
+                        isCancel = if (isNext) {
+                            x - mMoveX > 0
                         } else {
-                            if (x - mMoveX < 0) {
-                                isCancel = true
-                            } else {
-                                isCancel = false
-                            }
+                            x - mMoveX < 0
                         }
                     }
 
-                    mMoveX = x
-                    mMoveY = y
+                    mMoveX = x.toInt()
+                    mMoveY = y.toInt()
                     isRunning = true
                     mView!!.invalidate()
                 }
             }
             MotionEvent.ACTION_UP -> {
                 if (!isMove) {
-                    if (x < mScreenWidth / 2) {
-                        isNext = false
-                    } else {
-                        isNext = true
-                    }
+                    isNext = x >= mScreenWidth / 2
 
                     if (isNext) {
                         //判断是否下一页存在
                         val hasNext = mListener.hasNext()
                         //设置动画方向
-                        setDirection(PageAnimation.Direction.NEXT)
+                        mDirection = PageAnimation.Direction.NEXT
                         if (!hasNext) {
                             return true
                         }
                     } else {
                         val hasPrev = mListener.hasPrev()
-                        setDirection(PageAnimation.Direction.PRE)
+                        mDirection = PageAnimation.Direction.PRE
                         if (!hasPrev) {
                             return true
                         }
@@ -172,8 +157,10 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
                     mView!!.invalidate()
                 }
             }
+
         }
         return true
+
     }
 
     override fun draw(canvas: Canvas) {
@@ -213,12 +200,8 @@ abstract class HorizonPageAnim(w: Int, h: Int, marginWidth: Int, marginHeight: I
     override fun getBgBitmap(): Bitmap {
         return mNextBitmap
     }
-
     override fun getNextBitmap(): Bitmap {
         return mNextBitmap
     }
 
-    companion object {
-        private val TAG = "HorizonPageAnim"
-    }
 }
