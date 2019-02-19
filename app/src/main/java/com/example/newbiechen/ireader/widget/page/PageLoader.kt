@@ -1176,13 +1176,6 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
      * @return
      */
     private fun loadPages(chapter: TxtChapter, br: BufferedReader): MutableList<TxtPage> {
-        /*val chapterStr = StringBuilder()
-        var line = br.readLine()
-        while (line != null) {
-            chapterStr.append(line).append("\n")
-            line = br.readLine()
-        }
-        Log.i("tag", chapterStr.toString())*/
         //生成的页面
         val pages = ArrayList<TxtPage>()
         //使用流的方式加载
@@ -1229,7 +1222,6 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
                         lines.clear()
                         rHeight = mVisibleHeight
                         titleLinesCount = 0
-                        paragraph = br.readLine()
                         continue
                     }
 
