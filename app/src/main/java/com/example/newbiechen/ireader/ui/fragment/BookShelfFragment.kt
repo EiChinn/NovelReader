@@ -312,8 +312,8 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     }
 
     override fun onDestroy() {
-        book_shelf_rv_content.setOnRefreshListener(null)
-        book_shelf_rv_content.setAdapter(null)
+        book_shelf_rv_content?.setOnRefreshListener(null)
+        book_shelf_rv_content?.setAdapter(null)
         super.onDestroy()
     }
 }

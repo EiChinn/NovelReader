@@ -63,7 +63,7 @@ class CommunityFragment : BaseFragment(), BaseListAdapter.OnItemClickListener {
 
     override fun onDestroy() {
         mAdapter!!.setOnItemClickListener(null)
-        community_rv_content.adapter = null
+        community_rv_content?.adapter = null
         super.onDestroy()
     }
 }
