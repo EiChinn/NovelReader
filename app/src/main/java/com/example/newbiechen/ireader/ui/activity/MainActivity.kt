@@ -124,10 +124,12 @@ class MainActivity : BaseTabActivity() {
     override fun onBackPressed() {
         if (!isPrepareFinish) {
             mVp.postDelayed({ isPrepareFinish = false }, WAIT_INTERVAL)
+            isPrepareFinish = true
+            toast("再按一次退出")
+        } else {
+            super.onBackPressed()
         }
-        isPrepareFinish = true
-        toast("再按一次退出")
-        super.onBackPressed()
+
     }
 
     /**
