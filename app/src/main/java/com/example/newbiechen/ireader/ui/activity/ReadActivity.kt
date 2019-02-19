@@ -543,16 +543,17 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                     .getBookChaptersInRx(mBookId!!)
                     .compose<List<BookChapter>> { RxUtils.toSimpleSingle(it) }
                     .subscribe { bookChapter, throwable ->
-                        // 设置 CollBook
-                        mPageLoader!!.bookChapters = bookChapter
-                        // 刷新章节列表
-                        mPageLoader!!.refreshChapterList()
-                        // 如果是网络小说并被标记更新的，则从网络下载目录
-                        if (mCollBook!!.isUpdate && !mCollBook!!.isLocal) {
+                        // 如果数据库的目录章节为空，或者小说并被标记更新的，则从网络下载目录
+                        if (bookChapter.isEmpty() || (mCollBook!!.isUpdate && !mCollBook!!.isLocal)) {
                             loadCategory()
                             if (throwable != null) {
                                 LogUtils.e(throwable.toString())
                             }
+                        } else {
+                            // 设置 CollBook
+                            mPageLoader!!.bookChapters = bookChapter
+                            // 刷新章节列表
+                            mPageLoader!!.refreshChapterList()
                         }
                     }
             addDisposable(disposable)

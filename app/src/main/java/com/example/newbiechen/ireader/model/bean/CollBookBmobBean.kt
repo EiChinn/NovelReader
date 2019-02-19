@@ -28,6 +28,8 @@ class CollBookBmobBean : BmobObject() {
     // 获取目录和章节时使用
     var currentSourceName: String = ""
     var currentSourceId: String = ""
+    var chapter: Int = 0 // 阅读到了第几章
+    var pagePos: Int = 0 // 当前的页码
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -65,6 +67,8 @@ object BmobDaoUtils {
         result.isLocal = sourceObj.isLocal
         result.currentSourceId = sourceObj.currentSourceId
         result.currentSourceName = sourceObj.currentSourceName
+        result.chapter = sourceObj.chapter
+        result.pagePos = sourceObj.pagePos
         return result
     }
     fun dao2Bmob(sourceObj: CollBook): CollBookBmobBean {
@@ -83,8 +87,10 @@ object BmobDaoUtils {
         result.lastChapter = sourceObj.lastChapter
         result.isUpdate = sourceObj.isUpdate
         result.isLocal = sourceObj.isLocal
-        result.currentSourceId = sourceObj.currentSourceId ?: ""
-        result.currentSourceName = sourceObj.currentSourceName ?: ""
+        result.currentSourceId = sourceObj.currentSourceId
+        result.currentSourceName = sourceObj.currentSourceName
+        result.chapter = sourceObj.chapter
+        result.pagePos = sourceObj.pagePos
         return result
     }
 }

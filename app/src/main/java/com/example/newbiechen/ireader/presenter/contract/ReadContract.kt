@@ -14,6 +14,6 @@ interface ReadContract{
     interface Presenter : BaseContract.BasePresenter<View> {
         fun loadMixCategory(bookMixId: String)
         fun loadSourceCategory(bookBookId: String, bookMixId: String)
-        fun loadChapter(bookId: String, bookChapterList: List<@JvmSuppressWildcards TxtChapter>)
+        fun loadChapter(bookId: String, bookChapterList: List<TxtChapter>)
     }
 }

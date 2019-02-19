@@ -127,7 +127,6 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
      * @return
      */
     var chapterPos = 0
-        protected set
     //上一章的记录
     private var mLastChapterPos = 0
 

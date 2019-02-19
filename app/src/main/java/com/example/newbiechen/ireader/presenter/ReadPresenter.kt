@@ -68,20 +68,20 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
         addDisposable(disposable)
     }
 
-    override fun loadChapter(bookId: String, bookChapters: List<TxtChapter>) {
-        val size = bookChapters.size
+    override fun loadChapter(bookId: String, bookChapterList: List<TxtChapter>) {
+        val size = bookChapterList.size
 
         //取消上次的任务，防止多次加载
         if (mChapterSub != null) {
             mChapterSub!!.cancel()
         }
 
-        val chapterInfos = ArrayList<Single<ChapterInfoBean>>(bookChapters.size)
-        val titles = ArrayDeque<String>(bookChapters.size)
+        val chapterInfos = ArrayList<Single<ChapterInfoBean>>(bookChapterList.size)
+        val titles = ArrayDeque<String>(bookChapterList.size)
 
         // 将要下载章节，转换成网络请求。
         for (i in 0 until size) {
-            val bookChapter = bookChapters[i]
+            val bookChapter = bookChapterList[i]
             // 网络中获取数据
             val chapterInfoSingle = RemoteRepository.instance
                     .getChapterInfo(bookChapter.link)
@@ -96,7 +96,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         object : Subscriber<ChapterInfoBean> {
-                            internal var title = titles.poll()
+                            var title = titles.poll()
 
                             override fun onSubscribe(s: Subscription) {
                                 s.request(Integer.MAX_VALUE.toLong())
@@ -115,7 +115,7 @@ class ReadPresenter : RxPresenter<ReadContract.View>(), ReadContract.Presenter {
 
                             override fun onError(t: Throwable) {
                                 //只有第一个加载失败才会调用errorChapter
-                                if (bookChapters[0].title == title) {
+                                if (bookChapterList[0].title == title) {
                                     mView.errorChapter()
                                 }
                                 LogUtils.e(t.toString())
