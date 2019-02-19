@@ -62,7 +62,7 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
             val newCollBooks = ArrayList<CollBook>(objects.size)
             for (i in collBooks.indices) {
                 val oldCollBook = collBooks[i]
-                val newCollBook = (objects[i] as BookDetailBean).collBook
+                val newCollBook = (objects[i] as BookDetailBean).getCollBook()!!
                 //如果是oldBook是update状态，或者newCollBook与oldBook章节数不同
                 newCollBook.isUpdate = oldCollBook.isUpdate || oldCollBook.lastChapter != newCollBook.lastChapter
                 newCollBook.lastRead = oldCollBook.lastRead

@@ -215,7 +215,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.View, BookDetailCo
             mTvChase!!.setCompoundDrawables(ContextCompat.getDrawable(this, R.drawable.ic_book_list_delete), null, null, null)
             mTvRead!!.text = "继续阅读"
         } else {
-            mCollBook = bean.collBook
+            mCollBook = bean.getCollBook()
         }
     }
 

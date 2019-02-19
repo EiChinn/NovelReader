@@ -17,7 +17,6 @@ import com.example.newbiechen.ireader.event.DeleteTaskEvent
 import com.example.newbiechen.ireader.event.DownloadMessage
 import com.example.newbiechen.ireader.event.SyncBookEvent
 import com.example.newbiechen.ireader.model.local.BookRepository
-import com.example.newbiechen.ireader.model.local.Void
 import com.example.newbiechen.ireader.presenter.BookShelfPresenter
 import com.example.newbiechen.ireader.presenter.contract.BookShelfContract
 import com.example.newbiechen.ireader.ui.activity.ReadActivity
@@ -28,7 +27,6 @@ import com.example.newbiechen.ireader.utils.RxUtils
 import com.example.newbiechen.ireader.utils.ToastUtils
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
-import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_bookshelf.*
 import java.io.File
@@ -97,8 +95,8 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                         progressDialog.setMessage("正在删除中")
                         progressDialog.show()
                         BookRepository.instance.deleteCollBookInRx(collBook)
-                                .compose<com.example.newbiechen.ireader.model.local.Void>(SingleTransformer<com.example.newbiechen.ireader.model.local.Void, Void> { RxUtils.toSimpleSingle(it) })
-                                .subscribe { Void ->
+                                .compose<com.example.newbiechen.ireader.model.local.Void> { RxUtils.toSimpleSingle(it) }
+                                .subscribe { _ ->
                                     mCollBookAdapter!!.removeItem(collBook)
                                     progressDialog.dismiss()
                                 }
