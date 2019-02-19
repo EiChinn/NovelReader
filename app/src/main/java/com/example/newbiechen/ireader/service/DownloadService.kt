@@ -47,17 +47,14 @@ class DownloadService : BaseService() {
         super.onCreate()
         mHandler = Handler(mainLooper)
         //从数据库中获取所有的任务
-        mDownloadTaskList = LocalRepository
-                .instance
-                .getDownloadTaskList()
+        mDownloadTaskList = LocalRepository.instance.getDownloadTaskList()
     }
 
     override fun onBind(intent: Intent): IBinder? {
         return TaskBuilder()
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //接受创建的DownloadTask
         val disposable = RxBus.getInstance()
                 .toObservable(DownloadTaskBean::class.java)
@@ -355,10 +352,6 @@ class DownloadService : BaseService() {
         //首先判断是否在加载队列中。
         //如果在加载队列中首先判断是否正在下载，
         //然后判断是否在完成队列中。
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
 
