@@ -1,10 +1,8 @@
 package com.example.newbiechen.ireader
 
 import android.app.Application
-import android.content.Intent
 import android.text.TextUtils
 import cn.bmob.v3.Bmob
-import com.example.newbiechen.ireader.service.DownloadService
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import com.tencent.bugly.crashreport.CrashReport
@@ -21,8 +19,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        startService(Intent(this, DownloadService::class.java))
-
         //多进程（如：android:process=":push"）会导致Application的onCreate多次调用，有N个进程就调用N次，所以这里要按进程进行初始化
         // 获取当前包名
         val processName = getProcessName(android.os.Process.myPid())
