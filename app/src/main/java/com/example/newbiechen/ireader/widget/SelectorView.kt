@@ -13,7 +13,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.newbiechen.ireader.R
 
-class SelectorView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+class SelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
     private val parentGroup: ViewGroup
     init {
         parentGroup = this
@@ -167,15 +167,16 @@ class SelectorView(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
             internal var current = 0
 
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                var holder: ViewHolder? = null
+                val holder: ViewHolder
+                val returnView: View
                 if (convertView == null) {
-                    val newConvertView = LayoutInflater.from(context)
-                            .inflate(R.layout.item_selector, null, false)
+                    returnView = LayoutInflater.from(context)
+                            .inflate(R.layout.item_selector, parent, false)
                     holder = ViewHolder()
-                    holder.tvName = newConvertView.findViewById(R.id.selector_tv_type)
-                    newConvertView.tag = holder
-                    return newConvertView
+                    holder.tvName = returnView.findViewById(R.id.selector_tv_type)
+                    returnView.tag = holder
                 } else {
+                    returnView = convertView
                     holder = convertView.tag as ViewHolder
                 }
                 if (current == position) {
@@ -184,7 +185,7 @@ class SelectorView(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
                     holder.tvName!!.setTextColor(ContextCompat.getColor(context, R.color.nb_text_default))
                 }
                 holder.tvName!!.text = typeList[position]
-                return convertView
+                return returnView
             }
 
             override fun getItem(position: Int)= typeList[position]

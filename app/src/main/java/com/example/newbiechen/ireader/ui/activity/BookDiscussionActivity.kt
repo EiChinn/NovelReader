@@ -1,11 +1,7 @@
 package com.example.newbiechen.ireader.ui.activity
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
 import com.example.newbiechen.ireader.event.SelectorEvent
@@ -20,6 +16,7 @@ import com.example.newbiechen.ireader.ui.fragment.DiscHelpsFragment
 import com.example.newbiechen.ireader.ui.fragment.DiscReviewFragment
 import com.example.newbiechen.ireader.utils.Constant
 import com.example.newbiechen.ireader.widget.SelectorView
+import kotlinx.android.synthetic.main.activity_book_discussion.*
 
 /**
  * Created by newbiechen on 17-4-17.
@@ -27,10 +24,6 @@ import com.example.newbiechen.ireader.widget.SelectorView
  */
 
 class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListener {
-
-    /*************************View */
-    @BindView(R.id.book_discussion_sv_selector)
-    @JvmField internal var mSvSelector: SelectorView? = null
 
     /**********************Params */
     //当前的讨论组
@@ -41,15 +34,13 @@ class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListen
     private var mBookType = BookType.ALL
 
     /*****************************init method */
-    override fun getContentId(): Int {
-        return R.layout.activity_book_discussion
-    }
+    override fun getContentId() = R.layout.activity_book_discussion
 
     override fun initData(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            mType = savedInstanceState.getSerializable(EXTRA_COMMUNITY) as CommunityType
+        mType = if (savedInstanceState != null) {
+            savedInstanceState.getSerializable(EXTRA_COMMUNITY) as CommunityType
         } else {
-            mType = intent.getSerializableExtra(EXTRA_COMMUNITY) as CommunityType
+            intent.getSerializableExtra(EXTRA_COMMUNITY) as CommunityType
         }
     }
 
@@ -60,17 +51,17 @@ class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListen
     /******************************click method */
     override fun initClick() {
         super.initClick()
-        mSvSelector!!.setOnItemSelectedListener(this)
+        book_discussion_sv_selector.setOnItemSelectedListener(this)
     }
 
     override fun onItemSelected(type: Int, pos: Int) {
         //转换器
         when (type) {
             0 -> mDistillate = BookDistillate.values()[pos]
-            1 -> if (mSvSelector!!.childCount == 2) {
+            1 -> if (book_discussion_sv_selector.childCount == 2) {
                 //当size = 2的时候，就会到Sort这里。
                 mBookSort = BookSort.values()[pos]
-            } else if (mSvSelector!!.childCount == 3) {
+            } else if (book_discussion_sv_selector.childCount == 3) {
                 mBookType = BookType.values()[pos]
             }
             2 -> mBookSort = BookSort.values()[pos]
@@ -84,35 +75,30 @@ class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListen
 
     /*******************************logic method */
     override fun processLogic() {
-        var fragment: Fragment? = null
-
-        when (mType) {
-            CommunityType.REVIEW -> {
+        val fragment = when (mType) {
+            CommunityType.REVIEW -> { // 书评区
                 setUpSelectorView(TYPE_SECOND)
-                fragment = DiscReviewFragment()
+                DiscReviewFragment()
             }
-            CommunityType.HELP -> {
+            CommunityType.HELP -> { // 书荒帮助区
                 setUpSelectorView(TYPE_FIRST)
-                fragment = DiscHelpsFragment()
-            }
-            else -> {
+                DiscHelpsFragment()
+            } else -> {
                 setUpSelectorView(TYPE_FIRST)
-                fragment = DiscCommentFragment.newInstance(mType!!)
+                DiscCommentFragment.newInstance(mType!!)
             }
         }
 
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.book_discussion_fl, fragment)
-                    .commit()
-        }
+        supportFragmentManager.beginTransaction()
+                .add(R.id.book_discussion_fl, fragment)
+                .commit()
     }
 
     private fun setUpSelectorView(type: Int) {
         if (type == TYPE_FIRST) {
-            mSvSelector!!.setSelectData(DISTILLATE.getTypeParams(), SORT_TYPE.getTypeParams())
+            book_discussion_sv_selector.setSelectData(DISTILLATE.getTypeParams(), SORT_TYPE.getTypeParams())
         } else {
-            mSvSelector!!.setSelectData(DISTILLATE.getTypeParams(),
+            book_discussion_sv_selector.setSelectData(DISTILLATE.getTypeParams(),
                     BOOK_TYPE.getTypeParams(), SORT_TYPE.getTypeParams())
         }
     }
@@ -128,12 +114,5 @@ class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListen
         const val EXTRA_COMMUNITY = "extra_community"
         private const val TYPE_FIRST = 0
         private const val TYPE_SECOND = 1
-
-        /*****************************open method */
-        fun startActivity(context: Context, type: CommunityType) {
-            val intent = Intent(context, BookDiscussionActivity::class.java)
-            intent.putExtra(EXTRA_COMMUNITY, type)
-            context.startActivity(intent)
-        }
     }
 }
