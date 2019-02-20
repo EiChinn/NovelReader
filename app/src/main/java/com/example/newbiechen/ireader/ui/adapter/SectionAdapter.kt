@@ -1,16 +1,18 @@
 package com.example.newbiechen.ireader.ui.adapter
 
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
+import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.SectionBean
-import com.example.newbiechen.ireader.ui.adapter.view.SectionHolder
-import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter
-import com.example.newbiechen.ireader.ui.base.adapter.IViewHolder
 
 /**
  * Created by newbiechen on 17-4-16.
  */
 
-class SectionAdapter : BaseListAdapter<SectionBean>() {
-    override fun createViewHolder(viewType: Int): IViewHolder<SectionBean> {
-        return SectionHolder()
+class SectionAdapter(data: List<SectionBean>) : BaseQuickAdapter<SectionBean, BaseViewHolder>(R.layout.item_section, data) {
+    override fun convert(helper: BaseViewHolder, item: SectionBean) {
+        helper.setImageResource(R.id.section_iv_icon, item.drawableId)
+        helper.setText(R.id.section_tv_name, item.name)
     }
+
 }

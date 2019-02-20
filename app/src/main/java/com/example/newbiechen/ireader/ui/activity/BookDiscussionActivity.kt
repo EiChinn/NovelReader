@@ -125,7 +125,7 @@ class BookDiscussionActivity : BaseActivity(), SelectorView.OnItemSelectedListen
 
     companion object {
         /****************************Constant */
-        private const val EXTRA_COMMUNITY = "extra_community"
+        const val EXTRA_COMMUNITY = "extra_community"
         private const val TYPE_FIRST = 0
         private const val TYPE_SECOND = 1
 
