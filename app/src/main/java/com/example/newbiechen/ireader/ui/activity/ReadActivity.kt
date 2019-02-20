@@ -164,7 +164,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     private var mBookSourceId: String? = null
     private var isSourceId = true
 
-    private var isOpen: Boolean = false
     private var isChangeSource: Boolean = false
 
     override fun getContentId(): Int {
@@ -336,6 +335,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                     }
 
                     override fun onCategoryFinish(chapters: List<TxtChapter>?) {
+                        chapters!![mPageLoader!!.chapterPos].isSelected = true
                         mCategoryAdapter?.setNewData(chapters)
                     }
 
@@ -394,12 +394,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
         mTvCategory!!.setOnClickListener {
             openChapterDrawer()
-            /*if (mCollBook!!.isLocal) {
-                openChapterDrawer()
-            } else {
-                loadCategory()
-                isOpen = true
-            }*/
         }
         mTvSetting!!.setOnClickListener { v ->
             toggleMenu(false)
@@ -441,6 +435,10 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         }
 
         mSettingDialog!!.setOnDismissListener { dialog -> hideSystemBar() }
+
+        fab_refresh.setOnClickListener {
+            loadCategory()
+        }
     }
 
     /**
@@ -565,12 +563,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     override fun showCategory(bookChapters: List<BookChapter>) {
         mPageLoader!!.bookChapters = bookChapters
         mPageLoader!!.refreshChapterList()
-
-
-        if (isOpen) {
-            isOpen = false
-            openChapterDrawer()
-        }
 
         // TODO: 2018/11/18 这里几乎每次都要更新数据库，而且是先删除所有旧章节在插入新的，需优化
         // 如果是目录更新的情况，那么就需要存储更新数据

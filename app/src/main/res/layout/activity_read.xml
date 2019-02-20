@@ -165,46 +165,28 @@
     </RelativeLayout>
 
     <!--侧滑栏-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_category"
+    <FrameLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/theme_leather_bg"
-        android:paddingBottom="@dimen/nb.padding.large"
-        android:paddingTop="@dimen/nb.padding.large"
-        android:scrollbars="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
-    <!--<LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@drawable/theme_leather_bg"
-        android:clickable="true"
-        android:orientation="vertical"
         android:paddingBottom="@dimen/nb.padding.large"
         android:paddingTop="@dimen/nb.padding.large">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
 
-        <TextView
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="15dp"
-            android:text="目录"
-            android:textColor="@color/nb.text.default"
-            android:textSize="20sp" />
+            android:src="@drawable/ic_refresh"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="10dp"
+            app:backgroundTint="#ffffff"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+    </FrameLayout>
 
-            <ListView
-                android:id="@+id/read_iv_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"></ListView>
-        </RelativeLayout>
-    </LinearLayout>-->
 </androidx.drawerlayout.widget.DrawerLayout>
