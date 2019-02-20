@@ -165,7 +165,18 @@
     </RelativeLayout>
 
     <!--侧滑栏-->
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/theme_leather_bg"
+        android:paddingBottom="@dimen/nb.padding.large"
+        android:paddingTop="@dimen/nb.padding.large"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <!--<LinearLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -195,5 +206,5 @@
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"></ListView>
         </RelativeLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </androidx.drawerlayout.widget.DrawerLayout>

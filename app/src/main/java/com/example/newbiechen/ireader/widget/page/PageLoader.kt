@@ -28,7 +28,7 @@ import java.util.*
 abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) {
 
     // 当前章节列表
-    protected var mChapterList: MutableList<TxtChapter>? = null
+    var mChapterList: MutableList<TxtChapter>? = null
     // 书本对象
     /**
      * 获取书籍信息

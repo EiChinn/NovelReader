@@ -19,7 +19,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -28,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.BindView
 import com.example.newbiechen.ireader.BOOK_ID
 import com.example.newbiechen.ireader.R
@@ -45,6 +45,7 @@ import com.example.newbiechen.ireader.widget.page.PageLoader
 import com.example.newbiechen.ireader.widget.page.PageView
 import com.example.newbiechen.ireader.widget.page.TxtChapter
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.activity_read.*
 
 /**
  * Created by newbiechen on 17-5-16.
@@ -92,9 +93,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         TextView mTvDownload;*/
     @BindView(R.id.read_tv_setting)
     @JvmField internal var mTvSetting: TextView? = null
-    /***************left slide */
-    @BindView(R.id.read_iv_category)
-    @JvmField internal var mLvCategory: ListView? = null
     /*****************view */
     private var mSettingDialog: ReadSettingDialog? = null
     private var mPageLoader: PageLoader? = null
@@ -111,7 +109,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
             super.handleMessage(msg)
 
             when (msg.what) {
-                WHAT_CATEGORY -> mLvCategory!!.setSelection(mPageLoader!!.chapterPos)
+                WHAT_CATEGORY -> rv_category!!.scrollToPosition(mPageLoader!!.chapterPos)
                 WHAT_CHAPTER -> mPageLoader!!.openChapter()
             }
         }
@@ -216,8 +214,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         mDlSlide!!.isFocusableInTouchMode = false
         mSettingDialog = ReadSettingDialog(this, mPageLoader!!)
 
-        setUpAdapter()
-
         //夜间模式按钮的状态
         toggleNightMode()
 
@@ -286,12 +282,6 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         }
     }
 
-    private fun setUpAdapter() {
-        mCategoryAdapter = CategoryAdapter()
-        mLvCategory!!.adapter = mCategoryAdapter
-        mLvCategory!!.isFastScrollEnabled = true
-    }
-
     // 注册亮度观察者
     private fun registerBrightObserver() {
         try {
@@ -333,7 +323,9 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                 object : PageLoader.OnPageChangeListener {
 
                     override fun onChapterChange(pos: Int) {
-                        mCategoryAdapter!!.setChapter(pos)
+                        mPageLoader!!.mChapterList!!.forEachIndexed { index, txtChapter ->
+                            txtChapter.isSelected = pos == index
+                        }
                     }
 
                     override fun requestChapters(requestChapters: List<TxtChapter>) {
@@ -344,21 +336,14 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                     }
 
                     override fun onCategoryFinish(chapters: List<TxtChapter>?) {
-                        for (chapter in chapters!!) {
-                            chapter.title = chapter.title
-                        }
-                        mCategoryAdapter!!.refreshItems(chapters)
+                        mCategoryAdapter?.setNewData(chapters)
                     }
 
                     override fun onPageCountChange(count: Int) {
                         mSbChapterProgress!!.max = Math.max(0, count - 1)
                         mSbChapterProgress!!.progress = 0
                         // 如果处于错误状态，那么就冻结使用
-                        if (mPageLoader!!.pageStatus == PageLoader.STATUS_LOADING || mPageLoader!!.pageStatus == PageLoader.STATUS_ERROR) {
-                            mSbChapterProgress!!.isEnabled = false
-                        } else {
-                            mSbChapterProgress!!.isEnabled = true
-                        }
+                        mSbChapterProgress!!.isEnabled = !(mPageLoader!!.pageStatus == PageLoader.STATUS_LOADING || mPageLoader!!.pageStatus == PageLoader.STATUS_ERROR)
                     }
 
                     override fun onPageChange(pos: Int) {
@@ -407,34 +392,31 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
             override fun cancel() {}
         })
 
-        mLvCategory!!.setOnItemClickListener { parent, view, position, id ->
-            mDlSlide!!.closeDrawer(GravityCompat.START)
-            mPageLoader!!.skipToChapter(position)
-        }
-
-        mTvCategory!!.setOnClickListener { v ->
-            if (mCollBook!!.isLocal) {
+        mTvCategory!!.setOnClickListener {
+            openChapterDrawer()
+            /*if (mCollBook!!.isLocal) {
                 openChapterDrawer()
             } else {
-
                 loadCategory()
                 isOpen = true
-            }
+            }*/
         }
         mTvSetting!!.setOnClickListener { v ->
             toggleMenu(false)
             mSettingDialog!!.show()
         }
 
-        mTvPreChapter!!.setOnClickListener { v ->
+        mTvPreChapter!!.setOnClickListener {
             if (mPageLoader!!.skipPreChapter()) {
-                mCategoryAdapter!!.setChapter(mPageLoader!!.chapterPos)
+                mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos].isSelected = true
+                mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos + 1].isSelected = false
             }
         }
 
         mTvNextChapter!!.setOnClickListener { v ->
             if (mPageLoader!!.skipNextChapter()) {
-                mCategoryAdapter!!.setChapter(mPageLoader!!.chapterPos)
+                mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos].isSelected = true
+                mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos - 1].isSelected = false
             }
         }
 
@@ -603,9 +585,13 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     }
 
     private fun openChapterDrawer() {
-        //移动到指定位置
-        if (mCategoryAdapter!!.count > 0) {
-            mLvCategory!!.setSelection(mPageLoader!!.chapterPos)
+        if (mCategoryAdapter == null) {
+            initCategoryListView()
+        }
+        if (mCategoryAdapter!!.itemCount > 0) {
+            mCategoryAdapter?.notifyDataSetChanged()
+            //移动到指定位置
+            rv_category.scrollToPosition(mPageLoader!!.chapterPos)
         }
         //切换菜单
         toggleMenu(true)
@@ -614,12 +600,22 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
     }
 
+    private fun initCategoryListView() {
+        rv_category.layoutManager = LinearLayoutManager(this)
+        mCategoryAdapter = CategoryAdapter(mPageLoader!!.mChapterList!!)
+        mCategoryAdapter!!.setOnItemClickListener { _, _, position ->
+            mDlSlide!!.closeDrawer(GravityCompat.START)
+            mPageLoader!!.skipToChapter(position)
+        }
+        val headerView = layoutInflater.inflate(R.layout.item_category_header, null, false)
+        mCategoryAdapter!!.setHeaderView(headerView)
+        rv_category.adapter = mCategoryAdapter
+    }
+
     override fun finishChapter() {
         if (mPageLoader!!.pageStatus == PageLoader.STATUS_LOADING) {
             mHandler.sendEmptyMessage(WHAT_CHAPTER)
         }
-        // 当完成章节的时候，刷新列表
-        mCategoryAdapter!!.notifyDataSetChanged()
     }
 
     override fun errorChapter() {

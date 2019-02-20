@@ -19,6 +19,9 @@ class TxtChapter {
     //章节内容在文章中的终止位置(本地)
     var end: Long = 0
 
+    // 是否当前阅读章节
+    var isSelected = false
+
     override fun toString(): String {
         return "TxtChapter{" +
                 "title='" + title + '\''.toString() +

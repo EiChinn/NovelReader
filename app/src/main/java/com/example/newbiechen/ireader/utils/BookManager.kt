@@ -9,13 +9,11 @@ object BookManager {
      * @param fileName
      * @return
      */
-    @JvmStatic
     fun getBookFile(folderName: String, fileName: String): File {
         return FileUtils.getFile(Constant.BOOK_CACHE_PATH + folderName
                 + File.separator + fileName + FileUtils.SUFFIX_NB)
     }
 
-    @JvmStatic
     fun getBookSize(folderName: String): Long {
         return FileUtils.getDirSize(FileUtils
                 .getFolder(Constant.BOOK_CACHE_PATH + folderName))
@@ -28,7 +26,6 @@ object BookManager {
      * @param fileName: chapterName
      * @return
      */
-    @JvmStatic
     fun isChapterCached(folderName: String, fileName: String): Boolean {
         val file = File(Constant.BOOK_CACHE_PATH + folderName
                 + File.separator + fileName + FileUtils.SUFFIX_NB)
