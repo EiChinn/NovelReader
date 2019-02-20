@@ -52,7 +52,7 @@ class FindFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        find_rv_content.adapter = null
+        find_rv_content?.adapter = null
         super.onDestroy()
     }
 }

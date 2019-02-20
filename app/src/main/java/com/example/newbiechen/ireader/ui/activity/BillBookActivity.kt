@@ -18,9 +18,9 @@ import java.util.*
 class BillBookActivity : BaseTabActivity() {
 
 
-    private var mWeekId: String? = null
-    private var mMonthId: String? = null
-    private var mTotalId: String? = null
+    private lateinit var mWeekId: String
+    private lateinit var mMonthId: String
+    private lateinit var mTotalId: String
 
     override fun getContentId(): Int {
         return R.layout.activity_base_tab
@@ -29,21 +29,21 @@ class BillBookActivity : BaseTabActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
         if (savedInstanceState != null) {
-            mWeekId = savedInstanceState.getString(EXTRA_WEEK_ID)
-            mMonthId = savedInstanceState.getString(EXTRA_MONTH_ID)
-            mTotalId = savedInstanceState.getString(EXTRA_TOTAL_ID)
+            mWeekId = savedInstanceState.getString(EXTRA_WEEK_ID) ?: ""
+            mMonthId = savedInstanceState.getString(EXTRA_MONTH_ID) ?: ""
+            mTotalId = savedInstanceState.getString(EXTRA_TOTAL_ID) ?: ""
         } else {
-            mWeekId = intent.getStringExtra(EXTRA_WEEK_ID)
-            mMonthId = intent.getStringExtra(EXTRA_MONTH_ID)
-            mTotalId = intent.getStringExtra(EXTRA_TOTAL_ID)
+            mWeekId = intent.getStringExtra(EXTRA_WEEK_ID) ?: ""
+            mMonthId = intent.getStringExtra(EXTRA_MONTH_ID) ?: ""
+            mTotalId = intent.getStringExtra(EXTRA_TOTAL_ID) ?: ""
         }
     }
 
     override fun createTabFragments(): MutableList<Fragment> {
         val fragments = ArrayList<Fragment>()
-        fragments.add(BillBookFragment.newInstance(mWeekId!!))
-        fragments.add(BillBookFragment.newInstance(mMonthId!!))
-        fragments.add(BillBookFragment.newInstance(mTotalId!!))
+        fragments.add(BillBookFragment.newInstance(mWeekId))
+        fragments.add(BillBookFragment.newInstance(mMonthId))
+        fragments.add(BillBookFragment.newInstance(mTotalId))
         return fragments
     }
 
@@ -69,7 +69,7 @@ class BillBookActivity : BaseTabActivity() {
         private const val EXTRA_WEEK_ID = "extra_week_id"
         private const val EXTRA_MONTH_ID = "extra_month_id"
         private const val EXTRA_TOTAL_ID = "extra_total_id"
-        fun startActivity(context: Context, weekId: String, monthId: String, totalId: String) {
+        fun startActivity(context: Context, weekId: String, monthId: String?, totalId: String?) {
             val intent = Intent(context, BillBookActivity::class.java)
             intent.putExtra(EXTRA_WEEK_ID, weekId)
             intent.putExtra(EXTRA_MONTH_ID, monthId)

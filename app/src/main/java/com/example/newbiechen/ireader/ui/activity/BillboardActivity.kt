@@ -79,8 +79,7 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
             override fun onGroupClick(parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long): Boolean {
                 if (groupPosition != mGirlAdapter!!.groupCount - 1) {
                     val (_id, _, _, _, monthRank, totalRank) = mGirlAdapter!!.getGroup(groupPosition)
-                    BillBookActivity.startActivity(this@BillboardActivity, _id,
-                            monthRank, totalRank)
+                    BillBookActivity.startActivity(this@BillboardActivity, _id, monthRank, totalRank)
                     return true
                 }
                 return false

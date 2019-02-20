@@ -54,8 +54,8 @@ abstract class BaseTabActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        mFragmentList.clear()
-        mTitleList.clear()
+//        mFragmentList.clear()
+//        mTitleList.clear()
         super.onDestroy()
     }
 
