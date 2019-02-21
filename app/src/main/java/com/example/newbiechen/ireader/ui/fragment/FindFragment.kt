@@ -52,7 +52,10 @@ class FindFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        find_rv_content?.adapter = null
+        if (this::mAdapter.isInitialized) {
+            mAdapter.onItemClickListener = null
+            find_rv_content?.adapter = null
+        }
         super.onDestroy()
     }
 }

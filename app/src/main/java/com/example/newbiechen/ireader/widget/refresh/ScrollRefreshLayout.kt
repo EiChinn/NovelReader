@@ -136,11 +136,11 @@ abstract class ScrollRefreshLayout (
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        mFlContent = null
         mContentView = null
         mEmptyView = null
-
+        mFlContent?.removeAllViews()
+        mFlContent = null
+        super.onDetachedFromWindow()
     }
 
     companion object {

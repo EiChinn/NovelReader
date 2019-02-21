@@ -99,9 +99,11 @@ class ScrollRefreshRecyclerView : ScrollRefreshLayout {
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
         mRecyclerView!!.adapter = null
         mRecyclerView = null
+        setOnRefreshListener(null)
+        super.onDetachedFromWindow()
+
     }
 
     companion object {
