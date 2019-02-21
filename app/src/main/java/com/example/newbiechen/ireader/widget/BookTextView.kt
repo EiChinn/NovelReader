@@ -19,7 +19,7 @@ import com.example.newbiechen.ireader.R
  * 3. 设置ForeSpan
  * 4. 添加点击事件
  */
-class BookTextView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+class BookTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : AppCompatTextView(context, attrs, defStyleAttr) {
     private var mBookListener: OnBookClickListener? = null
     private var bookColor = 0

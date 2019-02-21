@@ -16,10 +16,10 @@ class LoadMoreView(context: Context, @LayoutRes loadMoreId: Int, @LayoutRes erro
         const val TYPE_LOAD_ERROR = 3
     }
 
-    private lateinit var mLoadMoreView: View
-    private lateinit var mErrorView: View
-    private lateinit var mNoMoreView: View
-    private lateinit var mListener: OnLoadMoreListener
+    private var mLoadMoreView: View
+    private var mErrorView: View
+    private var mNoMoreView: View
+    private var mListener: OnLoadMoreListener? = null
     private lateinit var onLoadMored: () -> Unit
     private var mStatus = TYPE_HIDE
 
