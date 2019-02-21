@@ -35,8 +35,8 @@ class FileSystemActivity : BaseTabActivity() {
     @BindView(R.id.file_system_btn_add_book)
     @JvmField internal var mBtnAddBook: Button? = null
 
-    private var mLocalFragment: LocalBookFragment? = null
-    private var mCategoryFragment: FileCategoryFragment? = null
+    private lateinit var mLocalFragment: LocalBookFragment
+    private lateinit var mCategoryFragment: FileCategoryFragment
     private var mCurFragment: BaseFileFragment? = null
 
     private val mListener = object : OnFileCheckedListener {
@@ -57,12 +57,10 @@ class FileSystemActivity : BaseTabActivity() {
     override fun createTabFragments(): MutableList<Fragment> {
         mLocalFragment = LocalBookFragment()
         mCategoryFragment = FileCategoryFragment()
-        return Arrays.asList(mLocalFragment, mCategoryFragment)
+        return mutableListOf(mLocalFragment, mCategoryFragment)
     }
 
-    override fun createTabTitles(): MutableList<String> {
-        return Arrays.asList("智能导入", "手机目录")
-    }
+    override fun createTabTitles() = mutableListOf("智能导入", "手机目录")
 
     override fun getContentId(): Int {
         return R.layout.activity_file_system
@@ -135,8 +133,8 @@ class FileSystemActivity : BaseTabActivity() {
                     .show()
         }
 
-        mLocalFragment!!.setOnFileCheckedListener(mListener)
-        mCategoryFragment!!.setOnFileCheckedListener(mListener)
+        mLocalFragment.setOnFileCheckedListener(mListener)
+        mCategoryFragment.setOnFileCheckedListener(mListener)
     }
 
     override fun processLogic() {

@@ -48,8 +48,8 @@ class BillBookActivity : BaseTabActivity() {
     }
 
     override fun createTabTitles(): MutableList<String> {
-        val title = resources.getStringArray(R.array.nb_fragment_bill_book)
-        return Arrays.asList(*title)
+        val titles = resources.getStringArray(R.array.nb_fragment_bill_book)
+        return titles.toMutableList()
     }
 
     override fun setUpToolbar(toolbar: Toolbar) {
