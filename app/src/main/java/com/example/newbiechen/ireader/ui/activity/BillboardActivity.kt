@@ -14,7 +14,8 @@ import com.example.newbiechen.ireader.widget.RefreshLayout
 import java.util.*
 
 /**
- * Created by newbiechen on 17-4-23.
+ * 发现-排行榜
+ *
  * 数据的初始化，Expand的配置
  * 1. 查看Api制作数据Bean，制作相应的Adapter
  * 2. 初始化Expandable

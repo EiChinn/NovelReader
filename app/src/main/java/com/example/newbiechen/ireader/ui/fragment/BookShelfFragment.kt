@@ -68,22 +68,22 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     override fun initClick() {
         super.initClick()
         //同步书籍
-        val AsyncBookDisp = RxBus.getInstance()
+        val syncBookDisp = RxBus.getInstance()
                 .toObservable(SyncBookEvent::class.java)
                 .subscribe(
                         { event -> mPresenter.refreshCollBooks() },
                         { error -> showErrorTip(error.toString()) }
                 )
-        addDisposable(AsyncBookDisp)
+        addDisposable(syncBookDisp)
 
-        val donwloadDisp = RxBus.getInstance()
+        val downloadDisp = RxBus.getInstance()
                 .toObservable(DownloadMessage::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { (message) ->
                     //使用Toast提示
                     ToastUtils.show(message)
                 }
-        addDisposable(donwloadDisp)
+        addDisposable(downloadDisp)
 
         //删除书籍 (写的丑了点)
         val deleteDisp = RxBus.getInstance()

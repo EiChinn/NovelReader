@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
- * Created by newbiechen on 17-5-1.
+ * 主题书单
  */
 
 class BookListActivity : BaseTabActivity() {
