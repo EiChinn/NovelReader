@@ -6,14 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.bumptech.glide.Glide
 import com.example.newbiechen.ireader.App
 import com.example.newbiechen.ireader.R
@@ -25,10 +19,11 @@ import com.example.newbiechen.ireader.presenter.contract.BookListDetailContract
 import com.example.newbiechen.ireader.ui.adapter.BookListDetailAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
 import com.example.newbiechen.ireader.utils.Constant
-import com.example.newbiechen.ireader.widget.RefreshLayout
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
 import com.example.newbiechen.ireader.widget.transform.CircleTransform
+import kotlinx.android.synthetic.main.activity_refresh_list.*
+import kotlinx.android.synthetic.main.header_book_list_detail.*
 import java.util.*
 
 /**
@@ -36,11 +31,6 @@ import java.util.*
  */
 
 class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, BookListDetailContract.Presenter>(), BookListDetailContract.View {
-    @BindView(R.id.refresh_layout)
-    @JvmField internal var mRefreshLayout: RefreshLayout? = null
-    @BindView(R.id.refresh_rv_content)
-    @JvmField internal var mRvContent: RecyclerView? = null
-    /** */
     private var mDetailAdapter: BookListDetailAdapter? = null
     private var mDetailHeader: DetailHeader? = null
     private var mBooksList: List<DetailBooksBean>? = null
@@ -72,10 +62,10 @@ class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, Book
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        if (savedInstanceState != null) {
-            mDetailId = savedInstanceState.getString(EXTRA_DETAIL_ID)
+        mDetailId = if (savedInstanceState != null) {
+            savedInstanceState.getString(EXTRA_DETAIL_ID)
         } else {
-            mDetailId = intent.getStringExtra(EXTRA_DETAIL_ID)
+            intent.getStringExtra(EXTRA_DETAIL_ID)
         }
     }
 
@@ -94,9 +84,9 @@ class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, Book
         mDetailHeader = DetailHeader()
         mDetailAdapter!!.addHeaderView(mDetailHeader!!)
 
-        mRvContent!!.layoutManager = LinearLayoutManager(this)
-        mRvContent!!.addItemDecoration(DividerItemDecoration(this))
-        mRvContent!!.adapter = mDetailAdapter
+        refresh_rv_content!!.layoutManager = LinearLayoutManager(this)
+        refresh_rv_content!!.addItemDecoration(DividerItemDecoration(this))
+        refresh_rv_content!!.adapter = mDetailAdapter
     }
 
     override fun initClick() {
@@ -112,7 +102,7 @@ class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, Book
 
     override fun processLogic() {
         super.processLogic()
-        mRefreshLayout!!.showLoading()
+        refresh_layout!!.showLoading()
         mPresenter.refreshBookListDetail(mDetailId!!)
     }
 
@@ -136,11 +126,11 @@ class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, Book
     }
 
     override fun showError() {
-        mRefreshLayout!!.showError()
+        refresh_layout!!.showError()
     }
 
     override fun complete() {
-        mRefreshLayout!!.showFinish()
+        refresh_layout!!.showFinish()
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
@@ -150,59 +140,35 @@ class BookListDetailActivity : BaseMVPActivity<BookListDetailContract.View, Book
 
 
     internal inner class DetailHeader : WholeAdapter.ItemView {
-        @BindView(R.id.book_list_info_tv_title)
-        @JvmField var tvTitle: TextView? = null
-        @BindView(R.id.book_list_detail_tv_desc)
-        @JvmField var tvDesc: TextView? = null
-        @BindView(R.id.book_list_info_iv_cover)
-        @JvmField var ivPortrait: ImageView? = null
-        @BindView(R.id.book_list_detail_tv_create)
-        @JvmField var tvCreate: TextView? = null
-        @BindView(R.id.book_list_info_tv_author)
-        @JvmField var tvAuthor: TextView? = null
-        @BindView(R.id.book_list_detail_tv_share)
-        @JvmField var tvShare: TextView? = null
-
         var detailBean: BookListDetailBean? = null
 
-        var detailUnbinder: Unbinder? = null
         override fun onCreateView(parent: ViewGroup): View {
             return LayoutInflater.from(parent.context)
                     .inflate(R.layout.header_book_list_detail, parent, false)
         }
 
         override fun onBindView(view: View) {
-            if (detailUnbinder == null) {
-                detailUnbinder = ButterKnife.bind(this, view)
-            }
             //如果没有值就直接返回
             if (detailBean == null) {
                 return
             }
             //标题
-            tvTitle!!.text = detailBean!!.title
+            book_list_info_tv_title!!.text = detailBean!!.title
             //描述
-            tvDesc!!.text = detailBean!!.desc
+            book_list_detail_tv_desc!!.text = detailBean!!.desc
             //头像
             Glide.with(App.getInstance())
                     .load(Constant.IMG_BASE_URL + detailBean!!.author.avatar)
                     .placeholder(R.drawable.ic_loadding)
                     .error(R.drawable.ic_load_error)
                     .transform(CircleTransform(App.getInstance()))
-                    .into(ivPortrait!!)
+                    .into(book_list_info_iv_cover!!)
             //作者
-            tvAuthor!!.text = detailBean!!.author.nickname
+            book_list_info_tv_author!!.text = detailBean!!.author.nickname
         }
 
         fun setBookListDetail(bean: BookListDetailBean) {
             detailBean = bean
-        }
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        if (mDetailHeader!!.detailUnbinder != null) {
-            mDetailHeader!!.detailUnbinder!!.unbind()
         }
     }
 

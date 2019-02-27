@@ -2,8 +2,6 @@ package com.example.newbiechen.ireader.ui.activity
 
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage
 import com.example.newbiechen.ireader.model.bean.packages.BookSubSortPackage
@@ -11,8 +9,8 @@ import com.example.newbiechen.ireader.presenter.BookSortPresenter
 import com.example.newbiechen.ireader.presenter.contract.BookSortContract
 import com.example.newbiechen.ireader.ui.adapter.BookSortAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
-import com.example.newbiechen.ireader.widget.RefreshLayout
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerGridItemDecoration
+import kotlinx.android.synthetic.main.activity_book_sort.*
 
 /**
  * Created by newbiechen on 17-4-23.
@@ -21,13 +19,6 @@ import com.example.newbiechen.ireader.widget.itemdecoration.DividerGridItemDecor
  */
 
 class BookSortActivity : BaseMVPActivity<BookSortContract.View, BookSortContract.Presenter>(), BookSortContract.View {
-
-    @BindView(R.id.book_sort_rl_refresh)
-    @JvmField internal var mRlRefresh: RefreshLayout? = null
-    @BindView(R.id.book_sort_rv_boy)
-    @JvmField internal var mRvBoy: RecyclerView? = null
-    @BindView(R.id.book_sort_rv_girl)
-    @JvmField internal var mRvGirl: RecyclerView? = null
 
     private var mBoyAdapter: BookSortAdapter? = null
     private var mGirlAdapter: BookSortAdapter? = null
@@ -54,13 +45,13 @@ class BookSortActivity : BaseMVPActivity<BookSortContract.View, BookSortContract
 
         val itemDecoration = DividerGridItemDecoration(this, R.drawable.shape_divider_row, R.drawable.shape_divider_col)
 
-        mRvBoy!!.layoutManager = GridLayoutManager(this, SPAN_COUNT)
-        mRvBoy!!.addItemDecoration(itemDecoration)
-        mRvBoy!!.adapter = mBoyAdapter
+        book_sort_rv_boy!!.layoutManager = GridLayoutManager(this, SPAN_COUNT)
+        book_sort_rv_boy!!.addItemDecoration(itemDecoration)
+        book_sort_rv_boy!!.adapter = mBoyAdapter
 
-        mRvGirl!!.layoutManager = GridLayoutManager(this, SPAN_COUNT)
-        mRvGirl!!.addItemDecoration(itemDecoration)
-        mRvGirl!!.adapter = mGirlAdapter
+        book_sort_rv_girl!!.layoutManager = GridLayoutManager(this, SPAN_COUNT)
+        book_sort_rv_girl!!.addItemDecoration(itemDecoration)
+        book_sort_rv_girl!!.adapter = mGirlAdapter
     }
 
     override fun bindPresenter(): BookSortContract.Presenter {
@@ -86,14 +77,14 @@ class BookSortActivity : BaseMVPActivity<BookSortContract.View, BookSortContract
     override fun processLogic() {
         super.processLogic()
 
-        mRlRefresh!!.showLoading()
+        book_sort_rl_refresh!!.showLoading()
         mPresenter.refreshSortBean()
     }
 
     /***********************rewrite */
     override fun finishRefresh(sortPackage: BookSortPackage, subSortPackage: BookSubSortPackage) {
         if (sortPackage == null || sortPackage.male.isEmpty() || sortPackage.female.isEmpty()) {
-            mRlRefresh!!.showEmpty()
+            book_sort_rl_refresh!!.showEmpty()
         } else {
             mBoyAdapter!!.refreshItems(sortPackage.male)
             mGirlAdapter!!.refreshItems(sortPackage.female)
@@ -102,11 +93,11 @@ class BookSortActivity : BaseMVPActivity<BookSortContract.View, BookSortContract
     }
 
     override fun showError() {
-        mRlRefresh!!.showError()
+        book_sort_rl_refresh!!.showError()
     }
 
     override fun complete() {
-        mRlRefresh!!.showFinish()
+        book_sort_rl_refresh!!.showFinish()
     }
 
     companion object {

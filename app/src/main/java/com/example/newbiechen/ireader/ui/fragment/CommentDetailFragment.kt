@@ -111,13 +111,6 @@ class CommentDetailFragment : BaseMVPFragment<CommentDetailContract.View, Commen
         outState.putString(EXTRA_DETAIL_ID, mDetailId)
     }
 
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mDetailHeader!!.detailUnbinder!!.unbind()
-    }
-
     companion object {
         private const val TAG = "CommentDetailFragment"
         private const val EXTRA_DETAIL_ID = "extra_detail_id"

@@ -6,13 +6,8 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean
 import com.example.newbiechen.ireader.presenter.SearchPresenter
@@ -20,34 +15,15 @@ import com.example.newbiechen.ireader.presenter.contract.SearchContract
 import com.example.newbiechen.ireader.ui.adapter.KeyWordAdapter
 import com.example.newbiechen.ireader.ui.adapter.SearchBookAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
-import com.example.newbiechen.ireader.widget.RefreshLayout
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
-import me.gujun.android.taggroup.TagGroup
+import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.fragment_refresh_list.*
 
 /**
  * Created by newbiechen on 17-4-24.
  */
 
 class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Presenter>(), SearchContract.View {
-
-    @BindView(R.id.search_iv_back)
-    @JvmField internal var mIvBack: ImageView? = null
-    @BindView(R.id.search_et_input)
-    @JvmField internal var mEtInput: EditText? = null
-    @BindView(R.id.search_iv_delete)
-    @JvmField internal var mIvDelete: ImageView? = null
-    @BindView(R.id.search_iv_search)
-    @JvmField internal var mIvSearch: ImageView? = null
-    @BindView(R.id.search_book_tv_refresh_hot)
-    @JvmField internal var mTvRefreshHot: TextView? = null
-    @BindView(R.id.search_tg_hot)
-    @JvmField internal var mTgHot: TagGroup? = null
-    /*    @BindView(R.id.search_rv_history)
-    RecyclerView mRvHistory;*/
-    @BindView(R.id.refresh_layout)
-    @JvmField internal var mRlRefresh: RefreshLayout? = null
-    @BindView(R.id.refresh_rv_content)
-    @JvmField internal var mRvSearch: RecyclerView? = null
 
     private var mKeyWordAdapter: KeyWordAdapter? = null
     private var mSearchAdapter: SearchBookAdapter? = null
@@ -67,25 +43,25 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
     override fun initWidget() {
         super.initWidget()
         setUpAdapter()
-        mRlRefresh!!.background = ContextCompat.getDrawable(this, R.color.white)
+        refresh_layout!!.background = ContextCompat.getDrawable(this, R.color.white)
     }
 
     private fun setUpAdapter() {
         mKeyWordAdapter = KeyWordAdapter()
         mSearchAdapter = SearchBookAdapter()
 
-        mRvSearch!!.layoutManager = LinearLayoutManager(this)
-        mRvSearch!!.addItemDecoration(DividerItemDecoration(this))
+        refresh_rv_content!!.layoutManager = LinearLayoutManager(this)
+        refresh_rv_content!!.addItemDecoration(DividerItemDecoration(this))
     }
 
     override fun initClick() {
         super.initClick()
 
         //退出
-        mIvBack!!.setOnClickListener { v -> onBackPressed() }
+        search_iv_back!!.setOnClickListener { v -> onBackPressed() }
 
         //输入框
-        mEtInput!!.addTextChangedListener(object : TextWatcher {
+        search_et_input!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
@@ -93,27 +69,27 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().trim { it <= ' ' } == "") {
                     //隐藏delete按钮和关键字显示内容
-                    if (mIvDelete!!.visibility == View.VISIBLE) {
-                        mIvDelete!!.visibility = View.INVISIBLE
-                        mRlRefresh!!.visibility = View.INVISIBLE
+                    if (search_iv_delete!!.visibility == View.VISIBLE) {
+                        search_iv_delete!!.visibility = View.INVISIBLE
+                        refresh_layout!!.visibility = View.INVISIBLE
                         //删除全部视图
                         mKeyWordAdapter!!.clear()
                         mSearchAdapter!!.clear()
-                        mRvSearch!!.removeAllViews()
+                        refresh_rv_content!!.removeAllViews()
                     }
                     return
                 }
                 //显示delete按钮
-                if (mIvDelete!!.visibility == View.INVISIBLE) {
-                    mIvDelete!!.visibility = View.VISIBLE
-                    mRlRefresh!!.visibility = View.VISIBLE
+                if (search_iv_delete!!.visibility == View.INVISIBLE) {
+                    search_iv_delete!!.visibility = View.VISIBLE
+                    refresh_layout!!.visibility = View.VISIBLE
                     //默认是显示完成状态
-                    mRlRefresh!!.showFinish()
+                    refresh_layout!!.showFinish()
                 }
                 //搜索
                 val query = s.toString().trim { it <= ' ' }
                 if (isTag) {
-                    mRlRefresh!!.showLoading()
+                    refresh_layout!!.showLoading()
                     mPresenter.searchBook(query)
                     isTag = false
                 } else {
@@ -128,7 +104,7 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
         })
 
         //键盘的搜索
-        mEtInput!!.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        search_et_input!!.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             //修改回车键功能
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 searchBook()
@@ -138,31 +114,31 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
         })
 
         //进行搜索
-        mIvSearch!!.setOnClickListener { v -> searchBook() }
+        search_iv_search!!.setOnClickListener { v -> searchBook() }
 
         //删除字
-        mIvDelete!!.setOnClickListener { v ->
-            mEtInput!!.setText("")
+        search_iv_delete!!.setOnClickListener { v ->
+            search_et_input!!.setText("")
             toggleKeyboard()
         }
 
         //点击查书
         mKeyWordAdapter!!.setOnItemClickListener { view, pos ->
             //显示正在加载
-            mRlRefresh!!.showLoading()
+            refresh_layout!!.showLoading()
             val book = mKeyWordAdapter!!.getItem(pos)
             mPresenter.searchBook(book)
             toggleKeyboard()
         }
 
         //Tag的点击事件
-        mTgHot!!.setOnTagClickListener { tag ->
+        search_tg_hot!!.setOnTagClickListener { tag ->
             isTag = true
-            mEtInput!!.setText(tag)
+            search_et_input!!.setText(tag)
         }
 
         //Tag的刷新事件
-        mTvRefreshHot!!.setOnClickListener { v -> refreshTag() }
+        search_book_tv_refresh_hot!!.setOnClickListener { v -> refreshTag() }
 
         //书本的点击事件
         mSearchAdapter!!.setOnItemClickListener { view, pos ->
@@ -172,13 +148,13 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
     }
 
     private fun searchBook() {
-        val query = mEtInput!!.text.toString().trim { it <= ' ' }
+        val query = search_et_input!!.text.toString().trim { it <= ' ' }
         if (query != "") {
-            mRlRefresh!!.visibility = View.VISIBLE
-            mRlRefresh!!.showLoading()
+            refresh_layout!!.visibility = View.VISIBLE
+            refresh_layout!!.showLoading()
             mPresenter.searchBook(query)
             //显示正在加载
-            mRlRefresh!!.showLoading()
+            refresh_layout!!.showLoading()
             toggleKeyboard()
         }
     }
@@ -191,7 +167,7 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
     override fun processLogic() {
         super.processLogic()
         //默认隐藏
-        mRlRefresh!!.visibility = View.GONE
+        refresh_layout!!.visibility = View.GONE
         //获取热词
         mPresenter.searchHotWord()
     }
@@ -214,39 +190,39 @@ class SearchActivity : BaseMVPActivity<SearchContract.View, SearchContract.Prese
             last = TAG_LIMIT
         }
         val tags = mHotTagList!!.subList(mTagStart, last)
-        mTgHot!!.setTags(tags)
+        search_tg_hot!!.setTags(tags)
         mTagStart += TAG_LIMIT
     }
 
     override fun finishKeyWords(keyWords: List<String>) {
-        if (keyWords.size == 0) mRlRefresh!!.visibility = View.INVISIBLE
+        if (keyWords.isEmpty()) refresh_layout!!.visibility = View.INVISIBLE
         mKeyWordAdapter!!.refreshItems(keyWords)
-        if (mRvSearch!!.adapter !is KeyWordAdapter) {
-            mRvSearch!!.adapter = mKeyWordAdapter
+        if (refresh_rv_content!!.adapter !is KeyWordAdapter) {
+            refresh_rv_content!!.adapter = mKeyWordAdapter
         }
     }
 
     override fun finishBooks(books: List<SearchBooksBean>) {
         mSearchAdapter!!.refreshItems(books)
-        if (books.size == 0) {
-            mRlRefresh!!.showEmpty()
+        if (books.isEmpty()) {
+            refresh_layout!!.showEmpty()
         } else {
             //显示完成
-            mRlRefresh!!.showFinish()
+            refresh_layout!!.showFinish()
         }
         //加载
-        if (mRvSearch!!.adapter !is SearchBookAdapter) {
-            mRvSearch!!.adapter = mSearchAdapter
+        if (refresh_rv_content!!.adapter !is SearchBookAdapter) {
+            refresh_rv_content!!.adapter = mSearchAdapter
         }
     }
 
     override fun errorBooks() {
-        mRlRefresh!!.showEmpty()
+        refresh_layout!!.showEmpty()
     }
 
     override fun onBackPressed() {
-        if (mRlRefresh!!.visibility == View.VISIBLE) {
-            mEtInput!!.setText("")
+        if (refresh_layout!!.visibility == View.VISIBLE) {
+            search_et_input!!.setText("")
         } else {
             super.onBackPressed()
         }

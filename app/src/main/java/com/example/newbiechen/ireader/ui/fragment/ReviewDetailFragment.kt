@@ -102,13 +102,6 @@ class ReviewDetailFragment : BaseMVPFragment<ReviewDetailContract.View, ReviewDe
         refresh_layout.showFinish()
     }
 
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mDetailHeader!!.detailUnbinder!!.unbind()
-    }
-
     companion object {
         private const val EXTRA_DETAIL_ID = "extra_detail_id"
 

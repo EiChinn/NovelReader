@@ -5,17 +5,13 @@ import android.util.Log
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.example.newbiechen.ireader.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var mDisposable: CompositeDisposable
-    //ButterKnife
     private var mToolbar: Toolbar? = null
-    protected lateinit var unbinder: Unbinder
 
     /****************************abstract area*************************************/
     @LayoutRes
@@ -77,7 +73,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getContentId())
         initData(savedInstanceState)
-        unbinder = ButterKnife.bind(this)
         initToolbar()
         initWidget()
         initClick()
@@ -85,7 +80,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        unbinder.unbind()
         if (this::mDisposable.isInitialized) {
             mDisposable.dispose()
         }

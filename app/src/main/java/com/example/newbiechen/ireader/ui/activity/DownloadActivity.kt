@@ -7,15 +7,13 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.DownloadTaskBean
 import com.example.newbiechen.ireader.service.DownloadService
 import com.example.newbiechen.ireader.ui.adapter.DownLoadAdapter
 import com.example.newbiechen.ireader.ui.base.BaseActivity
-import com.example.newbiechen.ireader.widget.RefreshLayout
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
+import kotlinx.android.synthetic.main.activity_refresh_list.*
 
 /**
  * Created by newbiechen on 17-5-11.
@@ -23,11 +21,6 @@ import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoratio
  */
 
 class DownloadActivity : BaseActivity(), DownloadService.OnDownloadListener {
-    @BindView(R.id.refresh_layout)
-    @JvmField internal var mRefreshLayout: RefreshLayout? = null
-    @BindView(R.id.refresh_rv_content)
-    @JvmField internal var mRvContent: RecyclerView? = null
-
     private var mDownloadAdapter: DownLoadAdapter? = null
 
     private var mConn: ServiceConnection? = null
@@ -48,9 +41,9 @@ class DownloadActivity : BaseActivity(), DownloadService.OnDownloadListener {
 
     private fun setUpAdapter() {
         mDownloadAdapter = DownLoadAdapter()
-        mRvContent!!.addItemDecoration(DividerItemDecoration(this))
-        mRvContent!!.layoutManager = LinearLayoutManager(this)
-        mRvContent!!.adapter = mDownloadAdapter
+        refresh_rv_content!!.addItemDecoration(DividerItemDecoration(this))
+        refresh_rv_content!!.layoutManager = LinearLayoutManager(this)
+        refresh_rv_content!!.adapter = mDownloadAdapter
     }
 
     override fun initClick() {
@@ -82,7 +75,7 @@ class DownloadActivity : BaseActivity(), DownloadService.OnDownloadListener {
 
                 mService!!.setOnDownloadListener(this@DownloadActivity)
 
-                mRefreshLayout!!.showFinish()
+                refresh_layout!!.showFinish()
             }
 
             override fun onServiceDisconnected(name: ComponentName) {}

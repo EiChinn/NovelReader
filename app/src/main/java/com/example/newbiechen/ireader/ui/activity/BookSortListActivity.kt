@@ -6,8 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
 import com.example.newbiechen.ireader.event.BookSubSortEvent
@@ -16,6 +14,7 @@ import com.example.newbiechen.ireader.model.flag.BookSortListType
 import com.example.newbiechen.ireader.ui.adapter.HorizonTagAdapter
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity
 import com.example.newbiechen.ireader.ui.fragment.BookSortListFragment
+import kotlinx.android.synthetic.main.activity_book_sort_list.*
 import java.util.*
 
 /**
@@ -25,9 +24,6 @@ import java.util.*
 
 class BookSortListActivity : BaseTabActivity() {
 
-    /** */
-    @BindView(R.id.book_sort_list_rv_tag)
-    @JvmField internal var mRvTag: RecyclerView? = null
     /** */
     private var mTagAdapter: HorizonTagAdapter? = null
     /** */
@@ -87,8 +83,8 @@ class BookSortListActivity : BaseTabActivity() {
         mTagAdapter = HorizonTagAdapter()
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        mRvTag!!.layoutManager = linearLayoutManager
-        mRvTag!!.adapter = mTagAdapter
+        book_sort_list_rv_tag!!.layoutManager = linearLayoutManager
+        book_sort_list_rv_tag!!.adapter = mTagAdapter
 
         mSubSortBean!!.mins.add(0, "全部")
         mTagAdapter!!.addItems(mSubSortBean!!.mins)

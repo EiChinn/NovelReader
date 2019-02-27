@@ -9,9 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.bumptech.glide.Glide
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.CommentBean
@@ -27,47 +24,44 @@ import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoratio
 import com.example.newbiechen.ireader.widget.transform.CircleTransform
 
 class ReviewDetailHeader(val context: Context, private val commentAdapter: CommentAdapter) : WholeAdapter.ItemView {
-    @BindView(R.id.disc_detail_iv_portrait)
     @JvmField var ivPortrait: ImageView? = null
-    @BindView(R.id.disc_detail_tv_name)
     @JvmField var tvName: TextView? = null
-    @BindView(R.id.disc_detail_tv_time)
     @JvmField var tvTime: TextView? = null
-    @BindView(R.id.disc_detail_tv_title)
     @JvmField var tvTitle: TextView? = null
-    @BindView(R.id.disc_detail_btv_content)
     @JvmField var btvContent: BookTextView? = null
-    @BindView(R.id.review_detail_iv_book_cover)
     @JvmField var ivBookCover: ImageView? = null
-    @BindView(R.id.review_detail_tv_book_name)
     @JvmField var tvBookName: TextView? = null
-    @BindView(R.id.review_detail_erb_rate)
     @JvmField var erbBookRate: EasyRatingBar? = null
-    @BindView(R.id.review_detail_tv_helpful_count)
     @JvmField var tvHelpfulCount: TextView? = null
-    @BindView(R.id.review_detail_tv_unhelpful_count)
     @JvmField var tvUnhelpfulCount: TextView? = null
 
-    @BindView(R.id.disc_detail_tv_best_comment)
     @JvmField var tvBestComment: TextView? = null
-    @BindView(R.id.disc_detail_rv_best_comments)
     @JvmField var rvBestComments: RecyclerView? = null
-    @BindView(R.id.disc_detail_tv_comment_count)
     @JvmField var tvCommentCount: TextView? = null
 
     var godCommentAdapter: GodCommentAdapter? = null
     var reviewDetailBean: ReviewDetailBean? = null
     var godCommentList: List<CommentBean>? = null
-    var detailUnbinder: Unbinder? = null
     override fun onCreateView(parent: ViewGroup): View {
-        return LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.header_disc_review_detail, parent, false)
+        ivPortrait = view.findViewById(R.id.disc_detail_iv_portrait)
+        tvName = view.findViewById(R.id.disc_detail_tv_name)
+        tvTime = view.findViewById(R.id.disc_detail_tv_time)
+        tvTitle = view.findViewById(R.id.disc_detail_tv_title)
+        btvContent = view.findViewById(R.id.disc_detail_btv_content)
+        ivBookCover = view.findViewById(R.id.review_detail_iv_book_cover)
+        tvBookName = view.findViewById(R.id.review_detail_tv_book_name)
+        erbBookRate = view.findViewById(R.id.review_detail_erb_rate)
+        tvHelpfulCount = view.findViewById(R.id.review_detail_tv_helpful_count)
+        tvUnhelpfulCount = view.findViewById(R.id.review_detail_tv_unhelpful_count)
+        tvBestComment = view.findViewById(R.id.disc_detail_tv_best_comment)
+        rvBestComments = view.findViewById(R.id.disc_detail_rv_best_comments)
+        tvCommentCount = view.findViewById(R.id.disc_detail_tv_comment_count)
+        return view
     }
 
     override fun onBindView(view: View) {
-        if (detailUnbinder == null) {
-            detailUnbinder = ButterKnife.bind(this, view)
-        }
         //如果没有值就直接返回
         if (reviewDetailBean == null || godCommentList == null) {
             return

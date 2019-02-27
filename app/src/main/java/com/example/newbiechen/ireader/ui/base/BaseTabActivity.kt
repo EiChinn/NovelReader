@@ -4,15 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.google.android.material.tabs.TabLayout
 
 abstract class BaseTabActivity : BaseActivity() {
     /**************View***************/
-    @BindView(R.id.tab_tl_indicator)
-    protected lateinit var mTlIndicator: TabLayout
-    @BindView(R.id.tab_vp)
     protected lateinit var mVp: ViewPager
 
     /************Params*******************/
@@ -36,9 +32,11 @@ abstract class BaseTabActivity : BaseActivity() {
         checkParamsIsRight()
 
         val adapter = TabFragmentPageAdapter(supportFragmentManager)
+        mVp = findViewById(R.id.tab_vp)
         mVp.adapter = adapter
         mVp.offscreenPageLimit = 3
-        mTlIndicator.setupWithViewPager(mVp)
+        val tabLayout = findViewById<TabLayout>(R.id.tab_tl_indicator)
+        tabLayout.setupWithViewPager(mVp)
 
 
     }

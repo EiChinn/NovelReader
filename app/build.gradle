@@ -66,10 +66,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
-    // View injection
-    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"

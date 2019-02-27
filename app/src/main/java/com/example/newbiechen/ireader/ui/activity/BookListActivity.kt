@@ -3,12 +3,9 @@ package com.example.newbiechen.ireader.ui.activity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.CheckBox
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
 import com.example.newbiechen.ireader.event.BookSubSortEvent
@@ -23,6 +20,7 @@ import com.example.newbiechen.ireader.utils.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_book_list.*
 import java.util.*
 
 /**
@@ -30,13 +28,6 @@ import java.util.*
  */
 
 class BookListActivity : BaseTabActivity() {
-    @BindView(R.id.book_list_rv_tag_horizon)
-    @JvmField internal var mRvTag: RecyclerView? = null
-    @BindView(R.id.book_list_cb_filter)
-    @JvmField internal var mCbFilter: CheckBox? = null
-    @BindView(R.id.book_list_rv_tag_filter)
-    @JvmField internal var mRvFilter: RecyclerView? = null
-    /** */
     private var mHorizonTagAdapter: HorizonTagAdapter? = null
     private var mTagGroupAdapter: TagGroupAdapter? = null
     private var mTopInAnim: Animation? = null
@@ -78,12 +69,12 @@ class BookListActivity : BaseTabActivity() {
         //横向的
         mHorizonTagAdapter = HorizonTagAdapter()
         val tagManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        mRvTag!!.layoutManager = tagManager
-        mRvTag!!.adapter = mHorizonTagAdapter
+        book_list_rv_tag_horizon!!.layoutManager = tagManager
+        book_list_rv_tag_horizon!!.adapter = mHorizonTagAdapter
 
         //筛选框
-        mTagGroupAdapter = TagGroupAdapter(mRvFilter!!, 4)
-        mRvFilter!!.adapter = mTagGroupAdapter
+        mTagGroupAdapter = TagGroupAdapter(book_list_rv_tag_filter!!, 4)
+        book_list_rv_tag_filter!!.adapter = mTagGroupAdapter
     }
 
     override fun initClick() {
@@ -95,18 +86,18 @@ class BookListActivity : BaseTabActivity() {
         }
 
         //筛选
-        mCbFilter!!.setOnCheckedChangeListener { btn, checked ->
+        book_list_cb_filter!!.setOnCheckedChangeListener { _, checked ->
             if (mTopInAnim == null || mTopOutAnim == null) {
                 mTopInAnim = AnimationUtils.loadAnimation(this, R.anim.slide_top_in)
                 mTopOutAnim = AnimationUtils.loadAnimation(this, R.anim.slide_top_out)
             }
 
             if (checked) {
-                mRvFilter!!.visibility = View.VISIBLE
-                mRvFilter!!.startAnimation(mTopInAnim)
+                book_list_rv_tag_filter!!.visibility = View.VISIBLE
+                book_list_rv_tag_filter!!.startAnimation(mTopInAnim)
             } else {
-                mRvFilter!!.startAnimation(mTopOutAnim)
-                mRvFilter!!.visibility = View.GONE
+                book_list_rv_tag_filter!!.startAnimation(mTopOutAnim)
+                book_list_rv_tag_filter!!.visibility = View.GONE
             }
         }
 
@@ -119,7 +110,7 @@ class BookListActivity : BaseTabActivity() {
             for (i in tags.indices) {
                 if (bean == tags[i]) {
                     mHorizonTagAdapter!!.setCurrentSelected(i)
-                    mRvTag!!.layoutManager!!.scrollToPosition(i)
+                    book_list_rv_tag_horizon!!.layoutManager!!.scrollToPosition(i)
                     isExist = true
                 }
             }
@@ -127,9 +118,9 @@ class BookListActivity : BaseTabActivity() {
                 //添加到1的位置,保证全本的位置
                 mHorizonTagAdapter!!.addItem(1, bean)
                 mHorizonTagAdapter!!.setCurrentSelected(1)
-                mRvTag!!.layoutManager!!.scrollToPosition(1)
+                book_list_rv_tag_horizon!!.layoutManager!!.scrollToPosition(1)
             }
-            mCbFilter!!.isChecked = false
+            book_list_cb_filter!!.isChecked = false
         }
     }
 

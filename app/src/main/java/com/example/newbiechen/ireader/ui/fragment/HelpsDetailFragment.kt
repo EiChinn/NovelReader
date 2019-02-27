@@ -111,13 +111,6 @@ class HelpsDetailFragment : BaseMVPFragment<HelpsDetailContract.View, HelpsDetai
         outState.putString(EXTRA_DETAIL_ID, mDetailId)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (mDetailHeader!!.detailUnbinder != null) {
-            mDetailHeader!!.detailUnbinder!!.unbind()
-        }
-    }
-
     companion object {
         private val TAG = "HelpsDetailFragment"
         private val EXTRA_DETAIL_ID = "extra_detail_id"

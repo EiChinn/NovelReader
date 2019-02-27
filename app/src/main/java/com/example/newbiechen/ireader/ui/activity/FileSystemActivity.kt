@@ -1,12 +1,9 @@
 package com.example.newbiechen.ireader.ui.activity
 
-import android.widget.Button
-import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.local.BookRepository
@@ -19,6 +16,7 @@ import com.example.newbiechen.ireader.utils.Constant
 import com.example.newbiechen.ireader.utils.MD5Utils
 import com.example.newbiechen.ireader.utils.StringUtils
 import com.example.newbiechen.ireader.utils.ToastUtils
+import kotlinx.android.synthetic.main.activity_file_system.*
 import java.io.File
 import java.util.*
 
@@ -27,13 +25,6 @@ import java.util.*
  */
 
 class FileSystemActivity : BaseTabActivity() {
-
-    @BindView(R.id.file_system_cb_selected_all)
-    @JvmField internal var mCbSelectAll: CheckBox? = null
-    @BindView(R.id.file_system_btn_delete)
-    @JvmField internal var mBtnDelete: Button? = null
-    @BindView(R.id.file_system_btn_add_book)
-    @JvmField internal var mBtnAddBook: Button? = null
 
     private lateinit var mLocalFragment: LocalBookFragment
     private lateinit var mCategoryFragment: FileCategoryFragment
@@ -73,9 +64,9 @@ class FileSystemActivity : BaseTabActivity() {
 
     override fun initClick() {
         super.initClick()
-        mCbSelectAll!!.setOnClickListener { view ->
+        file_system_cb_selected_all!!.setOnClickListener {
             //设置全选状态
-            val isChecked = mCbSelectAll!!.isChecked
+            val isChecked = file_system_cb_selected_all!!.isChecked
             mCurFragment!!.setCheckedAll(isChecked)
             //改变菜单状态
             changeMenuStatus()
@@ -101,7 +92,7 @@ class FileSystemActivity : BaseTabActivity() {
             }
         })
 
-        mBtnAddBook!!.setOnClickListener { v ->
+        file_system_btn_add_book!!.setOnClickListener {
             //获取选中的文件
             val files = mCurFragment!!.checkedFiles
             //转换成CollBook,并存储
@@ -118,12 +109,12 @@ class FileSystemActivity : BaseTabActivity() {
 
         }
 
-        mBtnDelete!!.setOnClickListener { v ->
+        file_system_btn_delete!!.setOnClickListener {
             //弹出，确定删除文件吗。
             AlertDialog.Builder(this)
                     .setTitle("删除文件")
                     .setMessage("确定删除文件吗?")
-                    .setPositiveButton(resources.getString(R.string.nb_common_sure)) { dialog, which ->
+                    .setPositiveButton(resources.getString(R.string.nb_common_sure)) { _, _ ->
                         //删除选中的文件
                         mCurFragment!!.deleteCheckedFiles()
                         //提示删除文件成功
@@ -175,17 +166,17 @@ class FileSystemActivity : BaseTabActivity() {
 
         //点击、删除状态的设置
         if (mCurFragment!!.checkedCount == 0) {
-            mBtnAddBook!!.text = getString(R.string.nb_file_add_shelf)
+            file_system_btn_add_book!!.text = getString(R.string.nb_file_add_shelf)
             //设置某些按钮的是否可点击
             setMenuClickable(false)
 
-            if (mCbSelectAll!!.isChecked) {
+            if (file_system_cb_selected_all!!.isChecked) {
                 mCurFragment!!.setChecked(false)
-                mCbSelectAll!!.isChecked = mCurFragment!!.isCheckedAll()
+                file_system_cb_selected_all!!.isChecked = mCurFragment!!.isCheckedAll()
             }
 
         } else {
-            mBtnAddBook!!.text = getString(R.string.nb_file_add_shelves, mCurFragment!!.checkedCount)
+            file_system_btn_add_book!!.text = getString(R.string.nb_file_add_shelves, mCurFragment!!.checkedCount)
             setMenuClickable(true)
 
             //全选状态的设置
@@ -194,18 +185,18 @@ class FileSystemActivity : BaseTabActivity() {
             if (mCurFragment!!.checkedCount == mCurFragment!!.checkableCount) {
                 //设置为全选
                 mCurFragment!!.setChecked(true)
-                mCbSelectAll!!.isChecked = mCurFragment!!.isCheckedAll()
+                file_system_cb_selected_all!!.isChecked = mCurFragment!!.isCheckedAll()
             } else if (mCurFragment!!.isCheckedAll()) {
                 mCurFragment!!.setChecked(false)
-                mCbSelectAll!!.isChecked = mCurFragment!!.isCheckedAll()
+                file_system_cb_selected_all!!.isChecked = mCurFragment!!.isCheckedAll()
             }//如果曾今是全选则替换
         }
 
         //重置全选的文字
         if (mCurFragment!!.isCheckedAll()) {
-            mCbSelectAll!!.text = "取消"
+            file_system_cb_selected_all!!.text = "取消"
         } else {
-            mCbSelectAll!!.text = "全选"
+            file_system_cb_selected_all!!.text = "全选"
         }
 
     }
@@ -213,12 +204,12 @@ class FileSystemActivity : BaseTabActivity() {
     private fun setMenuClickable(isClickable: Boolean) {
 
         //设置是否可删除
-        mBtnDelete!!.isEnabled = isClickable
-        mBtnDelete!!.isClickable = isClickable
+        file_system_btn_delete!!.isEnabled = isClickable
+        file_system_btn_delete!!.isClickable = isClickable
 
         //设置是否可添加书籍
-        mBtnAddBook!!.isEnabled = isClickable
-        mBtnAddBook!!.isClickable = isClickable
+        file_system_btn_add_book!!.isEnabled = isClickable
+        file_system_btn_add_book!!.isClickable = isClickable
     }
 
     /**
@@ -230,11 +221,11 @@ class FileSystemActivity : BaseTabActivity() {
 
         //设置是否能够全选
         if (count > 0) {
-            mCbSelectAll!!.isClickable = true
-            mCbSelectAll!!.isEnabled = true
+            file_system_cb_selected_all!!.isClickable = true
+            file_system_cb_selected_all!!.isEnabled = true
         } else {
-            mCbSelectAll!!.isClickable = false
-            mCbSelectAll!!.isEnabled = false
+            file_system_cb_selected_all!!.isClickable = false
+            file_system_cb_selected_all!!.isEnabled = false
         }
     }
 }

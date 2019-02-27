@@ -6,28 +6,20 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.BillBookBean
 import com.example.newbiechen.ireader.presenter.BillBookPresenter
 import com.example.newbiechen.ireader.presenter.contract.BillBookContract
 import com.example.newbiechen.ireader.ui.adapter.BillBookAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
-import com.example.newbiechen.ireader.widget.RefreshLayout
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
+import kotlinx.android.synthetic.main.activity_refresh_list.*
 
 /**
  * Created by newbiechen on 17-5-3.
  */
 
 class OtherBillBookActivity : BaseMVPActivity<BillBookContract.View, BillBookContract.Presenter>(), BillBookContract.View {
-    /** */
-    @BindView(R.id.refresh_layout)
-    @JvmField internal var mRefreshLayout: RefreshLayout? = null
-    @BindView(R.id.refresh_rv_content)
-    @JvmField internal var mRvContent: RecyclerView? = null
-    /** */
     private var mBillBookAdapter: BillBookAdapter? = null
     /** */
     private var mBillId: String? = null
@@ -64,15 +56,15 @@ class OtherBillBookActivity : BaseMVPActivity<BillBookContract.View, BillBookCon
 
     override fun processLogic() {
         super.processLogic()
-        mRefreshLayout!!.showLoading()
+        refresh_layout!!.showLoading()
         mPresenter.refreshBookBrief(mBillId!!)
     }
 
     private fun setUpAdapter() {
-        mRvContent!!.layoutManager = LinearLayoutManager(this)
-        mRvContent!!.addItemDecoration(DividerItemDecoration(this))
+        refresh_rv_content!!.layoutManager = LinearLayoutManager(this)
+        refresh_rv_content!!.addItemDecoration(DividerItemDecoration(this))
         mBillBookAdapter = BillBookAdapter()
-        mRvContent!!.adapter = mBillBookAdapter
+        refresh_rv_content!!.adapter = mBillBookAdapter
     }
 
     override fun finishRefresh(beans: List<BillBookBean>) {
@@ -80,11 +72,11 @@ class OtherBillBookActivity : BaseMVPActivity<BillBookContract.View, BillBookCon
     }
 
     override fun showError() {
-        mRefreshLayout!!.showError()
+        refresh_layout!!.showError()
     }
 
     override fun complete() {
-        mRefreshLayout!!.showFinish()
+        refresh_layout!!.showFinish()
     }
 
     /** */

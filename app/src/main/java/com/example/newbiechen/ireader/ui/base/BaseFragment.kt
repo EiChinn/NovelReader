@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -15,7 +13,6 @@ abstract class BaseFragment : Fragment() {
     private lateinit var mDisposable: CompositeDisposable
 
     private lateinit var root: View
-    private lateinit var unbinder: Unbinder
 
     @LayoutRes
     protected abstract fun getContentId(): Int
@@ -42,7 +39,6 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData(savedInstanceState)
-        unbinder = ButterKnife.bind(this, root)
         initWidget(savedInstanceState)
         initClick()
         processLogic()
@@ -50,9 +46,6 @@ abstract class BaseFragment : Fragment() {
     }
 
     override fun onDetach() {
-        if (this::unbinder.isInitialized) {
-            unbinder.unbind()
-        }
         if (this::mDisposable.isInitialized) {
             mDisposable.clear()
         }

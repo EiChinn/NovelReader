@@ -2,7 +2,6 @@ package com.example.newbiechen.ireader.ui.activity
 
 import android.view.View
 import android.widget.ExpandableListView
-import butterknife.BindView
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.BillboardBean
 import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage
@@ -10,7 +9,7 @@ import com.example.newbiechen.ireader.presenter.BillboardPresenter
 import com.example.newbiechen.ireader.presenter.contract.BillboardContract
 import com.example.newbiechen.ireader.ui.adapter.BillboardAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPActivity
-import com.example.newbiechen.ireader.widget.RefreshLayout
+import kotlinx.android.synthetic.main.activity_bilboard.*
 import java.util.*
 
 /**
@@ -23,13 +22,6 @@ import java.util.*
  */
 
 class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContract.Presenter>(), BillboardContract.View, ExpandableListView.OnGroupClickListener {
-
-    @BindView(R.id.billboard_rl_refresh)
-    @JvmField internal var mRlRefresh: RefreshLayout? = null
-    @BindView(R.id.billboard_elv_boy)
-    @JvmField internal var mElvBoy: ExpandableListView? = null
-    @BindView(R.id.billboard_elv_girl)
-    @JvmField internal var mElvGirl: ExpandableListView? = null
 
     private var mBoyAdapter: BillboardAdapter? = null
     private var mGirlAdapter: BillboardAdapter? = null
@@ -45,15 +37,15 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
     private fun setUpAdapter() {
         mBoyAdapter = BillboardAdapter()
         mGirlAdapter = BillboardAdapter()
-        mElvBoy!!.setAdapter(mBoyAdapter)
-        mElvGirl!!.setAdapter(mGirlAdapter)
+        billboard_elv_boy!!.setAdapter(mBoyAdapter)
+        billboard_elv_boy!!.setAdapter(mGirlAdapter)
     }
 
     override fun initClick() {
         super.initClick()
-        mRlRefresh!!.setOnReloadingListener { mPresenter.loadBillboardList() }
+        billboard_rl_refresh!!.setOnReloadingListener { mPresenter.loadBillboardList() }
 
-        mElvBoy!!.setOnGroupClickListener (object : ExpandableListView.OnGroupClickListener{
+        billboard_elv_boy!!.setOnGroupClickListener (object : ExpandableListView.OnGroupClickListener{
             override fun onGroupClick(parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long): Boolean {
                 if (groupPosition != mBoyAdapter!!.groupCount - 1) {
                     val (_id, _, _, _, monthRank, totalRank) = mBoyAdapter!!.getGroup(groupPosition)
@@ -63,7 +55,7 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
                 return false
             }
         })
-        mElvBoy!!.setOnChildClickListener(object : ExpandableListView.OnChildClickListener {
+        billboard_elv_boy!!.setOnChildClickListener(object : ExpandableListView.OnChildClickListener {
 
             override fun onChildClick(parent: ExpandableListView?, v: View?, groupPosition: Int, childPosition: Int, id: Long): Boolean {
                 if (groupPosition == mBoyAdapter!!.groupCount - 1) {
@@ -76,7 +68,7 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
         })
 
 
-        mElvGirl!!.setOnGroupClickListener(object : ExpandableListView.OnGroupClickListener {
+        billboard_elv_boy!!.setOnGroupClickListener(object : ExpandableListView.OnGroupClickListener {
             override fun onGroupClick(parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long): Boolean {
                 if (groupPosition != mGirlAdapter!!.groupCount - 1) {
                     val (_id, _, _, _, monthRank, totalRank) = mGirlAdapter!!.getGroup(groupPosition)
@@ -88,7 +80,7 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
 
         })
 
-        mElvGirl!!.setOnChildClickListener(object : ExpandableListView.OnChildClickListener {
+        billboard_elv_boy!!.setOnChildClickListener(object : ExpandableListView.OnChildClickListener {
             override fun onChildClick(parent: ExpandableListView?, v: View?, groupPosition: Int, childPosition: Int, id: Long): Boolean {
                 if (groupPosition == mGirlAdapter!!.groupCount - 1) {
                     val bean = mGirlAdapter!!.getChild(groupPosition, childPosition)
@@ -108,14 +100,14 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
     override fun processLogic() {
         super.processLogic()
 
-        mRlRefresh!!.showLoading()
+        billboard_rl_refresh!!.showLoading()
         mPresenter.loadBillboardList()
     }
 
     override fun finishRefresh(beans: BillboardPackage) {
         if (beans?.male == null || beans.female == null
                 || beans.male!!.isEmpty() || beans.female!!.isEmpty()) {
-            mRlRefresh!!.showEmpty()
+            billboard_rl_refresh!!.showEmpty()
             return
         }
         updateMaleBillboard(beans.male!!)
@@ -154,11 +146,11 @@ class BillboardActivity : BaseMVPActivity<BillboardContract.View, BillboardContr
     }
 
     override fun showError() {
-        mRlRefresh!!.showError()
+        billboard_rl_refresh!!.showError()
     }
 
     override fun complete() {
-        mRlRefresh!!.showFinish()
+        billboard_rl_refresh!!.showFinish()
     }
 
     override fun onGroupClick(parent: ExpandableListView, v: View, groupPosition: Int, id: Long): Boolean {

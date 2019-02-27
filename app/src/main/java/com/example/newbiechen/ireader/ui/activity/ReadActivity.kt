@@ -18,9 +18,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import android.widget.SeekBar
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -28,7 +26,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import butterknife.BindView
 import com.example.newbiechen.ireader.BOOK_ID
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.db.entity.BookChapter
@@ -44,7 +41,6 @@ import com.example.newbiechen.ireader.utils.*
 import com.example.newbiechen.ireader.widget.page.PageLoader
 import com.example.newbiechen.ireader.widget.page.PageView
 import com.example.newbiechen.ireader.widget.page.TxtChapter
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_read.*
 
 /**
@@ -59,40 +55,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     private val BRIGHTNESS_ADJ_URI = Settings.System.getUriFor("screen_auto_brightness_adj")
 
 
-    @BindView(R.id.read_dl_slide)
-    @JvmField internal var mDlSlide: DrawerLayout? = null
-    /*************top_menu_view */
-    @BindView(R.id.read_abl_top_menu)
-    @JvmField internal var mAblTopMenu: AppBarLayout? = null
-    @BindView(R.id.read_tv_change_source)
-    @JvmField internal var mTvChangeSource: TextView? = null
-    @BindView(R.id.read_tv_community)
-    @JvmField internal var mTvCommunity: TextView? = null
-    @BindView(R.id.read_tv_brief)
-    @JvmField internal var mTvBrief: TextView? = null
-    /***************content_view */
-    @BindView(R.id.read_pv_page)
-    @JvmField internal var mPvPage: PageView? = null
-    /***************bottom_menu_view */
-    @BindView(R.id.read_tv_page_tip)
-    @JvmField internal var mTvPageTip: TextView? = null
 
-    @BindView(R.id.read_ll_bottom_menu)
-    @JvmField internal var mLlBottomMenu: LinearLayout? = null
-    @BindView(R.id.read_tv_pre_chapter)
-    @JvmField internal var mTvPreChapter: TextView? = null
-    @BindView(R.id.read_sb_chapter_progress)
-    @JvmField internal var mSbChapterProgress: SeekBar? = null
-    @BindView(R.id.read_tv_next_chapter)
-    @JvmField internal var mTvNextChapter: TextView? = null
-    @BindView(R.id.read_tv_category)
-    @JvmField internal var mTvCategory: TextView? = null
-    @BindView(R.id.read_tv_night_mode)
-    @JvmField internal var mTvNightMode: TextView? = null
-    /*    @BindView(R.id.read_tv_download)
-        TextView mTvDownload;*/
-    @BindView(R.id.read_tv_setting)
-    @JvmField internal var mTvSetting: TextView? = null
     /*****************view */
     private var mSettingDialog: ReadSettingDialog? = null
     private var mPageLoader: PageLoader? = null
@@ -202,15 +165,15 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mPvPage!!.setLayerType(LAYER_TYPE_SOFTWARE, null)
+            read_pv_page!!.setLayerType(LAYER_TYPE_SOFTWARE, null)
         }
 
         //获取页面加载器
-        mPageLoader = mPvPage!!.getPageLoader(mCollBook!!)
+        mPageLoader = read_pv_page!!.getPageLoader(mCollBook!!)
         //禁止滑动展示DrawerLayout
-        mDlSlide!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        read_dl_slide!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         //侧边打开后，返回键能够起作用
-        mDlSlide!!.isFocusableInTouchMode = false
+        read_dl_slide!!.isFocusableInTouchMode = false
         mSettingDialog = ReadSettingDialog(this, mPageLoader!!)
 
         //夜间模式按钮的状态
@@ -234,7 +197,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "NovelReader:keep bright")
 
         //隐藏StatusBar
-        mPvPage!!.post { hideSystemBar() }
+        read_pv_page!!.post { hideSystemBar() }
 
         //初始化TopMenu
         initTopMenu()
@@ -245,7 +208,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
     private fun initTopMenu() {
         if (Build.VERSION.SDK_INT >= 19) {
-            mAblTopMenu!!.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0)
+            read_abl_top_menu!!.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0)
         }
     }
 
@@ -253,31 +216,31 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         //判断是否全屏
         if (ReadSettingManager.isFullScreen()) {
             //还需要设置mBottomMenu的底部高度
-            val params = mLlBottomMenu!!.layoutParams as ViewGroup.MarginLayoutParams
+            val params = read_ll_bottom_menu!!.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = ScreenUtils.getNavigationBarHeight()
-            mLlBottomMenu!!.layoutParams = params
+            read_ll_bottom_menu!!.layoutParams = params
         } else {
             //设置mBottomMenu的底部距离
-            val params = mLlBottomMenu!!.layoutParams as ViewGroup.MarginLayoutParams
+            val params = read_ll_bottom_menu!!.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = 0
-            mLlBottomMenu!!.layoutParams = params
+            read_ll_bottom_menu!!.layoutParams = params
         }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        Log.d(TAG, "onWindowFocusChanged: " + mAblTopMenu!!.measuredHeight)
+        Log.d(TAG, "onWindowFocusChanged: " + read_abl_top_menu!!.measuredHeight)
     }
 
     private fun toggleNightMode() {
         if (isNightMode) {
-            mTvNightMode!!.text = StringUtils.getString(R.string.nb_mode_morning)
+            read_tv_night_mode!!.text = StringUtils.getString(R.string.nb_mode_morning)
             val drawable = ContextCompat.getDrawable(this, R.drawable.ic_read_menu_morning)
-            mTvNightMode!!.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+            read_tv_night_mode!!.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
         } else {
-            mTvNightMode!!.text = StringUtils.getString(R.string.nb_mode_night)
+            read_tv_night_mode!!.text = StringUtils.getString(R.string.nb_mode_night)
             val drawable = ContextCompat.getDrawable(this, R.drawable.ic_read_menu_night)
-            mTvNightMode!!.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+            read_tv_night_mode!!.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
         }
     }
 
@@ -331,7 +294,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                         mPresenter.loadChapter(mBookId!!, requestChapters)
                         mHandler.sendEmptyMessage(WHAT_CATEGORY)
                         //隐藏提示
-                        mTvPageTip!!.visibility = GONE
+                        read_tv_page_tip!!.visibility = GONE
                     }
 
                     override fun onCategoryFinish(chapters: List<TxtChapter>?) {
@@ -340,25 +303,25 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                     }
 
                     override fun onPageCountChange(count: Int) {
-                        mSbChapterProgress!!.max = Math.max(0, count - 1)
-                        mSbChapterProgress!!.progress = 0
+                        read_sb_chapter_progress!!.max = Math.max(0, count - 1)
+                        read_sb_chapter_progress!!.progress = 0
                         // 如果处于错误状态，那么就冻结使用
-                        mSbChapterProgress!!.isEnabled = !(mPageLoader!!.pageStatus == PageLoader.STATUS_LOADING || mPageLoader!!.pageStatus == PageLoader.STATUS_ERROR)
+                        read_sb_chapter_progress!!.isEnabled = !(mPageLoader!!.pageStatus == PageLoader.STATUS_LOADING || mPageLoader!!.pageStatus == PageLoader.STATUS_ERROR)
                     }
 
                     override fun onPageChange(pos: Int) {
-                        mSbChapterProgress!!.post { mSbChapterProgress!!.progress = pos }
+                        read_sb_chapter_progress!!.post { read_sb_chapter_progress!!.progress = pos }
                     }
                 }
         )
 
-        mSbChapterProgress!!.setOnSeekBarChangeListener(
+        read_sb_chapter_progress!!.setOnSeekBarChangeListener(
                 object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        if (mLlBottomMenu!!.visibility == VISIBLE) {
+                        if (read_ll_bottom_menu!!.visibility == VISIBLE) {
                             //显示标题
-                            mTvPageTip!!.text = (progress + 1).toString() + "/" + (mSbChapterProgress!!.max + 1)
-                            mTvPageTip!!.visibility = VISIBLE
+                            read_tv_page_tip!!.text = (progress + 1).toString() + "/" + (read_sb_chapter_progress!!.max + 1)
+                            read_tv_page_tip!!.visibility = VISIBLE
                         }
                     }
 
@@ -366,17 +329,17 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
 
                     override fun onStopTrackingTouch(seekBar: SeekBar) {
                         //进行切换
-                        val pagePos = mSbChapterProgress!!.progress
+                        val pagePos = read_sb_chapter_progress!!.progress
                         if (pagePos != mPageLoader!!.pagePos) {
                             mPageLoader!!.skipToPage(pagePos)
                         }
                         //隐藏提示
-                        mTvPageTip!!.visibility = GONE
+                        read_tv_page_tip!!.visibility = GONE
                     }
                 }
         )
 
-        mPvPage!!.setTouchListener(object : PageView.TouchListener {
+        read_pv_page!!.setTouchListener(object : PageView.TouchListener {
             override fun onTouch(): Boolean {
                 return !hideReadMenu()
             }
@@ -392,42 +355,42 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
             override fun cancel() {}
         })
 
-        mTvCategory!!.setOnClickListener {
+        read_tv_category!!.setOnClickListener {
             openChapterDrawer()
         }
-        mTvSetting!!.setOnClickListener { v ->
+        read_tv_setting!!.setOnClickListener { v ->
             toggleMenu(false)
             mSettingDialog!!.show()
         }
 
-        mTvPreChapter!!.setOnClickListener {
+        read_tv_pre_chapter!!.setOnClickListener {
             if (mPageLoader!!.skipPreChapter()) {
                 mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos].isSelected = true
                 mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos + 1].isSelected = false
             }
         }
 
-        mTvNextChapter!!.setOnClickListener { v ->
+        read_tv_next_chapter!!.setOnClickListener { v ->
             if (mPageLoader!!.skipNextChapter()) {
                 mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos].isSelected = true
                 mPageLoader!!.mChapterList!![mPageLoader!!.chapterPos - 1].isSelected = false
             }
         }
 
-        mTvNightMode!!.setOnClickListener { v ->
+        read_tv_night_mode!!.setOnClickListener { v ->
             isNightMode = !isNightMode
             mPageLoader!!.setNightMode(isNightMode)
             toggleNightMode()
         }
 
-        mTvBrief!!.setOnClickListener { v -> BookDetailActivity.startActivity(this, mBookId!!) }
+        read_tv_brief!!.setOnClickListener { v -> BookDetailActivity.startActivity(this, mBookId!!) }
 
-        mTvCommunity!!.setOnClickListener { v ->
+        read_tv_community!!.setOnClickListener { v ->
             val intent = Intent(this, CommunityActivity::class.java)
             startActivity(intent)
         }
 
-        mTvChangeSource!!.setOnClickListener { v ->
+        read_tv_change_source!!.setOnClickListener { v ->
             val intent = Intent(this, ChangeSourceActivity::class.java)
             intent.putExtra(BOOK_ID, mBookId)
             intent.putExtra(ChangeSourceActivity.CURRENT_SOURCE_NAME, mCollBook!!.currentSourceName)
@@ -448,7 +411,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
      */
     private fun hideReadMenu(): Boolean {
         hideSystemBar()
-        if (mAblTopMenu!!.visibility == VISIBLE) {
+        if (read_abl_top_menu!!.visibility == VISIBLE) {
             toggleMenu(true)
             return true
         } else if (mSettingDialog!!.isShowing) {
@@ -481,22 +444,22 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     private fun toggleMenu(hideStatusBar: Boolean) {
         initMenuAnim()
 
-        if (mAblTopMenu!!.visibility == View.VISIBLE) {
+        if (read_abl_top_menu!!.visibility == View.VISIBLE) {
             //关闭
-            mAblTopMenu!!.startAnimation(mTopOutAnim)
-            mLlBottomMenu!!.startAnimation(mBottomOutAnim)
-            mAblTopMenu!!.visibility = GONE
-            mLlBottomMenu!!.visibility = GONE
-            mTvPageTip!!.visibility = GONE
+            read_abl_top_menu!!.startAnimation(mTopOutAnim)
+            read_ll_bottom_menu!!.startAnimation(mBottomOutAnim)
+            read_abl_top_menu!!.visibility = GONE
+            read_ll_bottom_menu!!.visibility = GONE
+            read_tv_page_tip!!.visibility = GONE
 
             if (hideStatusBar) {
                 hideSystemBar()
             }
         } else {
-            mAblTopMenu!!.visibility = View.VISIBLE
-            mLlBottomMenu!!.visibility = View.VISIBLE
-            mAblTopMenu!!.startAnimation(mTopInAnim)
-            mLlBottomMenu!!.startAnimation(mBottomInAnim)
+            read_abl_top_menu!!.visibility = View.VISIBLE
+            read_ll_bottom_menu!!.visibility = View.VISIBLE
+            read_abl_top_menu!!.startAnimation(mTopInAnim)
+            read_ll_bottom_menu!!.startAnimation(mBottomInAnim)
 
             showSystemBar()
         }
@@ -588,7 +551,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         //切换菜单
         toggleMenu(true)
         //打开侧滑动栏
-        mDlSlide!!.openDrawer(GravityCompat.START)
+        read_dl_slide!!.openDrawer(GravityCompat.START)
 
     }
 
@@ -596,7 +559,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         rv_category.layoutManager = LinearLayoutManager(this)
         mCategoryAdapter = CategoryAdapter(mPageLoader!!.mChapterList!!)
         mCategoryAdapter!!.setOnItemClickListener { _, _, position ->
-            mDlSlide!!.closeDrawer(GravityCompat.START)
+            read_dl_slide!!.closeDrawer(GravityCompat.START)
             mPageLoader!!.skipToChapter(position)
         }
         val headerView = layoutInflater.inflate(R.layout.item_category_header, null, false)
@@ -617,7 +580,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     }
 
     override fun onBackPressed() {
-        if (mAblTopMenu!!.visibility == View.VISIBLE) {
+        if (read_abl_top_menu!!.visibility == View.VISIBLE) {
             // 非全屏下才收缩，全屏下直接退出
             if (!ReadSettingManager.isFullScreen()) {
                 toggleMenu(true)
@@ -626,8 +589,8 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
         } else if (mSettingDialog!!.isShowing) {
             mSettingDialog!!.dismiss()
             return
-        } else if (mDlSlide!!.isDrawerOpen(GravityCompat.START)) {
-            mDlSlide!!.closeDrawer(GravityCompat.START)
+        } else if (read_dl_slide!!.isDrawerOpen(GravityCompat.START)) {
+            read_dl_slide!!.closeDrawer(GravityCompat.START)
             return
         }
 
