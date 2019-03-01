@@ -11,7 +11,6 @@ import io.reactivex.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var mDisposable: CompositeDisposable
-    private var mToolbar: Toolbar? = null
 
     /****************************abstract area*************************************/
     @LayoutRes
@@ -26,10 +25,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        mToolbar = findViewById(R.id.toolbar)
-        mToolbar?.let {
-            supportActionBar(mToolbar!!)
-            setUpToolbar(mToolbar!!)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.let {
+            supportActionBar(toolbar)
+            setUpToolbar(toolbar)
         }
     }
 
@@ -86,5 +85,4 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    /**************************used method area*******************************************/
 }

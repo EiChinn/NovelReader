@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
@@ -22,24 +21,22 @@ import com.example.newbiechen.ireader.presenter.contract.BookShelfContract
 import com.example.newbiechen.ireader.ui.activity.ReadActivity
 import com.example.newbiechen.ireader.ui.adapter.CollBookAdapter
 import com.example.newbiechen.ireader.ui.base.BaseMVPFragment
-import com.example.newbiechen.ireader.ui.base.adapter.BaseListAdapter
 import com.example.newbiechen.ireader.utils.RxUtils
 import com.example.newbiechen.ireader.utils.ToastUtils
-import com.example.newbiechen.ireader.widget.adapter.WholeAdapter
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_bookshelf.*
+import org.jetbrains.anko.support.v4.toast
 import java.io.File
 
 /**
  * Created by newbiechen on 17-4-15.
  */
 
-class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContract.Presenter>(), BookShelfContract.View {
+class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContract.Presenter>(), BookShelfContract.View{
 
     /** */
     private var mCollBookAdapter: CollBookAdapter? = null
-    private var mFooterItem: FooterItemView? = null
 
     //是否是第一次进入
     private var isInit = true
@@ -54,15 +51,17 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
 
     override fun initWidget(savedInstanceState: Bundle?) {
         super.initWidget(savedInstanceState)
+        swipeRefreshLayout.setOnRefreshListener { mPresenter.updateCollBooks(mCollBookAdapter!!.data) }
         setUpAdapter()
     }
 
     private fun setUpAdapter() {
         //添加Footer
-        mCollBookAdapter = CollBookAdapter()
-        book_shelf_rv_content.setLayoutManager(LinearLayoutManager(context))
-        book_shelf_rv_content.addItemDecoration(DividerItemDecoration(context!!))
-        book_shelf_rv_content.setAdapter(mCollBookAdapter)
+        mCollBookAdapter = CollBookAdapter(context!!)
+        mCollBookAdapter!!.emptyView = layoutInflater.inflate(R.layout.view_empty_book_shelf, null)
+        rv_coll_books.layoutManager = LinearLayoutManager(context)
+        rv_coll_books.addItemDecoration(DividerItemDecoration(context!!))
+        rv_coll_books.adapter = mCollBookAdapter
     }
 
     override fun initClick() {
@@ -71,7 +70,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
         val syncBookDisp = RxBus.getInstance()
                 .toObservable(SyncBookEvent::class.java)
                 .subscribe(
-                        { event -> mPresenter.refreshCollBooks() },
+                        { mPresenter.refreshCollBooks() },
                         { error -> showErrorTip(error.toString()) }
                 )
         addDisposable(syncBookDisp)
@@ -97,7 +96,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                         BookRepository.instance.deleteCollBookInRx(collBook)
                                 .compose<com.example.newbiechen.ireader.model.local.Void> { RxUtils.toSimpleSingle(it) }
                                 .subscribe { _ ->
-                                    mCollBookAdapter!!.removeItem(collBook)
+                                    mPresenter.refreshCollBooks()
                                     progressDialog.dismiss()
                                 }
                     } else {
@@ -105,53 +104,43 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                         val tipDialog = AlertDialog.Builder(context!!)
                                 .setTitle("您的任务正在加载")
                                 .setMessage("先请暂停任务再进行删除")
-                                .setPositiveButton("确定") { dialog, which -> dialog.dismiss() }.create()
+                                .setPositiveButton("确定") { dialog, _ -> dialog.dismiss() }.create()
                         tipDialog.show()
                     }
                 }
         addDisposable(deleteDisp)
 
-        book_shelf_rv_content.setOnRefreshListener { mPresenter.updateCollBooks(mCollBookAdapter!!.getItems()) }
-
-        mCollBookAdapter!!.setOnItemClickListener(object : BaseListAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, pos: Int) {
-                //如果是本地文件，首先判断这个文件是否存在
-                val collBook = mCollBookAdapter!!.getItem(pos)
-                if (collBook.isLocal) {
-                    //id表示本地文件的路径
-                    val path = collBook.cover
-                    val file = File(path)
-                    //判断这个本地文件是否存在
-                    if (file.exists() && file.length() != 0L) {
-                        ReadActivity.startActivity(context!!,
-                                mCollBookAdapter!!.getItem(pos), true)
-                    } else {
-                        val tip = context!!.getString(R.string.nb_bookshelf_book_not_exist)
-                        //提示(从目录中移除这个文件)
-                        AlertDialog.Builder(context!!)
-                                .setTitle(resources.getString(R.string.nb_common_tip))
-                                .setMessage(tip)
-                                .setPositiveButton(resources.getString(R.string.nb_common_sure)
-                                ) { dialog, which -> deleteBook(collBook) }
-                                .setNegativeButton(resources.getString(R.string.nb_common_cancel), null)
-                                .show()
-                    }
+        mCollBookAdapter?.setOnItemClickListener { adapter, view, position ->
+            //如果是本地文件，首先判断这个文件是否存在
+            val collBook = mCollBookAdapter!!.getItem(position)!!
+            if (collBook.isLocal) {
+                //id表示本地文件的路径
+                val path = collBook.cover
+                val file = File(path)
+                //判断这个本地文件是否存在
+                if (file.exists() && file.length() != 0L) {
+                    ReadActivity.startActivity(context!!, collBook, true)
                 } else {
-                    ReadActivity.startActivity(context!!,
-                            mCollBookAdapter!!.getItem(pos), true)
+                    val tip = context!!.getString(R.string.nb_bookshelf_book_not_exist)
+                    //提示(从目录中移除这个文件)
+                    AlertDialog.Builder(context!!)
+                            .setTitle(resources.getString(R.string.nb_common_tip))
+                            .setMessage(tip)
+                            .setPositiveButton(resources.getString(R.string.nb_common_sure)
+                            ) { _, _ -> deleteBook(collBook) }
+                            .setNegativeButton(resources.getString(R.string.nb_common_cancel), null)
+                            .show()
                 }
+            } else {
+                ReadActivity.startActivity(context!!, collBook, true)
             }
+        }
 
-        })
-
-        mCollBookAdapter!!.setOnItemLongClickListener(object : BaseListAdapter.OnItemLongClickListener {
-            override fun onItemLongClick(view: View, pos: Int): Boolean {
-                //开启Dialog,最方便的Dialog,就是AlterDialog
-                openItemDialog(mCollBookAdapter!!.getItem(pos))
-                return true
-            }
-
-        })
+        mCollBookAdapter?.setOnItemLongClickListener { _, _, position ->
+            //开启Dialog,最方便的Dialog,就是AlterDialog
+            openItemDialog(mCollBookAdapter!!.getItem(position)!!)
+            true
+        }
     }
 
     private fun openItemDialog(collBook: CollBook) {
@@ -160,7 +149,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                 .setTitle(collBook.title)
                 .setAdapter(ArrayAdapter(context!!,
                         android.R.layout.simple_list_item_1, menus)
-                ) { dialog, which -> onItemMenuClick(menus[which], collBook) }
+                ) { _, which -> onItemMenuClick(menus[which], collBook) }
                 .setNegativeButton(null, null)
                 .setPositiveButton(null, null)
                 .create()
@@ -219,12 +208,12 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                             BookRepository.instance.deleteCollBook(collBook)
 
                             //从Adapter中删除
-                            mCollBookAdapter!!.removeItem(collBook)
+                            mPresenter.refreshCollBooks()
                             progressDialog.dismiss()
                         } else {
                             BookRepository.instance.deleteCollBook(collBook)
                             //从Adapter中删除
-                            mCollBookAdapter!!.removeItem(collBook)
+                            mPresenter.refreshCollBooks()
                         }
                     }
                     .setNegativeButton(resources.getString(R.string.nb_common_cancel), null)
@@ -237,32 +226,28 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     /*******************************************************************8 */
 
     override fun showError() {
+        finishRefresh()
+    }
 
-        if (book_shelf_rv_content.isRefreshing) {
-            book_shelf_rv_content.finishRefresh()
+    private fun finishRefresh() {
+        if (swipeRefreshLayout.isRefreshing) {
+            swipeRefreshLayout.isRefreshing = false
         }
-
     }
 
     override fun complete() {
-        if (mCollBookAdapter!!.itemCount > 0 && mFooterItem == null) {
-            mFooterItem = FooterItemView()
-            mCollBookAdapter!!.addFooterView(mFooterItem!!)
-        }
-
-        if (book_shelf_rv_content.isRefreshing) {
-            book_shelf_rv_content.finishRefresh()
-        }
+        finishRefresh()
     }
 
     override fun finishRefresh(collBooks: List<CollBook>) {
         if (!collBooks.isEmpty()) {
-            mCollBookAdapter!!.refreshItems(collBooks)
+            mCollBookAdapter!!.setNewData(collBooks)
             //如果是初次进入，则更新书籍信息
             if (isInit) {
                 isInit = false
-                book_shelf_rv_content.startRefresh()
-                book_shelf_rv_content.post { mPresenter.updateCollBooks(mCollBookAdapter!!.getItems()) }
+                /*swipeRefreshLayout.post {
+                    swipeRefreshLayout.isRefreshing = true
+                }*/
             }
         }
 
@@ -270,27 +255,12 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
 
     override fun finishUpdate() {
         //重新从数据库中获取数据
-        mCollBookAdapter!!.refreshItems(BookRepository
+        mCollBookAdapter!!.setNewData(BookRepository
                 .instance.getAllCollBooks())
     }
 
     override fun showErrorTip(error: String) {
-        book_shelf_rv_content.setTip(error)
-        book_shelf_rv_content.showTip()
-    }
-
-    /** */
-    internal inner class FooterItemView : WholeAdapter.ItemView {
-        override fun onCreateView(parent: ViewGroup): View {
-            val view = LayoutInflater.from(context)
-                    .inflate(R.layout.footer_book_shelf, parent, false)
-            view.setOnClickListener { v ->
-                //设置RxBus回调
-            }
-            return view
-        }
-
-        override fun onBindView(view: View) {}
+       toast(error)
     }
 
     override fun onResume() {
@@ -312,8 +282,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     }
 
     override fun onDestroy() {
-        book_shelf_rv_content?.setOnRefreshListener(null)
-        book_shelf_rv_content?.setAdapter(null)
+        rv_coll_books?.adapter = null
         super.onDestroy()
     }
 }

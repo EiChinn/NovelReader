@@ -310,7 +310,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                     }
 
                     override fun onPageChange(pos: Int) {
-                        read_sb_chapter_progress!!.post { read_sb_chapter_progress!!.progress = pos }
+                        read_sb_chapter_progress.post { read_sb_chapter_progress.progress = pos }
                     }
                 }
         )
