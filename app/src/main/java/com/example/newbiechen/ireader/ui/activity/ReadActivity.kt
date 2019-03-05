@@ -207,9 +207,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
     }
 
     private fun initTopMenu() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            read_abl_top_menu!!.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0)
-        }
+        read_abl_top_menu!!.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0)
     }
 
     private fun initBottomMenu() {
