@@ -90,7 +90,8 @@ dependencies {
 
     def room_version = "2.1.0-alpha04"
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+    kapt "androidx.room:room-compiler:$room_version"
+    // For Kotlin use kapt instead of annotationProcessor
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
 
@@ -116,4 +117,10 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
 
     implementation 'cn.bmob.android:bmob-sdk:3.6.9'
+
+    def lifecycle_version = "2.0.0"
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    implementation 'com.google.android:flexbox:1.1.0'
 }

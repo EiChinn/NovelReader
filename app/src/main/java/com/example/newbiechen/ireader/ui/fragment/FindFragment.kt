@@ -6,6 +6,7 @@ import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.SectionBean
 import com.example.newbiechen.ireader.model.flag.FindType
 import com.example.newbiechen.ireader.ui.activity.BillboardActivity
+import com.example.newbiechen.ireader.ui.activity.BookCategoryActivity
 import com.example.newbiechen.ireader.ui.activity.BookListActivity
 import com.example.newbiechen.ireader.ui.activity.BookSortActivity
 import com.example.newbiechen.ireader.ui.adapter.SectionAdapter
@@ -46,6 +47,7 @@ class FindFragment : BaseFragment() {
                 FindType.TOP -> startActivity<BillboardActivity>()
                 FindType.SORT -> startActivity<BookSortActivity>()
                 FindType.TOPIC -> startActivity<BookListActivity>()
+                FindType.LISTEN -> startActivity<BookCategoryActivity>()
             }
         }
 
