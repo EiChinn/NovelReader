@@ -1,10 +1,10 @@
 package com.example.newbiechen.ireader.ui.activity
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -25,7 +25,6 @@ import com.example.newbiechen.ireader.event.SyncBookEvent
 import com.example.newbiechen.ireader.model.bean.BmobDaoUtils
 import com.example.newbiechen.ireader.model.bean.CollBookBmobBean
 import com.example.newbiechen.ireader.model.local.BookRepository
-import com.example.newbiechen.ireader.service.DownloadService
 import com.example.newbiechen.ireader.ui.base.BaseTabActivity
 import com.example.newbiechen.ireader.ui.fragment.BookShelfFragment
 import com.example.newbiechen.ireader.ui.fragment.CommunityFragment
@@ -54,7 +53,7 @@ class MainActivity : BaseTabActivity() {
 
 
         }
-        startService(Intent(this, DownloadService::class.java))
+//        startService(Intent(this, DownloadService::class.java))
     }
 
 
@@ -137,7 +136,12 @@ class MainActivity : BaseTabActivity() {
     }
 
     private fun quitApp() {
-        stopService(Intent(this, DownloadActivity::class.java))
+//        stopService(Intent(this, DownloadActivity::class.java))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Process.killProcess(Process.myPid())
     }
 
     /**
