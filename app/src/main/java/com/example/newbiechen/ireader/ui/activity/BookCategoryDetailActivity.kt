@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.flag.BookSortListType
-import com.example.newbiechen.ireader.ui.adapter.BookCategoryDetailAdapter
+import com.example.newbiechen.ireader.ui.adapter.BookCategoryListAdapter
 import com.example.newbiechen.ireader.viewmodel.BookCategoryDetailViewModel
 import com.example.newbiechen.ireader.viewmodel.InjectorUtils
 import com.example.newbiechen.ireader.widget.dialog.LoadingDialogHelper
@@ -25,30 +25,6 @@ class BookCategoryDetailActivity : AppCompatActivity() {
                 InjectorUtils.provideBookCategoryDetailViewModelFactory())
                 .get(BookCategoryDetailViewModel::class.java)
 
-        rv_books.layoutManager = LinearLayoutManager(this)
-        rv_books.adapter = BookCategoryDetailAdapter(this, null)
-        viewModel.books.observe(this, Observer {
-            Log.i("tag", "------------------------------------------------------------------")
-            (rv_books.adapter as BookCategoryDetailAdapter).setNewData(it)
-        })
-
-        for (type in BookSortListType.values()) {
-            tab_tl_indicator.addTab(tab_tl_indicator.newTab().setText(type.typeName))
-        }
-
-        tab_tl_indicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.currentType.postValue(tab.text.toString())
-            }
-
-        })
         viewModel.currentType.value = BookSortListType.HOT.netName
         viewModel.major = intent.getStringExtra("category")
         viewModel.gender = intent.getStringExtra("gender")
@@ -84,16 +60,34 @@ class BookCategoryDetailActivity : AppCompatActivity() {
 
                 })
 
-                viewModel.currentMinor.postValue("")
+                viewModel.currentMinor.postValue(it[0])
             }
 
         })
 
-        viewModel.currentType.observe(this, Observer {
-            viewModel.fetBooks()
+        rv_books.layoutManager = LinearLayoutManager(this)
+        rv_books.adapter = BookCategoryListAdapter()
+        viewModel.books.observe(this, Observer {
+            Log.i("tag", "------------------------------------------------------------------")
+            (rv_books.adapter as BookCategoryListAdapter).submitList(it)
         })
-        viewModel.currentMinor.observe(this, Observer {
-            viewModel.fetBooks()
+
+        for (type in BookSortListType.values()) {
+            tab_tl_indicator.addTab(tab_tl_indicator.newTab().setText(type.typeName))
+        }
+
+        tab_tl_indicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewModel.currentType.postValue(BookSortListType.getNetName(tab.text.toString()))
+            }
+
         })
 
 

@@ -3,10 +3,7 @@ package com.example.newbiechen.ireader.model.remote
 import com.example.newbiechen.ireader.db.entity.BookChapter
 import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.model.bean.*
-import com.example.newbiechen.ireader.model.bean.packages.BillboardPackage
-import com.example.newbiechen.ireader.model.bean.packages.BookSortPackage
-import com.example.newbiechen.ireader.model.bean.packages.BookSubSortPackage
-import com.example.newbiechen.ireader.model.bean.packages.SearchBooksBean
+import com.example.newbiechen.ireader.model.bean.packages.*
 import io.reactivex.Single
 import retrofit2.Retrofit
 import java.util.*
@@ -178,6 +175,19 @@ class RemoteRepository private constructor() {
     fun getSortBooks(gender: String, type: String, major: String, minor: String, start: Int, limit: Int): Single<List<SortBookBean>> {
         return mBookApi.getSortBookPackage(gender, type, major, minor, start, limit)
                 .map { (_, _, books) -> books }
+    }
+    /**
+     * 根据分类获取书籍列表
+     * @param gender
+     * @param type
+     * @param major
+     * @param minor
+     * @param start
+     * @param limit
+     * @return
+     */
+    fun getSortBookPage(gender: String, type: String, major: String, minor: String, start: Int, limit: Int): Single<SortBookPackage> {
+        return mBookApi.getSortBookPackage(gender, type, major, minor, start, limit)
     }
 
     /**

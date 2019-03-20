@@ -1,10 +1,15 @@
 package com.example.newbiechen.ireader.model.repository
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.paging.Config
+import androidx.paging.toLiveData
 import com.example.newbiechen.ireader.model.bean.SortBookBean
 import com.example.newbiechen.ireader.model.remote.RemoteRepository
+import com.example.newbiechen.ireader.viewmodel.BookCategoryList
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.Executors
 
 class BookCategoryDetailRepository private constructor(private val remoteRepository: RemoteRepository) {
     val isRequestInProgress = MutableLiveData<Boolean>()
@@ -18,7 +23,7 @@ class BookCategoryDetailRepository private constructor(private val remoteReposit
                 .map{ it.first { gender -> gender.major == majorCategory }.mins  }
                 .subscribe (
                         { response ->
-                            response.add(0, "全部")
+//                            response.add(0, "全部") // 不做全部了，全部分页机制无效
                             result.postValue(response)
                             isRequestInProgress.postValue(false)
                         },
@@ -44,6 +49,29 @@ class BookCategoryDetailRepository private constructor(private val remoteReposit
                             toastMsg.postValue(error.toString())
                         }
                 )
+    }
+    fun fetchBooks(gender: String, type: String, major: String, minor: String, start: Int, limit: Int): BookCategoryList {
+        isRequestInProgress.postValue(true)
+        val sourceFactory = BookCategoryDataSourceFactory(gender, type, major, minor, remoteRepository)
+        val bookList = sourceFactory.toLiveData(
+            config =  Config(
+                    pageSize = limit,
+                    enablePlaceholders = false,
+                    initialLoadSizeHint = limit * 2
+                    ),
+                fetchExecutor = Executors.newFixedThreadPool(5)
+        )
+
+        return BookCategoryList(
+                isRequestInProgress = Transformations.switchMap(sourceFactory.sourceLiveData) {
+                    it.isRequestInProgress
+                },
+                toastMsg = Transformations.switchMap(sourceFactory.sourceLiveData) {
+                    it.toastMsg
+                },
+                books = bookList
+
+        )
     }
     companion object {
         // For Singleton Instantiation

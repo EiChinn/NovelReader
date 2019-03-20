@@ -1,19 +1,33 @@
 package com.example.newbiechen.ireader.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.paging.PagedList
 import com.example.newbiechen.ireader.model.bean.SortBookBean
 import com.example.newbiechen.ireader.model.repository.BookCategoryDetailRepository
 
 class BookCategoryDetailViewModel(private val bookCategoryDetailRepository: BookCategoryDetailRepository) : ViewModel() {
-    val isRequestInProgress = bookCategoryDetailRepository.isRequestInProgress
-    val toastMsg = bookCategoryDetailRepository.toastMsg
-    var gender = "male"
+    val currentType = MutableLiveData<String>()
+    val currentMinor = MutableLiveData<String>()
+    val bookList = MediatorLiveData<BookCategoryList>()
+    init {
+        bookList.addSource(currentType) {
+            if (it.isNotBlank() && currentMinor.value != null) {
+                bookList.postValue(bookCategoryDetailRepository.fetchBooks(gender, currentType.value ?: "", major, currentMinor.value ?: "", 0, 10))
+            }
+        }
+
+        bookList.addSource(currentMinor) {
+            if (it.isNotBlank() && currentType.value != null) {
+                bookList.postValue(bookCategoryDetailRepository.fetchBooks(gender, currentType.value ?: "", major, currentMinor.value ?: "", 0, 10))
+            }
+        }
+    }
+    val isRequestInProgress = Transformations.switchMap(bookList) { it.isRequestInProgress }
+    val toastMsg = Transformations.switchMap(bookList) { it.toastMsg }
+    var gender = ""
     var major = ""
     var mins = MutableLiveData<List<String>>()
-    var currentType = MutableLiveData<String>()
-    var currentMinor = MutableLiveData<String>()
-    var books = MutableLiveData<List<SortBookBean>>()
+    var books = Transformations.switchMap(bookList) { it.books }
 
     fun fetchMins() {
         if (gender.isNotBlank() and major.isNotBlank()) {
@@ -21,10 +35,13 @@ class BookCategoryDetailViewModel(private val bookCategoryDetailRepository: Book
         }
     }
 
-    fun fetBooks() {
-        if (currentType.value != null && currentMinor.value != null) {
-            bookCategoryDetailRepository.fetchBooks(gender, currentType.value!!, major, currentMinor.value!!, 0, 20, books)
-        }
-    }
+
+
 
 }
+
+data class BookCategoryList(
+        val isRequestInProgress: LiveData<Boolean>,
+        val toastMsg: LiveData<String>,
+        val books: LiveData<PagedList<SortBookBean>>
+)
