@@ -14,6 +14,7 @@ import com.example.newbiechen.ireader.viewmodel.InjectorUtils
 import com.example.newbiechen.ireader.widget.dialog.LoadingDialogHelper
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_book_category_detail.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 
 class BookCategoryDetailActivity : AppCompatActivity() {
@@ -26,7 +27,9 @@ class BookCategoryDetailActivity : AppCompatActivity() {
                 .get(BookCategoryDetailViewModel::class.java)
 
         viewModel.currentType.value = BookSortListType.HOT.netName
-        viewModel.major = intent.getStringExtra("category")
+        val category = intent.getStringExtra("category")
+        viewModel.major = category
+        initToolbar(category)
         viewModel.gender = intent.getStringExtra("gender")
         viewModel.fetchMins()
         viewModel.isRequestInProgress.observe(this, Observer {
@@ -92,5 +95,14 @@ class BookCategoryDetailActivity : AppCompatActivity() {
 
 
 
+    }
+
+    private fun initToolbar(title: String) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.title = title
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 }
