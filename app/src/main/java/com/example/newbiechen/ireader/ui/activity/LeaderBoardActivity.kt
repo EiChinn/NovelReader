@@ -12,6 +12,7 @@ import com.example.newbiechen.ireader.viewmodel.LeaderBoardViewModel
 import com.example.newbiechen.ireader.widget.dialog.LoadingDialogHelper
 import kotlinx.android.synthetic.main.activity_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 class LeaderBoardActivity : AppCompatActivity() {
@@ -35,8 +36,11 @@ class LeaderBoardActivity : AppCompatActivity() {
             if (rv_leader_board.adapter == null) {
                 rv_leader_board.layoutManager = LinearLayoutManager(this)
                 rv_leader_board.adapter = LeaderBoardAdapter(it) { bean ->
-                    if (bean.monthRank.isBlank()) {
-                        OtherBillBookActivity.startActivity(this, bean.title, bean._id)
+                    if (bean.monthRank.isNullOrBlank()) {
+                        startActivity<SingleLeaderBoardBookActivity>(
+                                "extra_bill_id" to bean._id,
+                                "extra_bill_name" to bean.title
+                        )
                     } else {
                         BillBookActivity.startActivity(this, bean._id, bean.monthRank, bean.totalRank)
                     }

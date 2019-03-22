@@ -10,8 +10,8 @@ data class BillboardBean(
         val cover: String,
         @SerializedName("collapse")
         val isCollapse: Boolean,
-        val monthRank: String,
-        val totalRank: String
+        val monthRank: String?,
+        val totalRank: String?
 
 ) : MultiItemEntity {
     override fun getItemType() = LeaderBoardAdapter.TYPE_OTHER
