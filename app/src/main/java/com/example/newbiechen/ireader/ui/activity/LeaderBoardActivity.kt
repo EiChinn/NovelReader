@@ -35,7 +35,7 @@ class LeaderBoardActivity : AppCompatActivity() {
             if (rv_leader_board.adapter == null) {
                 rv_leader_board.layoutManager = LinearLayoutManager(this)
                 rv_leader_board.adapter = LeaderBoardAdapter(it) { bean ->
-                    if (bean.isCollapse) {
+                    if (bean.monthRank.isBlank()) {
                         OtherBillBookActivity.startActivity(this, bean.title, bean._id)
                     } else {
                         BillBookActivity.startActivity(this, bean._id, bean.monthRank, bean.totalRank)
