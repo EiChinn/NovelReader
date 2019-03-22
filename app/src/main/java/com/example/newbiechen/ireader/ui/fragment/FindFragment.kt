@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.SectionBean
 import com.example.newbiechen.ireader.model.flag.FindType
-import com.example.newbiechen.ireader.ui.activity.BillboardActivity
 import com.example.newbiechen.ireader.ui.activity.BookCategoryActivity
 import com.example.newbiechen.ireader.ui.activity.BookListActivity
+import com.example.newbiechen.ireader.ui.activity.LeaderBoardActivity
 import com.example.newbiechen.ireader.ui.adapter.SectionAdapter
 import com.example.newbiechen.ireader.ui.base.BaseFragment
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration
@@ -43,10 +43,10 @@ class FindFragment : BaseFragment() {
         mAdapter.setOnItemClickListener { _, _, position ->
             //跳转
             when ( FindType.values()[position]) {
-                FindType.TOP -> startActivity<BillboardActivity>()
+                FindType.TOP -> startActivity<LeaderBoardActivity>()
                 FindType.SORT -> startActivity<BookCategoryActivity>()
                 FindType.TOPIC -> startActivity<BookListActivity>()
-                FindType.LISTEN -> startActivity<BookCategoryActivity>()
+                FindType.LISTEN -> startActivity<LeaderBoardActivity>()
             }
         }
 

@@ -1,5 +1,7 @@
 package com.example.newbiechen.ireader.model.bean
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.example.newbiechen.ireader.ui.adapter.LeaderBoardAdapter
 import com.google.gson.annotations.SerializedName
 
 data class BillboardBean(
@@ -11,6 +13,8 @@ data class BillboardBean(
         val monthRank: String,
         val totalRank: String
 
-) {
+) : MultiItemEntity {
+    override fun getItemType() = LeaderBoardAdapter.TYPE_OTHER
+
     constructor(_id: String) : this(_id, "", "", false, "", "")
 }
