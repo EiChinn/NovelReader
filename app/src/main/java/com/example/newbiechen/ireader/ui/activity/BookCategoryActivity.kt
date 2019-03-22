@@ -59,9 +59,9 @@ class BookCategoryActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
+        toolbar.title = "分类"
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.title = "分类"
         toolbar.setNavigationOnClickListener {
             finish()
         }

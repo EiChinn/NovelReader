@@ -98,9 +98,9 @@ class BookCategoryDetailActivity : AppCompatActivity() {
     }
 
     private fun initToolbar(title: String) {
+        toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.title = title
         toolbar.setNavigationOnClickListener {
             finish()
         }
