@@ -19,7 +19,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.SingleLeaderBoardBookActivity"></activity>
+        <activity android:name=".ui.activity.MultiLeaderBoardBookActivity"></activity>
+        <activity android:name=".ui.activity.SingleLeaderBoardBookActivity" />
         <activity android:name=".ui.activity.LeaderBoardActivity" />
         <activity android:name=".ui.activity.BookCategoryDetailActivity" />
         <activity android:name=".ui.activity.BookCategoryActivity" />
@@ -40,8 +41,6 @@
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.BookListActivity" />
         <activity android:name=".ui.activity.BookListDetailActivity" />
-        <activity android:name=".ui.activity.BillBookActivity" />
-        <activity android:name=".ui.activity.OtherBillBookActivity" />
         <activity android:name=".ui.activity.BookDetailActivity" />
         <activity android:name=".ui.activity.DownloadActivity" />
         <activity android:name=".ui.activity.ReadActivity" />

@@ -42,7 +42,12 @@ class LeaderBoardActivity : AppCompatActivity() {
                                 "extra_bill_name" to bean.title
                         )
                     } else {
-                        BillBookActivity.startActivity(this, bean._id, bean.monthRank, bean.totalRank)
+                        startActivity<MultiLeaderBoardBookActivity>(
+                                "title" to bean.title,
+                                "weekId" to bean._id,
+                                "monthId" to bean.monthRank,
+                                "totalId" to bean.totalRank
+                        )
                     }
                 }
             } else {
