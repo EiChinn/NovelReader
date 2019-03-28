@@ -1,184 +1,157 @@
 package com.example.newbiechen.ireader.ui.activity
 
-import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.os.Bundle
+import android.view.WindowManager
+import android.widget.PopupWindow
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.example.newbiechen.ireader.R
-import com.example.newbiechen.ireader.RxBus
-import com.example.newbiechen.ireader.event.BookSubSortEvent
-import com.example.newbiechen.ireader.model.bean.BookTagBean
 import com.example.newbiechen.ireader.model.flag.BookListType
-import com.example.newbiechen.ireader.model.remote.RemoteRepository
-import com.example.newbiechen.ireader.ui.adapter.HorizonTagAdapter
-import com.example.newbiechen.ireader.ui.adapter.TagGroupAdapter
-import com.example.newbiechen.ireader.ui.base.BaseTabActivity
-import com.example.newbiechen.ireader.ui.fragment.BookListFragment
-import com.example.newbiechen.ireader.utils.LogUtils
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.example.newbiechen.ireader.viewmodel.BookListViewModel
+import com.example.newbiechen.ireader.viewmodel.InjectorUtils
+import com.example.newbiechen.ireader.widget.dialog.LoadingDialogHelper
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_book_list.*
-import java.util.*
+import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
 
 /**
  * 主题书单
  */
 
-class BookListActivity : BaseTabActivity() {
-    private var mHorizonTagAdapter: HorizonTagAdapter? = null
-    private var mTagGroupAdapter: TagGroupAdapter? = null
-    private var mTopInAnim: Animation? = null
-    private var mTopOutAnim: Animation? = null
-    /************Params */
-    private val mDisposable = CompositeDisposable()
+class BookListActivity : AppCompatActivity() {
 
-    override fun getContentId(): Int {
-        return R.layout.activity_book_list
-    }
-
-    override fun createTabFragments(): MutableList<Fragment> {
-        val fragments = ArrayList<Fragment>(BookListType.values().size)
-        for (type in BookListType.values()) {
-            fragments.add(BookListFragment.newInstance(type))
-        }
-        return fragments
-    }
-
-    override fun createTabTitles(): MutableList<String> {
-        val titles = ArrayList<String>(BookListType.values().size)
-        for (type in BookListType.values()) {
-            titles.add(type.getTypeName())
-        }
-        return titles
-    }
-
-    override fun setUpToolbar(toolbar: Toolbar) {
-        super.setUpToolbar(toolbar)
-        supportActionBar!!.title = "主题书单"
-    }
-
-    override fun initWidget() {
-        super.initWidget()
-        initTag()
-    }
-
-    private fun initTag() {
-        //横向的
-        mHorizonTagAdapter = HorizonTagAdapter()
-        val tagManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        book_list_rv_tag_horizon!!.layoutManager = tagManager
-        book_list_rv_tag_horizon!!.adapter = mHorizonTagAdapter
-
-        //筛选框
-        mTagGroupAdapter = TagGroupAdapter(book_list_rv_tag_filter!!, 4)
-        book_list_rv_tag_filter!!.adapter = mTagGroupAdapter
-    }
-
-    override fun initClick() {
-        super.initClick()
-        //滑动的Tag
-        mHorizonTagAdapter!!.setOnItemClickListener { _, pos ->
-            val bookSort = mHorizonTagAdapter!!.getItem(pos)
-            RxBus.getInstance().post(BookSubSortEvent(bookSort))
-        }
-
-        //筛选
-        book_list_cb_filter!!.setOnCheckedChangeListener { _, checked ->
-            if (mTopInAnim == null || mTopOutAnim == null) {
-                mTopInAnim = AnimationUtils.loadAnimation(this, R.anim.slide_top_in)
-                mTopOutAnim = AnimationUtils.loadAnimation(this, R.anim.slide_top_out)
-            }
-
-            if (checked) {
-                book_list_rv_tag_filter!!.visibility = View.VISIBLE
-                book_list_rv_tag_filter!!.startAnimation(mTopInAnim)
+    private lateinit var viewModel: BookListViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_book_list)
+        initToolbar()
+        initTabCategory()
+        viewModel = ViewModelProviders.of(this,
+                InjectorUtils.provideBookListViewModelFactory())
+                .get(BookListViewModel::class.java)
+        viewModel.isRequestInProgress.observe(this, Observer {
+            if (it) {
+                LoadingDialogHelper.showLoadingDialog(this)
             } else {
-                book_list_rv_tag_filter!!.startAnimation(mTopOutAnim)
-                book_list_rv_tag_filter!!.visibility = View.GONE
+                LoadingDialogHelper.closeLoadingDialog()
             }
+        })
+        viewModel.toastMsg.observe(this, Observer { toast(it) })
+        viewModel.fetchTags()
+        viewModel.tags?.observe(this, Observer { list ->
+            viewModel.big5Tags.postValue(list.filter { it.type == MultiTagItem.TYPE_TAG }.take(5).map { it.tag }.toMutableList())
+        })
+        viewModel.big5Tags.observe(this, Observer {list ->
+            tl_tag.removeAllTabs()
+            list.forEach {
+                tl_tag.addTab(tl_tag.newTab().setText(it))
+            }
+            tl_tag.clearOnTabSelectedListeners()
+            tl_tag.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        viewModel.currentTag.postValue(it.text.toString())
+                    }
+                }
+
+            })
+        })
+
+        tv_filter.setOnClickListener {
+            showTagsPopupWindow()
+        }
+    }
+
+    private fun showTagsPopupWindow() {
+        val popupWindow = PopupWindow()
+        val contentView = layoutInflater.inflate(R.layout.popup_book_list_tags, null)
+        val rv_tags = contentView.findViewById<RecyclerView>(R.id.rv_tags)
+        val adapter = FilterTagAdapter(viewModel.tags!!.value!!) {
+            viewModel.refreshBig5Tags(it)
+            popupWindow.dismiss()
+        }
+        rv_tags.layoutManager = GridLayoutManager(this, 4)
+        adapter.setSpanSizeLookup { _, i ->
+            return@setSpanSizeLookup if (adapter.data[i].type == MultiTagItem.TYPE_CATEGORY) 4 else 1
+        }
+        rv_tags.adapter = adapter
+
+        popupWindow.contentView = contentView
+        popupWindow.width = WindowManager.LayoutParams.MATCH_PARENT
+        popupWindow.height = WindowManager.LayoutParams.WRAP_CONTENT
+        popupWindow.showAsDropDown(tv_filter)
+    }
+
+    class MultiTagItem(val type: Int, val tag: String) : MultiItemEntity{
+        override fun getItemType() = type
+
+        companion object {
+            const val TYPE_CATEGORY = 0xff01
+            const val TYPE_TAG = 0xff02
         }
 
-        //筛选列表
-        mTagGroupAdapter!!.setOnChildItemListener { _, groupPos, childPos ->
-            val bean = mTagGroupAdapter!!.getChildItem(groupPos, childPos)
-            //是否已存在
-            val tags = mHorizonTagAdapter!!.getItems()
-            var isExist = false
-            for (i in tags.indices) {
-                if (bean == tags[i]) {
-                    mHorizonTagAdapter!!.setCurrentSelected(i)
-                    book_list_rv_tag_horizon!!.layoutManager!!.scrollToPosition(i)
-                    isExist = true
+    }
+
+    class FilterTagAdapter(data: List<MultiTagItem>, val selectTag: (String) -> Unit) : BaseMultiItemQuickAdapter<MultiTagItem, BaseViewHolder>(data) {
+        init {
+            addItemType(MultiTagItem.TYPE_CATEGORY, R.layout.item_book_category_label)
+            addItemType(MultiTagItem.TYPE_TAG, R.layout.item_book_list_tag)
+        }
+        override fun convert(helper: BaseViewHolder, item: MultiTagItem) {
+            when (item.type) {
+                MultiTagItem.TYPE_CATEGORY -> {
+                    helper.setText(R.id.tv_label, item.tag)
+                }
+                MultiTagItem.TYPE_TAG -> {
+                    helper.setText(R.id.btn_tag, item.tag)
+                    helper.setOnClickListener(R.id.btn_tag) {
+                        selectTag(item.tag)
+                    }
                 }
             }
-            if (!isExist) {
-                //添加到1的位置,保证全本的位置
-                mHorizonTagAdapter!!.addItem(1, bean)
-                mHorizonTagAdapter!!.setCurrentSelected(1)
-                book_list_rv_tag_horizon!!.layoutManager!!.scrollToPosition(1)
-            }
-            book_list_cb_filter!!.isChecked = false
         }
+
     }
 
-
-    override fun processLogic() {
-        super.processLogic()
-        refreshTag()
+    private fun initToolbar() {
+        toolbar.title = "主题书单"
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
-    private fun refreshTag() {
-        val refreshDispo = RemoteRepository.instance
-                .bookTags
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { tagBeans ->
-                            refreshHorizonTag(tagBeans)
-                            refreshGroupTag(tagBeans.toMutableList())
-                        },
-                        { e -> LogUtils.e(e.toString()) }
-                )
-        mDisposable.add(refreshDispo)
-    }
+    private fun initTabCategory() {
+        BookListType.values().forEach {
+            tl_category.addTab(tl_category.newTab().setText(it.typeName))
+        }
+        tl_category.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {
 
-    private fun refreshHorizonTag(tagBeans: List<BookTagBean>) {
-        val randomTag = ArrayList<String>(RANDOM_COUNT)
-        randomTag.add("全本")
-        var caculator = 0
-        //随机获取4,5个。
-        val tagBeanCount = tagBeans.size
-        for (i in 0 until tagBeanCount) {
-            val tags = tagBeans[i].tags
-            val tagCount = tags.size
-            for (j in 0 until tagCount) {
-                if (caculator < RANDOM_COUNT) {
-                    randomTag.add(tags[j])
-                    ++caculator
-                } else {
-                    break
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    viewModel.currentCategory.postValue(BookListType.getNetName(it.text.toString()))
                 }
             }
-            if (caculator >= RANDOM_COUNT) {
-                break
-            }
-        }
-        mHorizonTagAdapter!!.addItems(randomTag)
-    }
 
-    private fun refreshGroupTag(tagBeans: MutableList<BookTagBean>) {
-        //由于数据还有根据性别分配，所以需要加上去
-        val bean = BookTagBean(resources.getString(R.string.nb_tag_sex),
-                Arrays.asList(resources.getString(R.string.nb_tag_boy), resources.getString(R.string.nb_tag_girl)))
-        tagBeans.add(0, bean)
-
-        mTagGroupAdapter!!.refreshItems(tagBeans)
-    }
-
-    companion object {
-        private const val RANDOM_COUNT = 5
+        })
     }
 }

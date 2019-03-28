@@ -44,9 +44,8 @@ class RemoteRepository private constructor() {
      * 获取书单的标签|类型
      * @return
      */
-    val bookTags: Single<List<BookTagBean>>
+    val bookTags: Single<BookTagPackage>
         get() = mBookApi.bookTagPackage
-                .map { (_, data) -> data }
     /********************************书籍搜索 */
     /**
      * 搜索热词

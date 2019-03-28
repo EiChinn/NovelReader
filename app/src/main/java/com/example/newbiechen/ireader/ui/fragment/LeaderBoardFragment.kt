@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiechen.ireader.R
+import com.example.newbiechen.ireader.ui.activity.BookDetailActivity
 import com.example.newbiechen.ireader.ui.adapter.LeaderBoardBookAdapter
 import com.example.newbiechen.ireader.viewmodel.InjectorUtils
 import com.example.newbiechen.ireader.viewmodel.LeaderBoardBookViewModel
@@ -38,7 +39,7 @@ class LeaderBoardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProviders.of(this,
-                InjectorUtils.provideLeaderBoardBookReposityFactory())
+                InjectorUtils.provideLeaderBoardBookViewModelFactory())
                 .get(LeaderBoardBookViewModel::class.java)
         viewModel.id.value = leaderBoardId
         viewModel.isRequestInProgress.observe(this, Observer {
@@ -53,7 +54,10 @@ class LeaderBoardFragment : Fragment() {
         viewModel.data.observe(this, Observer {
             if (rv_books.adapter == null) {
                 rv_books.layoutManager = LinearLayoutManager(context)
-                rv_books.adapter = LeaderBoardBookAdapter(it)
+                rv_books.adapter = LeaderBoardBookAdapter(it) {bookId ->
+                    BookDetailActivity.startActivity(context!!, bookId)
+
+                }
             } else {
                 (rv_books.adapter as LeaderBoardBookAdapter).setNewData(it)
             }

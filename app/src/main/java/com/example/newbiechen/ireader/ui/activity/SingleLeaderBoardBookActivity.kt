@@ -22,7 +22,7 @@ class SingleLeaderBoardBookActivity : AppCompatActivity() {
         val title = intent.getStringExtra("extra_bill_name")
         initToolbar(title)
         val viewModel = ViewModelProviders.of(this,
-                InjectorUtils.provideLeaderBoardBookReposityFactory())
+                InjectorUtils.provideLeaderBoardBookViewModelFactory())
                 .get(LeaderBoardBookViewModel::class.java)
         viewModel.id.value = intent.getStringExtra("extra_bill_id")
         viewModel.isRequestInProgress.observe(this, Observer {
@@ -36,7 +36,9 @@ class SingleLeaderBoardBookActivity : AppCompatActivity() {
         viewModel.data.observe(this, Observer {
             if (rv_book.adapter == null) {
                 rv_book.layoutManager = LinearLayoutManager(this)
-                rv_book.adapter = LeaderBoardBookAdapter(it)
+                rv_book.adapter = LeaderBoardBookAdapter(it) { bookId ->
+                    BookDetailActivity.startActivity(this, bookId)
+                }
             } else {
                 (rv_book.adapter as LeaderBoardBookAdapter).setNewData(it)
             }

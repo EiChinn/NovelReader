@@ -1,16 +1,21 @@
 package com.example.newbiechen.ireader.model.flag
 
-import androidx.annotation.StringRes
-import com.example.newbiechen.ireader.App
-import com.example.newbiechen.ireader.R
-
-enum class BookListType(@StringRes val typeNameId: Int, val netName: String) {
-    HOT(R.string.nb_fragment_book_list_hot, "last-seven-days"),
-    NEWEST(R.string.nb_fragment_book_list_newest, "created"),
-    COLLECT(R.string.nb_fragment_book_list_collect, "collectorCount")
+enum class BookListType(val typeName: String, val netName: String) {
+    HOT("本周最热", "last-seven-days"),
+    NEWEST("最新发布", "created"),
+    COLLECT("最多收藏", "collectorCount")
     ;
 
-    fun getTypeName(): String {
-        return App.getInstance().resources.getString(typeNameId)
+    companion object {
+        fun getNetName(typeName: String): String {
+            values().forEach {
+                if (it.typeName == typeName) {
+                    return it.netName
+                }
+            }
+            return HOT.netName
+        }
     }
+
+
 }

@@ -24,6 +24,7 @@ class MultiLeaderBoardBookActivity : AppCompatActivity() {
     private fun initToolbar(title: String) {
         toolbar.title = title
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             finish()
         }

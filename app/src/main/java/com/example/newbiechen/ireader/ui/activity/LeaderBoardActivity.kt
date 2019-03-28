@@ -22,7 +22,7 @@ class LeaderBoardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_leader_board)
         initToolbar()
         val viewModel = ViewModelProviders.of(this,
-                InjectorUtils.provideLeaderBoardRepositoryFactory()).get(LeaderBoardViewModel::class.java)
+                InjectorUtils.provideLeaderBoardViewModelFactory()).get(LeaderBoardViewModel::class.java)
         viewModel.dataWrapper.isRequestInProgress.observe(this, Observer {
             if (it) {
                 LoadingDialogHelper.showLoadingDialog(this)

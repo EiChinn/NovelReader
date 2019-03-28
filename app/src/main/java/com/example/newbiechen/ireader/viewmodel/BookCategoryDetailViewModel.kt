@@ -8,7 +8,7 @@ import com.example.newbiechen.ireader.model.repository.BookCategoryDetailReposit
 class BookCategoryDetailViewModel(private val bookCategoryDetailRepository: BookCategoryDetailRepository) : ViewModel() {
     val currentType = MutableLiveData<String>()
     val currentMinor = MutableLiveData<String>()
-    val bookList = MediatorLiveData<BookCategoryList>()
+    private val bookList = MediatorLiveData<BookCategoryList>()
     init {
         bookList.addSource(currentType) {
             if (it.isNotBlank() && currentMinor.value != null) {

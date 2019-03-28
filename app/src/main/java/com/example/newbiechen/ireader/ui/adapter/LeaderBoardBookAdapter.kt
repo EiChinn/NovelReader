@@ -8,7 +8,7 @@ import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.model.bean.BillBookBean
 import com.example.newbiechen.ireader.utils.Constant
 
-class LeaderBoardBookAdapter(data: List<BillBookBean>) : BaseQuickAdapter<BillBookBean, BaseViewHolder>(R.layout.item_book_brief, data) {
+class LeaderBoardBookAdapter(data: List<BillBookBean>, val onItemClicked: (String) -> Unit) : BaseQuickAdapter<BillBookBean, BaseViewHolder>(R.layout.item_book_brief, data) {
     override fun convert(helper: BaseViewHolder, item: BillBookBean) {
         val bookCoverIv = helper.getView<ImageView>(R.id.book_brief_iv_portrait)
         //头像
@@ -22,6 +22,10 @@ class LeaderBoardBookAdapter(data: List<BillBookBean>) : BaseQuickAdapter<BillBo
         helper.setText(R.id.book_brief_tv_author, item.author)
         helper.setText(R.id.book_brief_tv_brief, item.shortIntro)
         helper.setText(R.id.book_brief_tv_msg, "${item.latelyFollower}人在追 | ${item.retentionRatio}读者留存")
+        helper.setOnClickListener(R.id.rl_container) {
+            onItemClicked(item._id)
+        }
+
     }
 
 }
