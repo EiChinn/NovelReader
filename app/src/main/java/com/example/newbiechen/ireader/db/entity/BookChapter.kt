@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
         indices = [Index(value = ["bookId"])])
 data class BookChapter(
         @PrimaryKey
-        var id: String = "",
-        var bookId: String = "",
+        var id: String = "", // 章节id
+        var bookId: String = "", // 书籍id
         var link: String = "",
         var title: String = "",
         var taskName: String = "", //所属的下载任务

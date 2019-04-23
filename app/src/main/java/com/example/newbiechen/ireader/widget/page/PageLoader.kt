@@ -28,14 +28,14 @@ import java.util.*
 abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) {
 
     // 当前章节列表
-    var mChapterList: MutableList<TxtChapter>? = null
+    var mChapterList: MutableList<TxtChapter>
     // 书本对象
     /**
      * 获取书籍信息
      *
      * @return
      */
-    var collBook: CollBook
+    var collBook = collBook
     var bookChapters: List<BookChapter> = emptyList()
     // 监听器
     protected var mPageChangeListener: OnPageChangeListener? = null
@@ -191,7 +191,6 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
         }
 
     init {
-        this.collBook = collBook
         mChapterList = ArrayList(1)
 
         // 初始化数据
@@ -538,7 +537,7 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
      */
     open fun saveRecord() {
 
-        if (mChapterList!!.isEmpty()) {
+        if (mChapterList.isEmpty()) {
             return
         }
 
@@ -550,9 +549,9 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
             collBook.pagePos = 0
         }
 
+        //todo 重复处理？
         //存储到数据库
-        BookRepository.instance
-                .insertOrUpdateCollBook(collBook)
+        BookRepository.instance.updateCollBook(collBook)
     }
 
     /**
@@ -581,7 +580,7 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
         }
 
         // 如果获取到的章节目录为空
-        if (mChapterList!!.isEmpty()) {
+        if (mChapterList.isEmpty()) {
             pageStatus = STATUS_CATEGORY_EMPTY
             mPageView!!.drawCurPage(false)
             return
@@ -631,7 +630,7 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
         clearList(mCurPageList)
         clearList(mNextPageList)
 
-        mChapterList = null
+//        mChapterList = null
         mCurPageList = null
         mNextPageList = null
         mPageView = null
@@ -1318,11 +1317,11 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
      */
     protected fun checkRecordValid() {
         if (chapterPos >= collBook.chaptersCount || chapterPos < 0) {
-            chapterPos = 0
+            chapterPos = collBook.chaptersCount - 1
             mLastChapterPos = chapterPos
-            collBook.chapter = 0
+            collBook.chapter = chapterPos
             collBook.pagePos = 0
-            BookRepository.instance.insertOrUpdateCollBook(collBook)
+            BookRepository.instance.updateCollBook(collBook)
             ToastUtils.show("上次阅读章节大于小说总章节，检查是否换源的时候出了问题")
         }
     }

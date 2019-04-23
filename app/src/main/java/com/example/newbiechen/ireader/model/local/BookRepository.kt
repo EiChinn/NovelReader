@@ -35,15 +35,20 @@ class BookRepository private constructor() {
     fun insertOrUpdateCollBooks(collBooks: List<CollBook>) {
         collBookDao.insertOrUpdateCollBooks(collBooks)
     }
+
     fun insertOrUpdateCollBook(collBook: CollBook) {
         collBookDao.insertOrUpdateCollBook(collBook)
+    }
+
+    fun updateCollBook(collBook: CollBook) {
+        collBookDao.updateCollBook(collBook)
     }
 
 
 
     fun changeBookSource(collBook: CollBook) {
         // 更新数据库信息，主要是更新currentSourceId，currentSourceName这两个字段
-        insertOrUpdateCollBook(collBook)
+        updateCollBook(collBook)
         // 换源之后删除本地章节缓存
         deleteBookCache(collBook.bookId)
     }

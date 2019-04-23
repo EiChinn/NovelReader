@@ -125,16 +125,16 @@ class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageVie
             var end = chapterPos
 
             // 是否当前不是最后一章
-            if (end < mChapterList!!.size) {
-                end = end + 1
-                if (end >= mChapterList!!.size) {
-                    end = mChapterList!!.size - 1
+            if (end < mChapterList.size) {
+                end += 1
+                if (end >= mChapterList.size) {
+                    end = mChapterList.size - 1
                 }
             }
 
             // 如果当前不是第一章
             if (begin != 0) {
-                begin = begin - 1
+                begin -= 1
                 if (begin < 0) {
                     begin = 0
                 }
@@ -155,13 +155,13 @@ class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageVie
             var end = begin + 1
 
             // 判断是否大于最后一章
-            if (begin >= mChapterList!!.size) {
+            if (begin >= mChapterList.size) {
                 // 如果下一章超出目录了，就没有必要加载了
                 return
             }
 
-            if (end > mChapterList!!.size) {
-                end = mChapterList!!.size - 1
+            if (end > mChapterList.size) {
+                end = mChapterList.size - 1
             }
 
             requestChapters(begin, end)
@@ -176,8 +176,8 @@ class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageVie
             start = 0
         }
 
-        if (end >= mChapterList!!.size) {
-            end = mChapterList!!.size - 1
+        if (end >= mChapterList.size) {
+            end = mChapterList.size - 1
         }
 
 
@@ -185,7 +185,7 @@ class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageVie
 
         // 过滤，哪些数据已经加载了
         for (i in start..end) {
-            val txtChapter = mChapterList!![i]
+            val txtChapter = mChapterList[i]
             if (!hasChapterData(txtChapter)) {
                 chapters.add(txtChapter)
             }
@@ -198,12 +198,13 @@ class NetPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageVie
 
     override fun saveRecord() {
         super.saveRecord()
-        if (collBook != null && isChapterListPrepare) {
+        if (isChapterListPrepare) {
             //表示当前CollBook已经阅读
             collBook.isUpdate = false
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.instance.insertOrUpdateCollBook(collBook)
+            //todo 重复处理？
+            BookRepository.instance.updateCollBook(collBook)
         }
     }
 }

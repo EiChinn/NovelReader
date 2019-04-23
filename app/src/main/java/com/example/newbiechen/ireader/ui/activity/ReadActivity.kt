@@ -602,8 +602,7 @@ class ReadActivity : BaseMVPActivity<ReadContract.View, ReadContract.Presenter>(
                         //设置阅读时间
                         mCollBook!!.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
 
-                        BookRepository.instance
-                                .insertOrUpdateCollBook(mCollBook!!)
+                        BookRepository.instance.insertOrUpdateCollBook(mCollBook!!)
 
                         exit()
                     }

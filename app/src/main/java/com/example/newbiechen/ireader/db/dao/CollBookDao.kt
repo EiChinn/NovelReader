@@ -11,6 +11,9 @@ interface CollBookDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateCollBook(collBook: CollBook)
 
+    @Update
+    fun updateCollBook(collBook: CollBook)
+
     @Query("SELECT * FROM CollBook WHERE bookId = :bookId")
     fun queryCollBookById(bookId: String): CollBook
 

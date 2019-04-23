@@ -12,7 +12,6 @@ import com.example.newbiechen.ireader.R
 import com.example.newbiechen.ireader.RxBus
 import com.example.newbiechen.ireader.db.entity.CollBook
 import com.example.newbiechen.ireader.event.DeleteResponseEvent
-import com.example.newbiechen.ireader.event.DeleteTaskEvent
 import com.example.newbiechen.ireader.event.DownloadMessage
 import com.example.newbiechen.ireader.event.SyncBookEvent
 import com.example.newbiechen.ireader.model.local.BookRepository
@@ -219,7 +218,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
                     .setNegativeButton(resources.getString(R.string.nb_common_cancel), null)
                     .show()
         } else {
-            RxBus.getInstance().post(DeleteTaskEvent(collBook))
+            RxBus.getInstance().post(DeleteResponseEvent(true, collBook))
         }
     }
 
@@ -242,12 +241,14 @@ class BookShelfFragment : BaseMVPFragment<BookShelfContract.View, BookShelfContr
     override fun finishRefresh(collBooks: List<CollBook>) {
         if (!collBooks.isEmpty()) {
             mCollBookAdapter!!.setNewData(collBooks)
+
             //如果是初次进入，则更新书籍信息
             if (isInit) {
                 isInit = false
-                /*swipeRefreshLayout.post {
+                swipeRefreshLayout.postDelayed({
                     swipeRefreshLayout.isRefreshing = true
-                }*/
+                    mPresenter.updateCollBooks(mCollBookAdapter!!.data)
+                }, 100)
             }
         }
 

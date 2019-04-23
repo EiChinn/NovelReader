@@ -67,11 +67,8 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
             var blockOffset: Long = 0
             //block的个数
             var blockCount = 0
-            //读取的长度
-            var blockLength: Int
-
             //获取文件中的数据到buffer，直到没有数据为止
-            blockLength = bookStream.read(blockBuffer, 0, blockBuffer.size)
+            var blockLength = bookStream.read(blockBuffer, 0, blockBuffer.size)
             while (blockLength > 0) {
                 ++blockCount
                 //如果存在Chapter
@@ -190,7 +187,7 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
                             chapter.end = blockOffset + end
                             chapters.add(chapter)
                             //减去已经被分配的长度
-                            strLength = strLength - (end - chapterOffset)
+                            strLength -= (end - chapterOffset)
                             //设置偏移的位置
                             chapterOffset = end
                         } else {
@@ -218,10 +215,11 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
                     System.gc()
                     System.runFinalization()
                 }
+
+                blockLength = bookStream.read(blockBuffer, 0, blockBuffer.size)
             }
 
             mChapterList = chapters
-            blockLength = bookStream.read(blockBuffer, 0, blockBuffer.size)
         }
 
         System.gc()
@@ -284,13 +282,14 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
     override fun saveRecord() {
         super.saveRecord()
         //修改当前COllBook记录
-        if (collBook != null && isChapterListPrepare) {
+        if (isChapterListPrepare) {
             //表示当前CollBook已经阅读
             collBook.isUpdate = false
-            collBook.lastChapter = mChapterList!![chapterPos].title
+            collBook.lastChapter = mChapterList[chapterPos].title
             collBook.lastRead = StringUtils.dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE)
             //直接更新
-            BookRepository.instance.insertOrUpdateCollBook(collBook)
+            //todo 重复处理？
+            BookRepository.instance.updateCollBook(collBook)
         }
     }
 
@@ -311,22 +310,23 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
         val lastModified = StringUtils.dateConvert(mBookFile!!.lastModified(), Constant.FORMAT_BOOK_DATE)
 
         // 判断文件是否已经加载过，并具有缓存
-        if (!collBook.isUpdate && collBook.updated != null
-                && collBook.updated == lastModified
-                && bookChapters != null) {
+        if (!collBook.isUpdate && collBook.updated == lastModified) {
 
             mChapterList = convertTxtChapter(bookChapters)
-            isChapterListPrepare = true
+            if (mChapterList.size > 0) {
+                isChapterListPrepare = true
 
-            //提示目录加载完成
-            if (mPageChangeListener != null) {
-                mPageChangeListener!!.onCategoryFinish(mChapterList)
+                //提示目录加载完成
+                if (mPageChangeListener != null) {
+                    mPageChangeListener!!.onCategoryFinish(mChapterList)
+                }
+
+                // 加载并显示当前章节
+                openChapter()
+
+                return
             }
 
-            // 加载并显示当前章节
-            openChapter()
-
-            return
         }
 
         // 通过RxJava异步处理分章事件
@@ -350,12 +350,13 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
 
                         // 存储章节到数据库
                         val bookChapterList = ArrayList<BookChapter>()
-                        for (i in 0 until mChapterList!!.size) {
-                            val chapter = mChapterList!![i]
+                        for (i in 0 until mChapterList.size) {
+                            val chapter = mChapterList[i]
                             val bean = BookChapter()
+                            bean.bookId = collBook.bookId // ForeignKey
                             bean.id = MD5Utils.strToMd5By16(mBookFile!!.absolutePath
                                     + File.separator + chapter.title) // 将路径+i 作为唯一值
-                            bean.title = chapter.title
+                            bean.title = chapter.title.trim()
                             bean.start = chapter.start
                             bean.unreadable = false
                             bean.end = chapter.end
@@ -364,8 +365,8 @@ class LocalPageLoader(pageView: PageView, collBook: CollBook) : PageLoader(pageV
                         bookChapters = bookChapterList
                         collBook.updated = lastModified
 
-                        BookRepository.instance.saveBookChaptersWithAsync(bookChapterList)
                         BookRepository.instance.insertOrUpdateCollBook(collBook)
+                        BookRepository.instance.saveBookChaptersWithAsync(bookChapterList)
 
                         // 加载并显示当前章节
                         openChapter()

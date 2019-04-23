@@ -132,8 +132,8 @@ class BookListFragment : BaseMVPFragment<BookListContract.View, BookListContract
     }
 
     companion object {
-        private val EXTRA_BOOK_LIST_TYPE = "extra_book_list_type"
-        private val BUNDLE_BOOK_TAG = "bundle_book_tag"
+        private const val EXTRA_BOOK_LIST_TYPE = "extra_book_list_type"
+        private const val BUNDLE_BOOK_TAG = "bundle_book_tag"
 
         fun newInstance(bookListType: BookListType): Fragment {
             val bundle = Bundle()
