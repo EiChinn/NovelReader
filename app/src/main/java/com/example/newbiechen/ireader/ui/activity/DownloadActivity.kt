@@ -81,12 +81,14 @@ class DownloadActivity : BaseActivity(), DownloadService.OnDownloadListener {
             override fun onServiceDisconnected(name: ComponentName) {}
         }
         //绑定
-        bindService(Intent(this, DownloadService::class.java), mConn, Service.BIND_AUTO_CREATE)
+        bindService(Intent(this, DownloadService::class.java), mConn!!, Service.BIND_AUTO_CREATE)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindService(mConn)
+        mConn?.let {
+            unbindService(it)
+        }
     }
 
     override fun onDownloadChange(pos: Int, status: Int, msg: String) {

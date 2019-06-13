@@ -10,7 +10,7 @@ object SharedPreUtils {
 
     @JvmStatic
     fun getString(key: String): String {
-        return sharedReadable.getString(key, "")
+        return sharedReadable.getString(key, "")!!
 
     }
 

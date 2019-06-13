@@ -707,10 +707,10 @@ abstract class PageLoader(private var mPageView: PageView?, collBook: CollBook) 
                 //根据状态不一样，数据不一样
                 if (pageStatus != STATUS_FINISH) {
                     if (isChapterListPrepare) {
-                        canvas.drawText(mChapterList!![chapterPos].title, mMarginWidth.toFloat(), tipTop, mTipPaint!!)
+                        canvas.drawText(mChapterList[chapterPos].title, mMarginWidth.toFloat(), tipTop, mTipPaint!!)
                     }
                 } else {
-                    canvas.drawText(mCurPage!!.title, mMarginWidth.toFloat(), tipTop, mTipPaint!!)
+                    canvas.drawText(mCurPage?.title ?: "", mMarginWidth.toFloat(), tipTop, mTipPaint!!)
                 }
 
                 /******绘制页码 */

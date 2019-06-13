@@ -13,7 +13,7 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
         private const val VERTICAL_LIST = LinearLayoutManager.VERTICAL
     }
 
-    private val mDrawable: Drawable
+    private val mDrawable: Drawable?
 
     init {
         val a = context.obtainStyledAttributes(ATTRS)
@@ -46,9 +46,9 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
             val params = child
                     .layoutParams as RecyclerView.LayoutParams
             val top = child.bottom + params.bottomMargin
-            val bottom = top + mDrawable.intrinsicHeight
-            mDrawable.setBounds(left, top, right, bottom)
-            mDrawable.draw(c)
+            val bottom = top + (mDrawable?.intrinsicHeight ?: 0)
+            mDrawable?.setBounds(left, top, right, bottom)
+            mDrawable?.draw(c)
         }
     }
 
@@ -62,17 +62,17 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
             val params = child
                     .layoutParams as RecyclerView.LayoutParams
             val left = child.right + params.rightMargin
-            val right = left + mDrawable.intrinsicHeight
-            mDrawable.setBounds(left, top, right, bottom)
-            mDrawable.draw(c)
+            val right = left + (mDrawable?.intrinsicHeight ?: 0)
+            mDrawable?.setBounds(left, top, right, bottom)
+            mDrawable?.draw(c)
         }
     }
 
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
         if (getLayoutManagerType(parent) == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, mDrawable.intrinsicHeight)
+            outRect.set(0, 0, 0, mDrawable?.intrinsicHeight ?: 0)
         } else {
-            outRect.set(0, 0, mDrawable.intrinsicWidth, 0)
+            outRect.set(0, 0, mDrawable?.intrinsicWidth ?: 0, 0)
         }
     }
 }

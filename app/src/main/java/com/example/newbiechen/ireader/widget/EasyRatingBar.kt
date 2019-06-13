@@ -170,11 +170,11 @@ class EasyRatingBar @JvmOverloads constructor(private val mContext: Context, att
         mCurrentRate = savedState.currentRate
     }
 
-    internal class SavedState : View.BaseSavedState {
+    internal class SavedState : BaseSavedState {
         var rateCount: Int = 0
         var currentRate: Int = 0
 
-        constructor(superState: Parcelable) : super(superState) {}
+        constructor(superState: Parcelable?) : super(superState)
 
         private constructor(`in`: Parcel) : super(`in`) {
             rateCount = `in`.readInt()

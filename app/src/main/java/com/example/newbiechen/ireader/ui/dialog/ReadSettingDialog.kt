@@ -48,11 +48,14 @@ class ReadSettingDialog(val mActivity: Activity, val mPageLoader: PageLoader) : 
     }
 
     private fun setUpWindow() {
-        val lp = window.attributes
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.BOTTOM
-        window.attributes = lp
+        val lp = window?.attributes
+        lp?.let {
+            it.width = WindowManager.LayoutParams.MATCH_PARENT
+            it.height = WindowManager.LayoutParams.WRAP_CONTENT
+            it.gravity = Gravity.BOTTOM
+            window?.attributes = it
+        }
+
     }
     private fun initData() {
         isBrightnessAuto = ReadSettingManager.isBrightnessAuto()

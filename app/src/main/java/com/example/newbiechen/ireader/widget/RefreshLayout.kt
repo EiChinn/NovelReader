@@ -185,7 +185,7 @@ class RefreshLayout @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun onSaveInstanceState(): Parcelable? {
         val superParcel = super.onSaveInstanceState()
         val savedState = SavedState(superParcel)
-        savedState.status = mStatus
+        savedState?.status = mStatus
         return savedState
     }
 
@@ -197,10 +197,10 @@ class RefreshLayout @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     // kotlin 的 class 可以没有 primary constructor
-    class SavedState : View.BaseSavedState {
+    class SavedState : BaseSavedState {
         var status: Int = 0
 
-        constructor(superState: Parcelable) : super(superState)
+        constructor(superState: Parcelable?) : super(superState)
 
         private constructor(inParcel: Parcel) : super(inParcel) {
             status = inParcel.readInt()

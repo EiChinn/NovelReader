@@ -13,7 +13,7 @@ android {
             storePassword '564579234'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.newbiechen.ireader"
         minSdkVersion rootProject.ext.minSdkVersion
